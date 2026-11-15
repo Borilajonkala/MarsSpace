@@ -4,6 +4,7 @@ import Header from './Components/Header'
 import Home from './Pages/Home'
 import About from './Pages/About'
 import Login from './Pages/Login'
+import Blog from './Pages/Blog'
 
 const App = () => {
   return (
@@ -19,7 +20,7 @@ const App = () => {
         <Route path="/my-works" element={<Home />} />
         <Route path="/games" element={<Home />} />
         <Route path="/algo" element={<About />} />
-        <Route path="/blog" element={<About />} />
+        <Route path="/blog" element={<Blog />} />
         <Route path="/hackathon" element={<Home />} />
         <Route path="/events" element={<About />} />
         <Route path="/rating" element={<Home />} />
