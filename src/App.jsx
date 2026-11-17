@@ -4,6 +4,7 @@ import Header from './Components/Header'
 import Home from './Pages/Home'
 import About from './Pages/About'
 import Login from './Pages/Login'
+import MyWorks from './Pages/My-works'
 
 const App = () => {
   return (
@@ -16,7 +17,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/courses" element={<About />} />
-        <Route path="/my-works" element={<Home />} />
+        <Route path="/my-works" element={<MyWorks />} />
         <Route path="/games" element={<Home />} />
         <Route path="/algo" element={<About />} />
         <Route path="/blog" element={<About />} />
