@@ -1294,5 +1294,15 @@
       "author": "Metodika bo'limi",
       "priority": "low"
     }
+  ],
+  "posts": [
+    {
+      "id": "1",
+      "author": "Yusupov Ulugbek",
+      "text": "Mening birinchi postim!",
+      "image": "/images/post1.jpg",
+      "likedBy": [],
+      "comments": []
+    }
   ]
 }
