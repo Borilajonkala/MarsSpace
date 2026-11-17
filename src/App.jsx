@@ -44,7 +44,7 @@ const App = () => {
         <Route path="/rating" element={<Home />} />
         <Route path="/payment" element={<About />} />
 
-        {/* Kometa vazifalari (keyin o'z komponentlariga almashtirasiz) */}
+       
         <Route path="/monkeytype" element={<Home />} />
         <Route path="/raqib-topish" element={<Home />} />
         <Route path="/uno" element={<Home />} />

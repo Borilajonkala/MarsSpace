@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 
-/* ---------- Asosiy sahifa (3 ta ekran: home / typing / battle) ---------- */
+
 const Asosiy = () => {
   const [view, setView] = useState('home') // 'home' | 'typing' | 'battle'
 
@@ -14,9 +14,7 @@ const Asosiy = () => {
   )
 }
 
-/* ------------------------------ KURS XARITASI ------------------------------ */
-/* Har bir modulda: darslar ro'yxati va nechta dars tugatilgani (done).
-   Darslar nomini o'zingizniki bilan almashtiring. */
+
 const MODULES = [
   {
     title: 'Modul 1',
@@ -33,7 +31,7 @@ const MODULES = [
       'Table',
       'Form taglari',
       'Box Modeling',
-      'Imtihon', // 12-dars (joriy)
+      'Imtihon', 
     ],
   },
   { title: 'Modul 2', done: 12 },
