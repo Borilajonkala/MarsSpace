@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import  { useState } from 'react'
+=======
+import { useState } from 'react'
+>>>>>>> 1f2548e7c30a57a04960dc1dc3c501e35af1def4
 import { NavLink, Outlet, useLocation, useNavigate, Link } from 'react-router-dom'
 
 const Header = ({ children }) => {
@@ -6,14 +10,16 @@ const Header = ({ children }) => {
     const navigate = useNavigate()
     const [selectedTheme, setSelectedTheme] = useState("YO'LAK")
 
-    // Saqlangan mentor/foydalanuvchi ma'lumotlari (mars_auth_user olib tashlandi, token'dan o'qiymiz)
-    const storedUser = localStorage.getItem('token')
-    let currentUser = null
-    try {
-        currentUser = storedUser ? JSON.parse(storedUser) : null
-    } catch {
-        currentUser = null
-    }
+    // Saqlangan mentor/foydalanuvchi ma'lumotlari (buzilgan JSON ilovani yiqitmasligi uchun)
+    const currentUser = (() => {
+        try {
+            const storedUser = localStorage.getItem('mars_auth_user')
+            return storedUser ? JSON.parse(storedUser) : null
+        } catch {
+            localStorage.removeItem('mars_auth_user')
+            return null
+        }
+    })()
 
     // Chiqish (Logout)
     const handleLogout = () => {
@@ -35,8 +41,8 @@ const Header = ({ children }) => {
                 return 'Mening ishlarim'
             case '/games':
                 return "O'yin-kulgi"
-            case '/algo':
-                return 'Algo'
+            case '/alogo':
+                return "Alogo"
             case '/blog':
                 return 'Blog'
             case '/hackathon':
@@ -102,8 +108,8 @@ const Header = ({ children }) => {
             )
         },
         {
-            to: '/algo',
-            label: 'Algo',
+            to: '/alogo',
+            label: 'Alogo',
             icon: (
                 <span className="font-mono font-bold text-sm tracking-tight">&lt;/&gt;</span>
             )
