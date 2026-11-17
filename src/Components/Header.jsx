@@ -29,8 +29,8 @@ const Header = ({ children }) => {
                 return 'Mening ishlarim'
             case '/games':
                 return "O'yin-kulgi"
-            case '/algo':
-                return 'Algo'
+            case '/alogo':
+                return "Alogo"
             case '/blog':
                 return 'Blog'
             case '/hackathon':
@@ -96,8 +96,8 @@ const Header = ({ children }) => {
             )
         },
         {
-            to: '/algo',
-            label: 'Algo',
+            to: '/alogo',
+            label: 'Alogo',
             icon: (
                 <span className="font-mono font-bold text-sm tracking-tight">&lt;/&gt;</span>
             )
