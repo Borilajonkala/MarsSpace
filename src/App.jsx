@@ -3,9 +3,14 @@ import Header from './Components/Header'
 import Home from './Pages/Home'
 import About from './Pages/About'
 import Login from './Pages/Login'
+<<<<<<< HEAD
 import Blog from './Pages/Blog'
 import Entertainment from './Pages/Entertainment'
 import Asosiy from './Pages/Asosiy'
+=======
+import Asosiy from './Pages/Asosiy'
+import Blog from './Pages/Blog'
+>>>>>>> d972ffe4721fb515a9f29ea080250fac8e5c503e
 
 const App = () => {
   return (
@@ -19,9 +24,15 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/courses" element={<About />} />
         <Route path="/my-works" element={<Home />} />
+<<<<<<< HEAD
         <Route path="/games" element={<Entertainment />} />
         <Route path="/algo" element={<About />} />
         <Route path="/blog" element={<Blog />} />
+=======
+        <Route path="/games" element={<Home />} />
+        <Route path="/alogo" element={<Alogo />} />
+        <Route path='/blog' element={<Blog/>}/>
+>>>>>>> d972ffe4721fb515a9f29ea080250fac8e5c503e
         <Route path="/hackathon" element={<Home />} />
         <Route path="/events" element={<About />} />
         <Route path="/rating" element={<Home />} />
