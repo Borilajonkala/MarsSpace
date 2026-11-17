@@ -19,7 +19,8 @@ const Header = ({ children }) => {
 
     // Chiqish (Logout)
     const handleLogout = () => {
-        localStorage.removeItem('mars_auth_user')
+        // Himoyalangan route'lar token'ni tekshiradi, shuni tozalash kifoya
+        localStorage.removeItem('token')
         navigate('/login')
     }
 
