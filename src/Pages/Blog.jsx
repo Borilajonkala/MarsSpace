@@ -1,11 +1,20 @@
 
 import { useEffect, useState } from "react";
+import dbData from "../../db.json";
 
 const API = "http://localhost:3000/posts";
 const USER_ID = "ulugbek-1";
 
 function EngZor() {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(() => {
+    try {
+      const saved = localStorage.getItem("mars_blog_posts");
+      if (saved) return JSON.parse(saved);
+    } catch {
+      // ignore JSON parse errors
+    }
+    return Array.isArray(dbData.posts) ? dbData.posts : [];
+  });
   const [text, setText] = useState("");
   const [image, setImage] = useState("");
   const [comments, setComments] = useState({});
@@ -22,8 +31,13 @@ function EngZor() {
         if (!res.ok) throw new Error("GET xatolik");
         return res.json();
       })
-      .then((data) => setPosts(data))
-      .catch(() => setError("Postlar yuklanmadi"));
+      .then((data) => {
+        setPosts(data);
+        localStorage.setItem("mars_blog_posts", JSON.stringify(data));
+      })
+      .catch(() => {
+        setPosts((prev) => (prev.length === 0 && Array.isArray(dbData.posts) ? dbData.posts : prev));
+      });
   }, []);
 
  
@@ -31,32 +45,43 @@ function EngZor() {
     e.preventDefault();
     if (!text.trim()) return;
 
+    const newPost = {
+      id: String(Date.now()),
+      author: "Yusupov Ulugbek",
+      text: text.trim(),
+      image: image.trim(),
+      likedBy: [],
+      comments: [],
+    };
+
     try {
       const res = await fetch(API, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          author: "Yusupov Ulugbek",
-          text: text.trim(),
-          image: image.trim(),
-          likedBy: [],
-          comments: [],
-        }),
+        body: JSON.stringify(newPost),
       });
 
       if (!res.ok) throw new Error("POST xatolik");
 
       const data = await res.json();
-      setPosts((prev) => [data, ...prev]);
-      setText("");
-      setImage("");
-      setOpen(false);
-      setError("");
+      setPosts((prev) => {
+        const next = [data, ...prev];
+        localStorage.setItem("mars_blog_posts", JSON.stringify(next));
+        return next;
+      });
     } catch {
-      setError("Post saqlanmadi");
+      setPosts((prev) => {
+        const next = [newPost, ...prev];
+        localStorage.setItem("mars_blog_posts", JSON.stringify(next));
+        return next;
+      });
     }
+    setText("");
+    setImage("");
+    setOpen(false);
+    setError("");
   };
 
  
@@ -66,6 +91,8 @@ function EngZor() {
     const updatedLikes = likedBy.includes(USER_ID)
       ? likedBy.filter((id) => id !== USER_ID)
       : [...likedBy, USER_ID];
+
+    const updatedPost = { ...post, likedBy: updatedLikes };
 
     try {
       const res = await fetch(`${API}/${post.id}`, {
@@ -80,16 +107,20 @@ function EngZor() {
 
       if (!res.ok) throw new Error("PATCH xatolik");
 
-      const updatedPost = await res.json();
+      const serverPost = await res.json();
 
-      setPosts((prev) =>
-        prev.map((item) =>
-          item.id === updatedPost.id ? updatedPost : item
-        )
-      );
+      setPosts((prev) => {
+        const next = prev.map((item) => (item.id === serverPost.id ? serverPost : item));
+        localStorage.setItem("mars_blog_posts", JSON.stringify(next));
+        return next;
+      });
       setError("");
     } catch {
-      setError("Like saqlanmadi");
+      setPosts((prev) => {
+        const next = prev.map((item) => (item.id === updatedPost.id ? updatedPost : item));
+        localStorage.setItem("mars_blog_posts", JSON.stringify(next));
+        return next;
+      });
     }
   };
 
@@ -106,6 +137,11 @@ function EngZor() {
       text: message,
     };
 
+    const updatedPost = {
+      ...post,
+      comments: [...(post.comments || []), newComment],
+    };
+
     try {
       const res = await fetch(`${API}/${post.id}`, {
         method: "PATCH",
@@ -113,28 +149,32 @@ function EngZor() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          comments: [...(post.comments || []), newComment],
+          comments: updatedPost.comments,
         }),
       });
 
       if (!res.ok) throw new Error("PATCH xatolik");
 
-      const updatedPost = await res.json();
+      const serverPost = await res.json();
 
-      setPosts((prev) =>
-        prev.map((item) =>
-          item.id === updatedPost.id ? updatedPost : item
-        )
-      );
-
-      setComments((prev) => ({
-        ...prev,
-        [post.id]: "",
-      }));
-      setError("");
+      setPosts((prev) => {
+        const next = prev.map((item) => (item.id === serverPost.id ? serverPost : item));
+        localStorage.setItem("mars_blog_posts", JSON.stringify(next));
+        return next;
+      });
     } catch {
-      setError("Komment saqlanmadi");
+      setPosts((prev) => {
+        const next = prev.map((item) => (item.id === updatedPost.id ? updatedPost : item));
+        localStorage.setItem("mars_blog_posts", JSON.stringify(next));
+        return next;
+      });
     }
+
+    setComments((prev) => ({
+      ...prev,
+      [post.id]: "",
+    }));
+    setError("");
   };
 
   return (

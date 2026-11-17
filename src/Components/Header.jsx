@@ -9,10 +9,11 @@ const Header = ({ children }) => {
     // Saqlangan mentor/foydalanuvchi ma'lumotlari (buzilgan JSON ilovani yiqitmasligi uchun)
     const currentUser = (() => {
         try {
-            const storedUser = localStorage.getItem('mars_auth_user')
+            const storedUser = localStorage.getItem('mars_auth_user') || localStorage.getItem('token')
             return storedUser ? JSON.parse(storedUser) : null
         } catch {
             localStorage.removeItem('mars_auth_user')
+            localStorage.removeItem('token')
             return null
         }
     })()
@@ -21,6 +22,7 @@ const Header = ({ children }) => {
     const handleLogout = () => {
         // Himoyalangan route'lar token'ni tekshiradi, shuni tozalash kifoya
         localStorage.removeItem('token')
+        localStorage.removeItem('mars_auth_user')
         navigate('/login')
     }
 

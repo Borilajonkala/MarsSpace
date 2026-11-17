@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 // ==========================================
 // 1. СТРАНИЦА: BATTLE (Остается в твоем приложении)
@@ -6,7 +6,7 @@ import React, { useState, useRef, useEffect } from 'react';
 function BattleLobby() {
   const [playersCount, setPlayersCount] = useState(4);
   const [statusMessage, setStatusMessage] = useState('');
-  const [stats, setStats] = useState({ coins: 15, points: 678, wins: 0 });
+  const [stats] = useState({ coins: 15, points: 678, wins: 0 });
 
   return (
     <div className="min-h-[calc(100vh-65px)] bg-slate-900 text-white p-6 flex flex-col items-center">

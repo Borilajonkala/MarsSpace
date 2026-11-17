@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from "react-router-dom";
 
 const Alogo = () => {
@@ -17,7 +16,7 @@ const Alogo = () => {
                 <div className="flex items-center gap-[10px]">
                     <Link to="" className=" w-[350px]  text-center bg-[#F26522] hover:bg-[#d95618] text-white font-semibold text-base px-7 py-3.5 rounded-lg transition-colors duration-200">
                         <span>Masalalarni yechishni boshlash</span>
-                        <span> -> </span>
+                        <span> &rarr; </span>
                     </Link>
 
                 </div>

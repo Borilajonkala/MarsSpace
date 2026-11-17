@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 
 const Asosiy = () => {
@@ -356,13 +356,15 @@ const WORDS =
 const Typing = ({ back }) => {
   const TOTAL = 300
 
-  const text = useMemo(() => {
+  const [text] = useState(() => {
     const out = []
+    let i = 0
     while (out.join(' ').length < 400) {
-      out.push(WORDS[Math.floor(Math.random() * WORDS.length)])
+      out.push(WORDS[i % WORDS.length])
+      i++
     }
     return out.join(' ').slice(0, 400)
-  }, [])
+  })
 
   const [typed, setTyped] = useState('')
   const [time, setTime] = useState(300)
@@ -375,13 +377,17 @@ const Typing = ({ back }) => {
 
   useEffect(() => {
     if (!running) return
-    const t = setInterval(() => setTime((s) => (s > 0 ? s - 1 : 0)), 1000)
+    const t = setInterval(() => {
+      setTime((s) => {
+        if (s <= 1) {
+          setRunning(false)
+          return 0
+        }
+        return s - 1
+      })
+    }, 1000)
     return () => clearInterval(t)
   }, [running])
-
-  useEffect(() => {
-    if (time === 0) setRunning(false)
-  }, [time])
 
   const correct = [...typed].filter((c, i) => c === text[i]).length
   const done = time === 0 || correct >= TOTAL
