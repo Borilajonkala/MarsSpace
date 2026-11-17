@@ -10,7 +10,6 @@ const TYPE_META = {
 	hackathon: { label: 'Xakaton', badge: 'bg-purple-50 text-purple-700 border-purple-200', emoji: '🚀' },
 }
 
-// To'garaklar qo'lda yozilgan — db.json dan olinmaydi
 const CLUBS = [
 	{
 		id: 'club-shaxmat',
@@ -47,7 +46,6 @@ const CLUBS = [
 	},
 ]
 
-// type qiymati har xil yozilgan bo'lsa ham to'g'ri guruhga tushadi
 const normalizeType = (raw) => {
 	const t = String(raw || '').toLowerCase()
 	if (t.includes('hack') || t.includes('xak')) return 'hackathon'
@@ -89,7 +87,6 @@ const Events = () => {
 	const [registrations, setRegistrations] = useState(() => loadList(STORAGE_KEY))
 	const [memberships, setMemberships] = useState(() => loadList(CLUB_STORAGE_KEY))
 
-	// faqat tadbirlar db.json dan keladi
 	const events = useMemo(() => (Array.isArray(dbData.events) ? dbData.events : []), [])
 
 	const filtered = useMemo(() => {
@@ -122,7 +119,6 @@ const Events = () => {
 
 	return (
 		<div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-			{/* ===== SARLAVHA ===== */}
 			<div className="text-black border-b border-gray-300 pb-4">
 				<h1 className="text-[20px] font-bold">Tadbirlar va to'garaklar</h1>
 				<p className="text-[15px] font-normal text-gray-500">
@@ -130,7 +126,6 @@ const Events = () => {
 				</p>
 			</div>
 
-			{/* ===== TADBIRLAR (db.json dan) ===== */}
 			<section className="mt-6">
 				<div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
 					<div className="flex items-center gap-2">

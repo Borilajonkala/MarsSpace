@@ -9,12 +9,9 @@ import TadbirVaTogareklar from './Pages/Events'
 const App = () => {
   return (
     <Routes>
-      {/* Login sahifasi ochiq (public) - token bo'lmasa ham ko'rinaveradi */}
       <Route path="/login" element={<Login />} />
 
-      {/* Barcha ichki sahifalar himoyalangan: token bo'lmasa PrivateRouter /login ga qaytaradi */}
       <Route element={<PrivateRouter />}>
-        {/* Header barcha himoyalangan sahifalarda doimiy ishlaydi va sahifalar uning ichida almashadi */}
         <Route element={<Header />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
