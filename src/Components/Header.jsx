@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate, Link } from 'react-router-dom'
 
 const Header = ({ children }) => {
@@ -6,9 +6,16 @@ const Header = ({ children }) => {
     const navigate = useNavigate()
     const [selectedTheme, setSelectedTheme] = useState("YO'LAK")
 
-    // Saqlangan mentor/foydalanuvchi ma'lumotlari
-    const storedUser = localStorage.getItem('mars_auth_user')
-    const currentUser = storedUser ? JSON.parse(storedUser) : null
+    // Saqlangan mentor/foydalanuvchi ma'lumotlari (buzilgan JSON ilovani yiqitmasligi uchun)
+    const currentUser = (() => {
+        try {
+            const storedUser = localStorage.getItem('mars_auth_user')
+            return storedUser ? JSON.parse(storedUser) : null
+        } catch {
+            localStorage.removeItem('mars_auth_user')
+            return null
+        }
+    })()
 
     // Chiqish (Logout)
     const handleLogout = () => {

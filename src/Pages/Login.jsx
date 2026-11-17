@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import dbData from '../db.json'
+import dbData from '../../db.json'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -29,12 +29,16 @@ const Login = () => {
       return
     }
 
-    const cleanInput = phoneInput.replace(/[\s\+\-\(\)]/g, '').trim().toLowerCase()
+    const cleanInput = phoneInput.replace(/[\s+\-()]/g, '').trim().toLowerCase()
+    // Telefon faqat to'liq yoki kamida 9 xonali oxirgi qism bo'yicha qidiriladi
+    const inputDigits = cleanInput.replace(/\D/g, '')
 
     const foundMentor = mentors.find((m) => {
-      const cleanPhone = m.phone.replace(/[\s\+\-\(\)]/g, '').toLowerCase()
+      const cleanPhone = m.phone.replace(/[\s+\-()]/g, '').toLowerCase()
       const cleanMarsId = (m.marsId || '').toLowerCase()
-      const matchesPhone = cleanPhone.includes(cleanInput) || cleanPhone.endsWith(cleanInput) || m.rawPhone === cleanInput
+      const matchesPhone =
+        inputDigits.length >= 9 &&
+        (cleanPhone === cleanInput || cleanPhone.endsWith(cleanInput))
       const matchesMarsId = cleanMarsId === cleanInput
       return matchesPhone || matchesMarsId
     })

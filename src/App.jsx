@@ -1,10 +1,10 @@
-import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Header from './Components/Header'
 import Home from './Pages/Home'
 import About from './Pages/About'
 import Login from './Pages/Login'
 import Blog from './Pages/Blog'
+import Entertainment from './Pages/Entertainment'
 
 const App = () => {
   return (
@@ -18,7 +18,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/courses" element={<About />} />
         <Route path="/my-works" element={<Home />} />
-        <Route path="/games" element={<Home />} />
+        <Route path="/games" element={<Entertainment />} />
         <Route path="/algo" element={<About />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/hackathon" element={<Home />} />

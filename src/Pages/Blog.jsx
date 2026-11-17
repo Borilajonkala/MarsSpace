@@ -12,6 +12,9 @@ function EngZor() {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
 
+  const sortedPosts = [...posts].sort(
+    (a, b) => (b.likedBy?.length || 0) - (a.likedBy?.length || 0)
+  );
  
   useEffect(() => {
     fetch(API)
