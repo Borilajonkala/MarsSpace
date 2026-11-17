@@ -1,5 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-
+import { useEffect, useRef, useState } from 'react'
 /* ---------- Asosiy sahifa (3 ta ekran: home / typing / battle) ---------- */
 const Asosiy = () => {
   const [view, setView] = useState('home') // 'home' | 'typing' | 'battle'
@@ -355,20 +354,22 @@ const Sidebar = ({ go }) => {
 const WORDS =
   "kod yozish bu san'at har kuni mashq qilsang tezroq yozasan klaviatura ustida barmoqlar raqs tushadi sabr bilan davom et xatolardan qo'rqma ular o'rgatadi dastur tuzish mantiq talab qiladi o'zgaruvchi funksiya massiv obyekt komponent holat".split(' ')
 
+const makeText = () => {
+  const out = []
+  while (out.join(' ').length < 400) {
+    out.push(WORDS[Math.floor(Math.random() * WORDS.length)])
+  }
+  return out.join(' ').slice(0, 400)
+}
+
 const Typing = ({ back }) => {
   const TOTAL = 300
 
-  const text = useMemo(() => {
-    const out = []
-    while (out.join(' ').length < 400) {
-      out.push(WORDS[Math.floor(Math.random() * WORDS.length)])
-    }
-    return out.join(' ').slice(0, 400)
-  }, [])
+  const [text] = useState(makeText)
 
   const [typed, setTyped] = useState('')
   const [time, setTime] = useState(300)
-  const [running, setRunning] = useState(false)
+  const [started, setStarted] = useState(false)
   const inputRef = useRef(null)
 
   useEffect(() => {
@@ -376,14 +377,10 @@ const Typing = ({ back }) => {
   }, [])
 
   useEffect(() => {
-    if (!running) return
+    if (!started) return
     const t = setInterval(() => setTime((s) => (s > 0 ? s - 1 : 0)), 1000)
     return () => clearInterval(t)
-  }, [running])
-
-  useEffect(() => {
-    if (time === 0) setRunning(false)
-  }, [time])
+  }, [started])
 
   const correct = [...typed].filter((c, i) => c === text[i]).length
   const done = time === 0 || correct >= TOTAL
@@ -393,14 +390,14 @@ const Typing = ({ back }) => {
 
   const onChange = (e) => {
     if (done) return
-    if (!running) setRunning(true)
+    if (!started) setStarted(true)
     setTyped(e.target.value.slice(0, text.length))
   }
 
   const restart = () => {
     setTyped('')
     setTime(300)
-    setRunning(false)
+    setStarted(false)
     setTimeout(() => inputRef.current?.focus(), 0)
   }
 

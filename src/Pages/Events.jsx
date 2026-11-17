@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import dbData from '../db.json'
+import dbData from '../../db.json'
 
 const STORAGE_KEY = 'mars_event_registrations'
 const CLUB_STORAGE_KEY = 'mars_club_members'

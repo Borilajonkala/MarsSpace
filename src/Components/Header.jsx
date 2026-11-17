@@ -6,27 +6,16 @@ const Header = ({ children }) => {
     const navigate = useNavigate()
     const [selectedTheme, setSelectedTheme] = useState("YO'LAK")
 
-<<<<<<< HEAD
     // Saqlangan mentor/foydalanuvchi ma'lumotlari (buzilgan JSON ilovani yiqitmasligi uchun)
     const currentUser = (() => {
         try {
-            const storedUser = localStorage.getItem('mars_auth_user')
+            const storedUser = localStorage.getItem('token')
             return storedUser ? JSON.parse(storedUser) : null
         } catch {
-            localStorage.removeItem('mars_auth_user')
+            localStorage.removeItem('token')
             return null
         }
     })()
-=======
-    // Saqlangan mentor/foydalanuvchi ma'lumotlari (mars_auth_user olib tashlandi, token'dan o'qiymiz)
-    const storedUser = localStorage.getItem('token')
-    let currentUser = null
-    try {
-        currentUser = storedUser ? JSON.parse(storedUser) : null
-    } catch {
-        currentUser = null
-    }
->>>>>>> 2d7295eb47bf2703634755b8b3f02c37eb5f7f97
 
     // Chiqish (Logout)
     const handleLogout = () => {
@@ -48,8 +37,8 @@ const Header = ({ children }) => {
                 return 'Mening ishlarim'
             case '/games':
                 return "O'yin-kulgi"
-            case '/algo':
-                return 'Algo'
+            case '/alogo':
+                return "Alogo"
             case '/blog':
                 return 'Blog'
             case '/hackathon':
@@ -115,8 +104,8 @@ const Header = ({ children }) => {
             )
         },
         {
-            to: '/algo',
-            label: 'Algo',
+            to: '/alogo',
+            label: 'Alogo',
             icon: (
                 <span className="font-mono font-bold text-sm tracking-tight">&lt;/&gt;</span>
             )

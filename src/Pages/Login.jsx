@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { useState } from 'react'
-=======
-import  { useState } from 'react'
->>>>>>> 2d7295eb47bf2703634755b8b3f02c37eb5f7f97
 import { useNavigate } from 'react-router-dom'
 import dbData from '../../db.json'
 
@@ -38,11 +34,8 @@ const Login = () => {
     }
 
     const cleanInput = phoneInput.replace(/[\s+\-()]/g, '').trim().toLowerCase()
-<<<<<<< HEAD
     // Telefon faqat to'liq yoki kamida 9 xonali oxirgi qism bo'yicha qidiriladi
     const inputDigits = cleanInput.replace(/\D/g, '')
-=======
->>>>>>> 2d7295eb47bf2703634755b8b3f02c37eb5f7f97
 
     const foundMentor = mentors.find((m) => {
       const cleanPhone = m.phone.replace(/[\s+\-()]/g, '').toLowerCase()
