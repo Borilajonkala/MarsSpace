@@ -6,6 +6,7 @@ const Header = ({ children }) => {
     const navigate = useNavigate()
     const [selectedTheme, setSelectedTheme] = useState("YO'LAK")
 
+<<<<<<< HEAD
     // Saqlangan mentor/foydalanuvchi ma'lumotlari (buzilgan JSON ilovani yiqitmasligi uchun)
     const currentUser = (() => {
         try {
@@ -16,10 +17,21 @@ const Header = ({ children }) => {
             return null
         }
     })()
+=======
+    // Saqlangan mentor/foydalanuvchi ma'lumotlari (mars_auth_user olib tashlandi, token'dan o'qiymiz)
+    const storedUser = localStorage.getItem('token')
+    let currentUser = null
+    try {
+        currentUser = storedUser ? JSON.parse(storedUser) : null
+    } catch {
+        currentUser = null
+    }
+>>>>>>> 2d7295eb47bf2703634755b8b3f02c37eb5f7f97
 
     // Chiqish (Logout)
     const handleLogout = () => {
-        localStorage.removeItem('mars_auth_user')
+        // Himoyalangan route'lar token'ni tekshiradi, shuni tozalash kifoya
+        localStorage.removeItem('token')
         navigate('/login')
     }
 

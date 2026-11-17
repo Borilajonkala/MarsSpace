@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { useState } from 'react'
+=======
+import  { useState } from 'react'
+>>>>>>> 2d7295eb47bf2703634755b8b3f02c37eb5f7f97
 import { useNavigate } from 'react-router-dom'
 import dbData from '../../db.json'
 
@@ -9,6 +13,10 @@ const Login = () => {
   const [errorMsg, setErrorMsg] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [activeLang, setActiveLang] = useState('Uz')
+
+
+
+
 
   // Mentorlar ro'yxati (db.json dan)
   const mentors = dbData.mentors || []
@@ -30,8 +38,11 @@ const Login = () => {
     }
 
     const cleanInput = phoneInput.replace(/[\s+\-()]/g, '').trim().toLowerCase()
+<<<<<<< HEAD
     // Telefon faqat to'liq yoki kamida 9 xonali oxirgi qism bo'yicha qidiriladi
     const inputDigits = cleanInput.replace(/\D/g, '')
+=======
+>>>>>>> 2d7295eb47bf2703634755b8b3f02c37eb5f7f97
 
     const foundMentor = mentors.find((m) => {
       const cleanPhone = m.phone.replace(/[\s+\-()]/g, '').toLowerCase()
@@ -65,15 +76,17 @@ const Login = () => {
       return
     }
 
-    // Muvaffaqiyatli login: localStorage ga saqlash
-    localStorage.setItem('mars_auth_user', JSON.stringify(foundMentor))
-    navigate('/')
-  }
+    // ===== O'ZGARTIRILGAN JOY (boshlandi) =====
+    // Muvaffaqiyatli login: ClickUser funksiyasi shu yerda chaqiriladi
+    const ClickUser = (mentor) => {
+      // Faqat bitta kalit ishlatiladi: mars_auth_user olib tashlandi (dublikat edi)
+      localStorage.setItem('token', JSON.stringify(mentor))
+      navigate('/')
+    }
 
-  // Tezkor demo kirish
-  const handleQuickLogin = (mentor) => {
-    localStorage.setItem('mars_auth_user', JSON.stringify(mentor))
-    navigate('/')
+    // Telefon/Mars ID va parol tekshiruvdan o'tdi -> ClickUser ni chaqiramiz
+    ClickUser(foundMentor)
+    // ===== O'ZGARTIRILGAN JOY (tugadi) =====
   }
 
   return (
@@ -99,49 +112,6 @@ const Login = () => {
               ? 'Staff Login'
               : 'Xodimlar uchun kirish'}
           </p>
-        </div>
-
-        {/* Mars ID Tugmasi */}
-        <button
-          type="button"
-          onClick={() => mentors[0] && handleQuickLogin(mentors[0])}
-          className="w-full bg-[#1b223c] hover:bg-[#252f52] text-white py-3.5 px-4 rounded-xl font-semibold flex items-center justify-center gap-3 transition shadow-md active:scale-[0.99] cursor-pointer"
-        >
-          {/* Barmoq izi ikonka */}
-          <svg
-            className="w-6 h-6 text-red-400"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4" />
-            <path d="M14 13.12c0 2.38 0 6.38-1 8.88" />
-            <path d="M17.29 21.02c.12-.6.43-2.3.5-3.02" />
-            <path d="M2 12a10 10 0 0 1 18-6" />
-            <path d="M2 16h.01" />
-            <path d="M21.8 16c.2-2 .131-5.354 0-6" />
-            <path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2" />
-            <path d="M8.65 22c.21-.66.45-1.32.57-2" />
-            <path d="M9 6.8a6 6 0 0 1 9 5.2v2" />
-          </svg>
-          <span>
-            {activeLang === 'Ru'
-              ? 'Войти через Mars ID'
-              : activeLang === 'En'
-              ? 'Sign in with Mars ID'
-              : 'Mars ID orqali kirish'}
-          </span>
-        </button>
-
-        {/* Ajratuvchi chiziq */}
-        <div className="relative my-6 flex items-center justify-center">
-          <div className="border-t border-gray-200 w-full"></div>
-          <span className="bg-white px-3 text-xs uppercase font-medium text-gray-400 absolute">
-            {activeLang === 'Ru' ? 'или' : activeLang === 'En' ? 'or' : 'yoki'}
-          </span>
         </div>
 
         {/* Xatolik xabari */}
@@ -205,27 +175,6 @@ const Login = () => {
           </button>
         </form>
 
-        {/* Demo Kirish Ro'yxati */}
-        <div className="mt-6 pt-5 border-t border-gray-100">
-          <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2.5 text-center">
-            Tezkor sinov uchun mentor hisobi:
-          </p>
-          <div className="grid grid-cols-2 gap-2">
-            {mentors.slice(0, 4).map((m) => (
-              <button
-                key={m.id}
-                onClick={() => handleQuickLogin(m)}
-                className="text-left text-xs p-2.5 rounded-xl border border-gray-200 hover:border-red-300 hover:bg-red-50/50 transition cursor-pointer"
-              >
-                <p className="font-bold text-gray-900 truncate">{m.fullName}</p>
-                <p className="text-[10px] text-gray-500 truncate">{m.marsId} • {m.role.split(' ')[0]}</p>
-              </button>
-            ))}
-          </div>
-          <p className="text-[11px] text-gray-400 text-center mt-2.5">
-            Default parol: <code className="bg-gray-100 px-1 py-0.5 rounded text-gray-700">password123</code>
-          </p>
-        </div>
       </div>
 
       {/* Tillar tanlagichi */}
