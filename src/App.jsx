@@ -6,6 +6,7 @@ import About from './Pages/About'
 import Login from './Pages/Login'
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Blog from './Pages/Blog'
 import Entertainment from './Pages/Entertainment'
 import Asosiy from './Pages/Asosiy'
@@ -16,6 +17,9 @@ import Blog from './Pages/Blog'
 =======
 import TadbirVaTogareklar from './Pages/Events'
 >>>>>>> 2d7295eb47bf2703634755b8b3f02c37eb5f7f97
+=======
+import MyWorks from './Pages/My-works'
+>>>>>>> cfa587038d1b9c9062eddcd230d599a119fd262f
 
 const App = () => {
   return (
@@ -29,9 +33,14 @@ const App = () => {
         <Route path="/" element={<Asosiy />} />
         <Route path="/about" element={<About />} />
         <Route path="/courses" element={<About />} />
+<<<<<<< HEAD
         <Route path="/my-works" element={<Home />} />
 <<<<<<< HEAD
         <Route path="/games" element={<Entertainment />} />
+=======
+        <Route path="/my-works" element={<MyWorks />} />
+        <Route path="/games" element={<Home />} />
+>>>>>>> cfa587038d1b9c9062eddcd230d599a119fd262f
         <Route path="/algo" element={<About />} />
         <Route path="/blog" element={<Blog />} />
 =======
