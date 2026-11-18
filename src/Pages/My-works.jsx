@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
-const Kurslarim = () => {
+const MyWorks = () => {
   const [active, setActive] = useState(null)
 
   const modules = [

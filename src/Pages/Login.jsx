@@ -34,16 +34,16 @@ const Login = () => {
     }
 
     const cleanInput = phoneInput.replace(/[\s+\-()]/g, '').trim().toLowerCase()
-    // Telefon faqat to'liq yoki kamida 9 xonali oxirgi qism bo'yicha qidiriladi
+    // Telefon faqat to'liq yoki kamida 7 xonali oxirgi qism bo'yicha qidiriladi
     const inputDigits = cleanInput.replace(/\D/g, '')
 
     const foundMentor = mentors.find((m) => {
-      const cleanPhone = m.phone.replace(/[\s+\-()]/g, '').toLowerCase()
-      const cleanMarsId = (m.marsId || '').toLowerCase()
+      const cleanPhone = (m.rawPhone || m.phone || '').replace(/[\s+\-()]/g, '').toLowerCase()
+      const cleanMarsId = (m.password || '').replace(/[\s+\-()]/g, '').toLowerCase()
       const matchesPhone =
-        inputDigits.length >= 9 &&
-        (cleanPhone === cleanInput || cleanPhone.endsWith(cleanInput))
-      const matchesMarsId = cleanMarsId === cleanInput
+        inputDigits.length >= 7 &&
+        (cleanPhone === inputDigits || cleanPhone.endsWith(inputDigits))
+      const matchesMarsId = cleanMarsId === cleanInput || cleanMarsId.endsWith(cleanInput)
       return matchesPhone || matchesMarsId
     })
 
@@ -71,15 +71,12 @@ const Login = () => {
 
     // ===== O'ZGARTIRILGAN JOY (boshlandi) =====
     // Muvaffaqiyatli login: ClickUser funksiyasi shu yerda chaqiriladi
-    const ClickUser = (mentor) => {
-      // Faqat bitta kalit ishlatiladi: mars_auth_user olib tashlandi (dublikat edi)
-      localStorage.setItem('token', JSON.stringify(mentor))
+    const ClickUser = () => {
+      localStorage.setItem('token', JSON.stringify())
       navigate('/')
     }
 
-    // Telefon/Mars ID va parol tekshiruvdan o'tdi -> ClickUser ni chaqiramiz
     ClickUser(foundMentor)
-    // ===== O'ZGARTIRILGAN JOY (tugadi) =====
   }
 
   return (

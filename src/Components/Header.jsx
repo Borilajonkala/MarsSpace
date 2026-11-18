@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import  { useState } from 'react'
-=======
-import { useState } from 'react'
->>>>>>> 1f2548e7c30a57a04960dc1dc3c501e35af1def4
 import { NavLink, Outlet, useLocation, useNavigate, Link } from 'react-router-dom'
 
 const Header = ({ children }) => {
@@ -13,10 +9,10 @@ const Header = ({ children }) => {
     // Saqlangan mentor/foydalanuvchi ma'lumotlari (buzilgan JSON ilovani yiqitmasligi uchun)
     const currentUser = (() => {
         try {
-            const storedUser = localStorage.getItem('mars_auth_user')
+            const storedUser = localStorage.getItem('mars_auth_user') 
             return storedUser ? JSON.parse(storedUser) : null
         } catch {
-            localStorage.removeItem('mars_auth_user')
+
             return null
         }
     })()
@@ -25,6 +21,7 @@ const Header = ({ children }) => {
     const handleLogout = () => {
         // Himoyalangan route'lar token'ni tekshiradi, shuni tozalash kifoya
         localStorage.removeItem('token')
+        localStorage.removeItem('mars_auth_user')
         navigate('/login')
     }
 
