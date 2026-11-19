@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import dbData from '../../db.json'
-import { getCoinBalance, setCoinBalance } from '../coinBalance'
+import { getCoinBalance, setCoinBalance } from '../coinBalance.jsx'
 
-const API_URL = 'http://localhost:3000'
 const SHOP_STATE_KEY = 'mars_space_shop_state'
 const localShopItems = Array.isArray(dbData.shopItems) ? dbData.shopItems : []
 const mergeShopItems = (catalogItems, overrides = []) => {
@@ -58,38 +57,10 @@ const SpaceShop = () => {
     savedShopState?.orders || (Array.isArray(dbData.orders) ? dbData.orders : [])
   )
   const [buyingId, setBuyingId] = useState(null)
-  const [errorMsg, setErrorMsg] = useState('')
   const [successMsg, setSuccessMsg] = useState('')
   const [pendingItem, setPendingItem] = useState(null)
   const [passwordInput, setPasswordInput] = useState('')
   const [purchaseError, setPurchaseError] = useState('')
-
-  useEffect(() => {
-    if (savedShopState) return
-
-    fetch(`${API_URL}/shopItems`)
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to load shopItems')
-        return res.json()
-      })
-      .then((data) => {
-        if (Array.isArray(data)) setItems(mergeShopItems(localShopItems, data))
-      })
-      .catch((err) => {
-        console.error('Ошибка загрузки shopItems:', err)
-        setErrorMsg('Сервер магазина недоступен. Используется локальный каталог.')
-      })
-
-    fetch(`${API_URL}/orders`)
-      .then((res) => {
-        if (!res.ok) return null
-        return res.json()
-      })
-      .then((data) => {
-        if (Array.isArray(data)) setOrders(data)
-      })
-      .catch((err) => console.error('Ошибка загрузки orders:', err))
-  }, [savedShopState])
 
   const handleBuy = (item) => {
     setPendingItem(item)
@@ -98,7 +69,7 @@ const SpaceShop = () => {
     setSuccessMsg('')
   }
 
-  const handleConfirmPurchase = async (event) => {
+  const handleConfirmPurchase = (event) => {
     event.preventDefault()
     if (!pendingItem || buyingId) return
 
@@ -124,7 +95,6 @@ const SpaceShop = () => {
     }
 
     setBuyingId(item.id)
-    setErrorMsg('')
     setPurchaseError('')
 
     const nextStock = item.inStock - 1
@@ -155,70 +125,10 @@ const SpaceShop = () => {
       setOrders(nextOrders)
       setPendingItem(null)
       setPasswordInput('')
-
-      let savedToServer = true
-      let stockUpdated = false
-      let coinsUpdated = false
-      try {
-        const stockRes = await fetch(`${API_URL}/shopItems/${item.id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ inStock: nextStock }),
-        })
-        if (!stockRes.ok) throw new Error('Failed to update stock')
-        stockUpdated = true
-
-        const userRes = await fetch(`${API_URL}/currentUser`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ coins: nextCoins }),
-        })
-        if (!userRes.ok) throw new Error('Failed to update coins')
-        coinsUpdated = true
-
-        const orderRes = await fetch(`${API_URL}/orders`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(order),
-        })
-        if (!orderRes.ok) throw new Error('Failed to save order')
-      } catch (error) {
-        savedToServer = false
-        console.error('Не удалось синхронизировать покупку с сервером:', error)
-        if (coinsUpdated) {
-          try {
-            const rollbackUserRes = await fetch(`${API_URL}/currentUser`, {
-              method: 'PATCH',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ coins: currentCoins }),
-            })
-            if (!rollbackUserRes.ok) throw new Error('Failed to restore coins')
-          } catch (rollbackError) {
-            console.error('Не удалось отменить списание коинов на сервере:', rollbackError)
-          }
-        }
-        if (stockUpdated) {
-          try {
-            const rollbackStockRes = await fetch(`${API_URL}/shopItems/${item.id}`, {
-              method: 'PATCH',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ inStock: item.inStock }),
-            })
-            if (!rollbackStockRes.ok) throw new Error('Failed to restore stock')
-          } catch (rollbackError) {
-            console.error('Не удалось восстановить остаток товара на сервере:', rollbackError)
-          }
-        }
-      }
-
-      setSuccessMsg(
-        savedToServer
-          ? 'Покупка успешно оформлена.'
-          : 'Покупка сохранена в этом браузере; сервер магазина недоступен.'
-      )
+      setSuccessMsg('Покупка успешно оформлена.')
     } catch (error) {
       console.error('Ошибка сохранения покупки:', error)
-      setPurchaseError('Не удалось сохранить покупку в этом браузере.')
+      setPurchaseError('Не удалось сохранить покупку.')
     } finally {
       setBuyingId(null)
     }
@@ -282,14 +192,6 @@ const SpaceShop = () => {
           </ul>
         </div>
       </div>
-
-      {errorMsg && (
-        <div className="max-w-5xl mx-auto px-6 pt-4">
-          <div className="alert alert-error text-sm">
-            <span>{errorMsg}</span>
-          </div>
-        </div>
-      )}
 
       {successMsg && (
         <div className="max-w-5xl mx-auto px-6 pt-4">
@@ -367,7 +269,21 @@ const isBuying = buyingId === item.id
                 key={item.id}
                 className="bg-base-100 rounded-2xl border border-base-300 shadow-sm p-5 flex flex-col justify-between gap-4"
               >
-                <div>
+                <div className="space-y-3">
+                  <div className="relative flex h-40 w-full items-center justify-center overflow-hidden rounded-xl bg-base-200">
+                    <span className="text-4xl">🛍️</span>
+                    {item.image && (
+                      <img
+                        src={item.image}
+                        alt={item.titleUz || item.name}
+                        loading="lazy"
+                        onError={(event) => {
+                          event.currentTarget.style.display = 'none'
+                        }}
+                        className="absolute inset-0 h-full w-full object-cover"
+                      />
+                    )}
+                  </div>
                   <h3 className="text-lg font-bold">{item.titleUz || item.name}</h3>
                   <p className="text-sm text-base-content/70 mt-1 flex items-center gap-1.5">
                     <span className="font-bold text-base-content">{item.priceCoins}</span>
