@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import dbData from '../../db.json'
 
 const Login = () => {
@@ -79,7 +79,6 @@ const Login = () => {
       navigate('/')
     }
 
-    // Telefon/Mars ID va parol tekshiruvdan o'tdi -> ClickUser ni chaqiramiz
     ClickUser(foundMentor)
     // ===== O'ZGARTIRILGAN JOY (tugadi) =====
   }
@@ -170,6 +169,11 @@ const Login = () => {
           </button>
         </form>
 
+
+
+      <div className='flex '>
+        <p>Akauntga ega emasmisiz <span className='text-blue-400'><Link to={'/register'}>Register</Link></span></p>
+      </div>
       </div>
 
       {/* Tillar tanlagichi */}
@@ -185,7 +189,9 @@ const Login = () => {
             {lang}
           </button>
         ))}
+        
       </div>
+
     </div>
   )
 }

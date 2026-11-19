@@ -13,11 +13,10 @@ const Header = ({ children }) => {
     // Saqlangan mentor/foydalanuvchi ma'lumotlari (buzilgan JSON ilovani yiqitmasligi uchun)
     const [currentUser] = useState(() => {
         try {
-            const storedUser = localStorage.getItem('mars_auth_user') || localStorage.getItem('token')
+            const storedUser = localStorage.getItem('mars_auth_user') 
             return storedUser ? JSON.parse(storedUser) : null
         } catch {
-            localStorage.removeItem('mars_auth_user')
-            localStorage.removeItem('token')
+
             return null
         }
     })
@@ -32,6 +31,17 @@ const Header = ({ children }) => {
             window.removeEventListener('storage', syncCoins)
         }
     }, [currentUser])
+
+    // Dropdown'ni yopish (daisyUI focus orqali ochiladi)
+    const closeDropdown = () => {
+        if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
+    }
+
+    // Profil sahifasiga o'tish + menyuni yopish
+    const handleOpenProfile = () => {
+        closeDropdown()
+        navigate('/profile')
+    }
 
     // Chiqish (Logout)
     const handleLogout = () => {
@@ -70,6 +80,9 @@ const Header = ({ children }) => {
                 return 'SpaceShop'
             case '/login':
                 return 'Kirish'
+            case '/profile':
+            case '/profil':
+                return 'Profil'
             default:
                 return 'Asosiy'
         }
@@ -295,7 +308,15 @@ const Header = ({ children }) => {
                                         <li className="px-3 py-1 text-[11px] text-gray-500">
                                             {currentUser.marsId || currentUser.phone}
                                         </li>
-                                        <li><Link to="/about" className="rounded-lg font-semibold text-gray-700">Profilim</Link></li>
+                                        <li>
+                                            <button
+                                                type="button"
+                                                onClick={handleOpenProfile}
+                                                className="rounded-lg font-semibold text-gray-700"
+                                            >
+                                                Profil
+                                            </button>
+                                        </li>
                                         <div className="divider my-1"></div>
                                         <li>
                                             <button onClick={handleLogout} className="rounded-lg font-semibold text-red-600 hover:bg-red-50">
@@ -305,6 +326,16 @@ const Header = ({ children }) => {
                                     </>
                                 ) : (
                                     <>
+                                        <li>
+                                            <button
+                                                type="button"
+                                                onClick={handleOpenProfile}
+                                                className="rounded-lg font-semibold text-gray-700"
+                                            >
+                                                Profil
+                                            </button>
+                                        </li>
+                                        <div className="divider my-1"></div>
                                         <li><Link to="/login" className="rounded-lg font-bold text-red-600 hover:bg-red-50">Tizimga kirish</Link></li>
                                     </>
                                 )}
@@ -377,7 +408,7 @@ const Header = ({ children }) => {
 
                         <div className="space-y-1 text-xs">
                             <a
-                                href="#eduverse"
+                                href="http://localhost:5173/"
                                 className="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-semibold transition"
                             >
                                 <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
