@@ -359,7 +359,8 @@ const SpaceShop = () => {
       {active !== 'HISTORY' && (
         <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 max-w-5xl mx-auto">
           {filteredItems.map((item) => {
-            const isBuying = buyingId === item.id
+
+const isBuying = buyingId === item.id
 
             return (
               <div
