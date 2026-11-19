@@ -18,6 +18,17 @@ const Header = ({ children }) => {
         }
     })()
 
+    // Dropdown'ni yopish (daisyUI focus orqali ochiladi)
+    const closeDropdown = () => {
+        if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
+    }
+
+    // Profil sahifasiga o'tish + menyuni yopish
+    const handleOpenProfile = () => {
+        closeDropdown()
+        navigate('/profile')
+    }
+
     // Chiqish (Logout)
     const handleLogout = () => {
         // Himoyalangan route'lar token'ni tekshiradi, shuni tozalash kifoya
@@ -53,6 +64,9 @@ const Header = ({ children }) => {
                 return "Onlayn to'lov"
             case '/login':
                 return 'Kirish'
+            case '/profile':
+            case '/profil':
+                return 'Profil'
             default:
                 return 'Asosiy'
         }
@@ -268,7 +282,15 @@ const Header = ({ children }) => {
                                         <li className="px-3 py-1 text-[11px] text-gray-500">
                                             {currentUser.marsId || currentUser.phone}
                                         </li>
-                                        <li><Link to="/about" className="rounded-lg font-semibold text-gray-700">Profilim</Link></li>
+                                        <li>
+                                            <button
+                                                type="button"
+                                                onClick={handleOpenProfile}
+                                                className="rounded-lg font-semibold text-gray-700"
+                                            >
+                                                Profil
+                                            </button>
+                                        </li>
                                         <div className="divider my-1"></div>
                                         <li>
                                             <button onClick={handleLogout} className="rounded-lg font-semibold text-red-600 hover:bg-red-50">
@@ -278,6 +300,16 @@ const Header = ({ children }) => {
                                     </>
                                 ) : (
                                     <>
+                                        <li>
+                                            <button
+                                                type="button"
+                                                onClick={handleOpenProfile}
+                                                className="rounded-lg font-semibold text-gray-700"
+                                            >
+                                                Profil
+                                            </button>
+                                        </li>
+                                        <div className="divider my-1"></div>
                                         <li><Link to="/login" className="rounded-lg font-bold text-red-600 hover:bg-red-50">Tizimga kirish</Link></li>
                                     </>
                                 )}
