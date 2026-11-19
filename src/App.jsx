@@ -9,6 +9,8 @@ import Entertainment from './Pages/Entertainment'
 import TadbirVaTogareklar from './Pages/Events'
 import MyWorks from './Pages/My-works'
 import Alogo from './Pages/Alogo'
+import Payment from './Pages/Payment'
+import Hackathon from './Pages/Hackathon'
 
 const App = () => {
   return (
@@ -26,10 +28,10 @@ const App = () => {
         <Route path="/alogo" element={<Alogo />} />
         <Route path="/algo" element={<Alogo />} />
         <Route path="/blog" element={<Blog />} />
-        <Route path="/hackathon" element={<TadbirVaTogareklar />} />
+        <Route path="/hackathon" element={<Hackathon />} />
         <Route path="/events" element={<TadbirVaTogareklar />} />
         <Route path="/rating" element={<Home />} />
-        <Route path="/payment" element={<About />} />
+        <Route path="/payment" element={<Payment />} />
 
         {/* Qo'shimcha yo'nalishlar */}
         <Route path="/monkeytype" element={<Home />} />
