@@ -649,7 +649,7 @@ const MyWorks = () => {
             <div className="min-w-0">
               <h4 className="truncate text-xs font-bold text-slate-700">{course.title}</h4>
               <p className="mt-0.5 text-xs font-medium text-slate-400">
-                {isFinished ? 'sertifikat tayyor' : `sertifikat ${course.total}-darsdan keyin ochiladi`}
+                {isFinished ? 'sertifikat tayyor' : `sertifikat tayyor emas (${course.total}-darsdan keyin ochiladi)`}
               </p>
             </div>
           </button>
