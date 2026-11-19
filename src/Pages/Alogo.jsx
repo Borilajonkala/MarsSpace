@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
 const companies = [
     {
@@ -152,10 +151,10 @@ const Alogo = () => {
                     <p className="text-sm text-slate-500">9–16 avgust kunlari Toshkentda IOI 2026 — informatika boʻyicha xalqaro olimpiada — Oʻzbekiston tarixida birinchi marta oʻtadi.</p>
                 </div>
                 <div className="flex items-center gap-[10px]">
-                    <Link to="" className=" w-[350px]  text-center bg-[#F26522] hover:bg-[#d95618] text-white font-semibold text-base px-7 py-3.5 rounded-lg transition-colors duration-200">
+                    <a href="https://robocontest.uz/tasks" className=" w-[350px]  text-center bg-[#F26522] hover:bg-[#d95618] text-white font-semibold text-base px-7 py-3.5 rounded-lg transition-colors duration-200">
                         <span>Masalalarni yechishni boshlash</span>
                         <span> &rarr; </span>
-                    </Link>
+                    </a>
 
                 </div>
             </section>
