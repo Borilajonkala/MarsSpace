@@ -1,44 +1,46 @@
 import { Route, Routes } from 'react-router-dom'
 import Header from './Components/Header'
-import PrivateRouter from './Components/PrivateRouter'
 import Home from './Pages/Home'
 import About from './Pages/About'
 import Login from './Pages/Login'
 import Asosiy from './Pages/Asosiy'
 import Blog from './Pages/Blog'
 import Entertainment from './Pages/Entertainment'
-import Events from './Pages/Events'
+import TadbirVaTogareklar from './Pages/Events'
+import MyWorks from './Pages/My-works'
 import Alogo from './Pages/Alogo'
+import SpaceShop from './Pages/SpaceShop'
 
 const App = () => {
   return (
     <Routes>
-      {/* Login sahifasi ochiq (public) - token bo'lmasa ham ko'rinaveradi */}
+      {/* Login sahifasi (To'liq ekran) */}
       <Route path="/login" element={<Login />} />
 
-      {/* Barcha ichki sahifalar himoyalangan: token bo'lmasa PrivateRouter /login ga qaytaradi */}
-      <Route element={<PrivateRouter />}>
-        {/* Header barcha himoyalangan sahifalarda doimiy ishlaydi va sahifalar uning ichida almashadi */}
-        <Route element={<Header />}>
-          <Route path="/" element={<Asosiy />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/courses" element={<About />} />
-          <Route path="/my-works" element={<Home />} />
-          <Route path="/games" element={<Entertainment />} />
-          <Route path="/alogo" element={<Alogo />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/hackathon" element={<Home />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/rating" element={<Home />} />
-          <Route path="/payment" element={<About />} />
+      {/* Header barcha sahifalarda doimiy ishlaydi va sahifalar uning ichida almashadi */}
+      <Route element={<Header />}>
+        <Route path="/" element={<Asosiy />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/courses" element={<MyWorks />} />
+        <Route path="/my-works" element={<MyWorks />} />
+        <Route path="/games" element={<Entertainment />} />
+        <Route path="/alogo" element={<Alogo />} />
+        <Route path="/algo" element={<Alogo />} />
+        <Route path="/space-shop" element={<SpaceShop />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/hackathon" element={<TadbirVaTogareklar />} />
+        <Route path="/events" element={<TadbirVaTogareklar />} />
+        <Route path="/rating" element={<Home />} />
+        <Route path="/payment" element={<About />} />
+        <Route path="/space-shop" element={<SpaceShop />} />
 
-          {/* Kometa vazifalari (keyin o'z komponentlariga almashtirasiz) */}
-          <Route path="/monkeytype" element={<Home />} />
-          <Route path="/raqib-topish" element={<Home />} />
-          <Route path="/uno" element={<Home />} />
+        {/* Qo'shimcha yo'nalishlar */}
+        <Route path="/monkeytype" element={<Home />} />
+        <Route path="/raqib-topish" element={<Home />} />
+        <Route path="/uno" element={<Home />} />
 
-          <Route path="*" element={<Home />} />
-        </Route>
+        {/* Noma'lum yo'nalishlar */}
+        <Route path="*" element={<Asosiy />} />
       </Route>
     </Routes>
   )

@@ -1,5 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate, Link } from 'react-router-dom'
+import {
+    COIN_BALANCE_EVENT,
+    getCoinBalance,
+} from '../coinBalance'
 
 const Header = ({ children }) => {
     const location = useLocation()
@@ -7,20 +11,33 @@ const Header = ({ children }) => {
     const [selectedTheme, setSelectedTheme] = useState("YO'LAK")
 
     // Saqlangan mentor/foydalanuvchi ma'lumotlari (buzilgan JSON ilovani yiqitmasligi uchun)
-    const currentUser = (() => {
+    const [currentUser] = useState(() => {
         try {
-            const storedUser = localStorage.getItem('token')
+            const storedUser = localStorage.getItem('mars_auth_user') || localStorage.getItem('token')
             return storedUser ? JSON.parse(storedUser) : null
         } catch {
+            localStorage.removeItem('mars_auth_user')
             localStorage.removeItem('token')
             return null
         }
-    })()
+    })
+    const [coins, setCoins] = useState(() => getCoinBalance(currentUser))
+
+    useEffect(() => {
+        const syncCoins = () => setCoins(getCoinBalance(currentUser))
+        window.addEventListener(COIN_BALANCE_EVENT, syncCoins)
+        window.addEventListener('storage', syncCoins)
+        return () => {
+            window.removeEventListener(COIN_BALANCE_EVENT, syncCoins)
+            window.removeEventListener('storage', syncCoins)
+        }
+    }, [currentUser])
 
     // Chiqish (Logout)
     const handleLogout = () => {
         // Himoyalangan route'lar token'ni tekshiradi, shuni tozalash kifoya
         localStorage.removeItem('token')
+        localStorage.removeItem('mars_auth_user')
         navigate('/login')
     }
 
@@ -49,6 +66,8 @@ const Header = ({ children }) => {
                 return 'Reyting'
             case '/payment':
                 return "Onlayn to'lov"
+            case '/space-shop':
+                return 'SpaceShop'
             case '/login':
                 return 'Kirish'
             default:
@@ -168,6 +187,16 @@ const Header = ({ children }) => {
             )
         },
         {
+            to: '/space-shop',
+            label: 'SpaceShop',
+            icon: (
+                <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M6 7h12l1 14H5L6 7Z" />
+                    <path d="M9 7a3 3 0 0 1 6 0" />
+                </svg>
+            )
+        },
+        {
             to: '/login',
             label: 'Xodimlar Logini',
             icon: (
@@ -208,7 +237,7 @@ const Header = ({ children }) => {
                         {/* Mars Coin */}
                         <div className="flex items-center gap-1.5 bg-[#fef9c3]/70 hover:bg-[#fef9c3] border border-amber-200/80 px-2.5 py-1 rounded-full text-xs font-bold text-amber-800 transition shadow-2xs">
                             <span className="text-sm">🪙</span>
-                            <span>{currentUser?.coins || 239}</span>
+                            <span>{coins}</span>
                         </div>
 
                         {/* Energy / XP */}

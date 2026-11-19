@@ -89,8 +89,24 @@ const Events = () => {
 	const [registrations, setRegistrations] = useState(() => loadList(STORAGE_KEY))
 	const [memberships, setMemberships] = useState(() => loadList(CLUB_STORAGE_KEY))
 
-	// faqat tadbirlar db.json dan keladi
-	const events = useMemo(() => (Array.isArray(dbData.events) ? dbData.events : []), [])
+	// tadbirlar db.json dan keladi (mavjud bo'lmasa announcements dan olinadi)
+	const events = useMemo(() => {
+		if (Array.isArray(dbData.events) && dbData.events.length > 0) return dbData.events
+		if (Array.isArray(dbData.announcements)) {
+			return dbData.announcements.map((a) => ({
+				id: a.id,
+				title: a.title,
+				description: a.content,
+				date: a.date,
+				type: a.type === 'event' ? 'hackathon' : 'tadbir',
+				location: 'Mars IT School - Toshkent',
+				organizer: a.author || 'Mars Administration',
+				tags: ['Mars', a.type || 'tadbir'],
+				seats: 50,
+			}))
+		}
+		return []
+	}, [])
 
 	const filtered = useMemo(() => {
 		const q = query.trim().toLowerCase()

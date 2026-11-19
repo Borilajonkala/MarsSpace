@@ -4,7 +4,7 @@
     "marsId": "M-31710",
     "fullName": "Siz",
     "groupCode": "YB-3171",
-    "coins": 239,
+    "coins": 10000,
     "xp": 650,
     "theme": "YO'LAK",
     "debtWarning": true
@@ -1264,8 +1264,129 @@
       "inStock": 80,
       "image": "https://images.unsplash.com/photo-1572375992501-4b0892d50c69?w=300&auto=format&fit=crop&q=80",
       "description": "Noutbuk va telefonlar uchun suvga chidamli dasturchilar stikerlari."
+    },
+    {
+      "id": "shop-7",
+      "name": "Strobar",
+      "titleUz": "Strobar",
+      "priceCoins": 49,
+      "category": "Aksessuarlar",
+      "inStock": 127,
+      "image": "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?w=300&auto=format&fit=crop&q=80",
+      "description": "Mazali shirin batonchik."
+    },
+    {
+      "id": "shop-8",
+      "name": "Mars Space Cap",
+      "titleUz": "Mars kepkasi",
+      "priceCoins": 1200,
+      "category": "Kiyimlar",
+      "inStock": 20,
+      "image": "https://images.unsplash.com/photo-1521369909029-2f8d3c3b48b7?w=300&auto=format&fit=crop&q=80",
+      "description": "Mars Space logotipli kundalik kepka."
+    },
+    {
+      "id": "shop-9",
+      "name": "Mars Red Hoodie",
+      "titleUz": "Mars qizil xudisi",
+      "priceCoins": 3800,
+      "category": "Kiyimlar",
+      "inStock": 9,
+      "image": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=300&auto=format&fit=crop&q=80",
+      "description": "Yumshoq matoli, Mars ranglaridagi issiq xudi."
+    },
+    {
+      "id": "shop-10",
+      "name": "Mars USB Flash Drive 64GB",
+      "titleUz": "Mars USB fleshka 64 GB",
+      "priceCoins": 1800,
+      "category": "Elektronika",
+      "inStock": 15,
+      "image": "https://images.unsplash.com/photo-1618410320928-25228d811631?w=300&auto=format&fit=crop&q=80",
+      "description": "64 GB xotirali ixcham USB fleshka."
+    },
+    {
+      "id": "shop-11",
+      "name": "Mars Wireless Mouse",
+      "titleUz": "Mars simsiz sichqonchasi",
+      "priceCoins": 3200,
+      "category": "Elektronika",
+      "inStock": 11,
+      "image": "https://images.unsplash.com/photo-1527814050087-3793815479db?w=300&auto=format&fit=crop&q=80",
+      "description": "Dars va uyda ishlash uchun qulay simsiz sichqoncha."
+    },
+    {
+      "id": "shop-12",
+      "name": "Mars Explorer Backpack",
+      "titleUz": "Mars sayohat ryukzagi",
+      "priceCoins": 2800,
+      "category": "Aksessuarlar",
+      "inStock": 8,
+      "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&auto=format&fit=crop&q=80",
+      "description": "Kitoblar va noutbuk uchun qulay kundalik ryukzak."
+    },
+    {
+      "id": "shop-13",
+      "name": "Mars Steel Bottle",
+      "titleUz": "Mars metall suv idishi",
+      "priceCoins": 1500,
+      "category": "Aksessuarlar",
+      "inStock": 16,
+      "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=300&auto=format&fit=crop&q=80",
+      "description": "Suvni uzoq vaqt salqin saqlaydigan ko'p martalik idish."
+    },
+    {
+      "id": "shop-14",
+      "name": "Mars Space Sticker Pack",
+      "titleUz": "Mars kosmik stikerlar to'plami",
+      "priceCoins": 350,
+      "category": "Stickerlar",
+      "inStock": 60,
+      "image": "https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?w=300&auto=format&fit=crop&q=80",
+      "description": "Daftar va noutbuk uchun kosmik mavzudagi stikerlar."
+    },
+    {
+      "id": "shop-15",
+      "name": "Mars Developer Notebook",
+      "titleUz": "Mars dasturchi kundaligi",
+      "priceCoins": 600,
+      "category": "Aksessuarlar",
+      "inStock": 35,
+      "image": "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=300&auto=format&fit=crop&q=80",
+      "description": "Dars qaydlari va g'oyalar uchun qulay daftar."
+    },
+    {
+      "id": "shop-16",
+      "name": "Python Starter eBook",
+      "titleUz": "Python boshlang'ich elektron kitobi",
+      "priceCoins": 900,
+      "category": "Raqamli mahsulotlar",
+      "inStock": 100,
+      "image": "https://images.unsplash.com/photo-1517842645767-c639042777db?w=300&auto=format&fit=crop&q=80",
+      "description": "Python asoslarini o'rganish uchun elektron qo'llanma."
+    },
+    {
+      "id": "shop-17",
+      "name": "HTML & CSS Cheat Sheet",
+      "titleUz": "HTML va CSS eslatmalar to'plami",
+      "priceCoins": 300,
+      "category": "Raqamli mahsulotlar",
+      "inStock": 100,
+      "image": "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=300&auto=format&fit=crop&q=80",
+      "description": "HTML teglari va CSS xossalari bo'yicha qisqa elektron qo'llanma."
+    },
+    {
+      "id": "shop-18",
+      "name": "React UI Starter Kit",
+      "titleUz": "React UI boshlang'ich to'plami",
+      "priceCoins": 1400,
+      "category": "Raqamli mahsulotlar",
+      "inStock": 100,
+      "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=300&auto=format&fit=crop&q=80",
+      "description": "React loyihalari uchun tayyor interfeys elementlari to'plami."
     }
   ],
+  "orders": [],
   "announcements": [
     {
       "id": "ann-1",

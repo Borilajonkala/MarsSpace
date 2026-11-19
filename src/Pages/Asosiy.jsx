@@ -13,9 +13,7 @@ const Asosiy = () => {
   )
 }
 
-/* ------------------------------ KURS XARITASI ------------------------------ */
-/* Har bir modulda: darslar ro'yxati va nechta dars tugatilgani (done).
-   Darslar nomini o'zingizniki bilan almashtiring. */
+
 const MODULES = [
   {
     title: 'Modul 1',
@@ -32,7 +30,7 @@ const MODULES = [
       'Table',
       'Form taglari',
       'Box Modeling',
-      'Imtihon', // 12-dars (joriy)
+      'Imtihon', 
     ],
   },
   { title: 'Modul 2', done: 12 },
