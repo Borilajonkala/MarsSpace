@@ -9,8 +9,12 @@ import Entertainment from './Pages/Entertainment'
 import TadbirVaTogareklar from './Pages/Events'
 import MyWorks from './Pages/My-works'
 import Alogo from './Pages/Alogo'
+<<<<<<< HEAD
 import Payment from './Pages/Payment'
 import Hackathon from './Pages/Hackathon'
+=======
+import SpaceShop from './Pages/SpaceShop'
+>>>>>>> fd9ecf6d361c6ab4a2f89f11d26ff1e25b1cc050
 
 const App = () => {
   return (
@@ -27,11 +31,17 @@ const App = () => {
         <Route path="/games" element={<Entertainment />} />
         <Route path="/alogo" element={<Alogo />} />
         <Route path="/algo" element={<Alogo />} />
+        <Route path="/space-shop" element={<SpaceShop />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/hackathon" element={<Hackathon />} />
         <Route path="/events" element={<TadbirVaTogareklar />} />
         <Route path="/rating" element={<Home />} />
+<<<<<<< HEAD
         <Route path="/payment" element={<Payment />} />
+=======
+        <Route path="/payment" element={<About />} />
+        <Route path="/space-shop" element={<SpaceShop />} />
+>>>>>>> fd9ecf6d361c6ab4a2f89f11d26ff1e25b1cc050
 
         {/* Qo'shimcha yo'nalishlar */}
         <Route path="/monkeytype" element={<Home />} />

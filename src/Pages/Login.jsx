@@ -43,7 +43,9 @@ const Login = () => {
       const matchesPhone =
         inputDigits.length >= 7 &&
         (cleanPhone === inputDigits || cleanPhone.endsWith(inputDigits))
-      const matchesMarsId = cleanMarsId === cleanInput || cleanMarsId.endsWith(cleanInput)
+      const matchesMarsId =
+        cleanMarsId === cleanInput ||
+        (cleanInput.length >= 3 && cleanMarsId.endsWith(cleanInput))
       return matchesPhone || matchesMarsId
     })
 
