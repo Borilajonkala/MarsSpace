@@ -1,51 +1,40 @@
-
 import { useEffect, useState } from "react";
 import dbData from "../../db.json";
 
-const API = "http://localhost:3000/posts";
+const STORAGE_KEY = "mars_blog_posts";
 const USER_ID = "ulugbek-1";
 
+const readSavedPosts = () => {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    const parsed = saved ? JSON.parse(saved) : null;
+    if (Array.isArray(parsed)) return parsed;
+  } catch (error) {
+    console.error("Ошибка чтения постов:", error);
+  }
+  return Array.isArray(dbData.posts) ? dbData.posts : [];
+};
+
 function EngZor() {
-  const [posts, setPosts] = useState(() => {
-    try {
-      const saved = localStorage.getItem("mars_blog_posts");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) return parsed;
-      }
-    } catch {
-      // ignore JSON parse errors
-    }
-    return Array.isArray(dbData.posts) ? dbData.posts : [];
-  });
+  const [posts, setPosts] = useState(readSavedPosts);
   const [text, setText] = useState("");
   const [image, setImage] = useState("");
   const [comments, setComments] = useState({});
   const [open, setOpen] = useState(false);
-  const [error, setError] = useState("");
 
   const sortedPosts = [...posts].sort(
     (a, b) => (b.likedBy?.length || 0) - (a.likedBy?.length || 0)
   );
- 
-  useEffect(() => {
-    fetch(API)
-      .then((res) => {
-        if (!res.ok) throw new Error("GET xatolik");
-        return res.json();
-      })
-      .then((data) => {
-        if (!Array.isArray(data)) return;
-        setPosts(data);
-        localStorage.setItem("mars_blog_posts", JSON.stringify(data));
-      })
-      .catch(() => {
-        setPosts((prev) => (prev.length === 0 && Array.isArray(dbData.posts) ? dbData.posts : prev));
-      });
-  }, []);
 
- 
-  const addPost = async (e) => {
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+    } catch (error) {
+      console.error("Ошибка сохранения постов:", error);
+    }
+  }, [posts]);
+
+  const addPost = (e) => {
     e.preventDefault();
     if (!text.trim()) return;
 
@@ -58,78 +47,26 @@ function EngZor() {
       comments: [],
     };
 
-    try {
-      const res = await fetch(API, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newPost),
-      });
-
-      if (!res.ok) throw new Error("POST xatolik");
-
-      const data = await res.json();
-      setPosts((prev) => {
-        const next = [data, ...prev];
-        localStorage.setItem("mars_blog_posts", JSON.stringify(next));
-        return next;
-      });
-    } catch {
-      setPosts((prev) => {
-        const next = [newPost, ...prev];
-        localStorage.setItem("mars_blog_posts", JSON.stringify(next));
-        return next;
-      });
-    }
+    setPosts((prev) => [newPost, ...prev]);
     setText("");
     setImage("");
     setOpen(false);
-    setError("");
   };
 
- 
-  const toggleLike = async (post) => {
+  const toggleLike = (post) => {
     const likedBy = post.likedBy || [];
-
     const updatedLikes = likedBy.includes(USER_ID)
       ? likedBy.filter((id) => id !== USER_ID)
       : [...likedBy, USER_ID];
 
-    const updatedPost = { ...post, likedBy: updatedLikes };
-
-    try {
-      const res = await fetch(`${API}/${post.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          likedBy: updatedLikes,
-        }),
-      });
-
-      if (!res.ok) throw new Error("PATCH xatolik");
-
-      const serverPost = await res.json();
-
-      setPosts((prev) => {
-        const next = prev.map((item) => (item.id === serverPost.id ? serverPost : item));
-        localStorage.setItem("mars_blog_posts", JSON.stringify(next));
-        return next;
-      });
-      setError("");
-    } catch {
-      setPosts((prev) => {
-        const next = prev.map((item) => (item.id === updatedPost.id ? updatedPost : item));
-        localStorage.setItem("mars_blog_posts", JSON.stringify(next));
-        return next;
-      });
-    }
+    setPosts((prev) =>
+      prev.map((item) =>
+        item.id === post.id ? { ...item, likedBy: updatedLikes } : item
+      )
+    );
   };
 
- 
-  const addComment = async (e, post) => {
+  const addComment = (e, post) => {
     e.preventDefault();
 
     const message = comments[post.id]?.trim();
@@ -141,44 +78,18 @@ function EngZor() {
       text: message,
     };
 
-    const updatedPost = {
-      ...post,
-      comments: [...(post.comments || []), newComment],
-    };
-
-    try {
-      const res = await fetch(`${API}/${post.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          comments: updatedPost.comments,
-        }),
-      });
-
-      if (!res.ok) throw new Error("PATCH xatolik");
-
-      const serverPost = await res.json();
-
-      setPosts((prev) => {
-        const next = prev.map((item) => (item.id === serverPost.id ? serverPost : item));
-        localStorage.setItem("mars_blog_posts", JSON.stringify(next));
-        return next;
-      });
-    } catch {
-      setPosts((prev) => {
-        const next = prev.map((item) => (item.id === updatedPost.id ? updatedPost : item));
-        localStorage.setItem("mars_blog_posts", JSON.stringify(next));
-        return next;
-      });
-    }
+    setPosts((prev) =>
+      prev.map((item) =>
+        item.id === post.id
+          ? { ...item, comments: [...(item.comments || []), newComment] }
+          : item
+      )
+    );
 
     setComments((prev) => ({
       ...prev,
       [post.id]: "",
     }));
-    setError("");
   };
 
   return (
@@ -193,8 +104,6 @@ function EngZor() {
       <div className="my-4 rounded-xl bg-green-500 p-3 text-center text-white">
         Eng zo'r
       </div>
-
-      {error && <p className="text-red-500">{error}</p>}
 
       {open && (
         <form

@@ -276,14 +276,14 @@ const Header = ({ children }) => {
                         {/* Profil rasmi va Dropdown */}
                         <div className="dropdown dropdown-end">
                             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle btn-sm avatar cursor-pointer">
-                                <div className="w-8 rounded-full border border-gray-300">
-                                    <img
-                                        alt="Profil"
-                                        src={
-                                            currentUser?.avatar ||
-                                            "https://api.dicebear.com/7.x/bottts/svg?seed=MarsStudent&backgroundColor=ffd5dc"
-                                        }
-                                    />
+                                <div className="w-8 rounded-full border border-gray-300 overflow-hidden">
+                                    {currentUser?.avatar ? (
+                                        <img alt="Profil" src={currentUser.avatar} />
+                                    ) : (
+                                        <span className="flex h-8 w-8 items-center justify-center bg-base-200 text-base leading-none">
+                                            🧑‍🚀
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                             <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-50 p-2 shadow-lg bg-white rounded-2xl w-56 border border-gray-100">
@@ -368,11 +368,9 @@ const Header = ({ children }) => {
                         {/* 3D Qahramon */}
                         <div className="flex flex-col items-center justify-center p-2">
                             <div className="relative">
-                                <img
-                                    src="https://api.dicebear.com/7.x/bottts/svg?seed=MarsBoy&backgroundColor=c0aede"
-                                    alt="Mars Qahramon"
-                                    className="w-16 h-16 object-contain drop-shadow-md hover:scale-105 transition"
-                                />
+                                <div className="flex h-16 w-16 items-center justify-center text-4xl hover:scale-105 transition drop-shadow-md">
+                                    🧑‍🚀
+                                </div>
                                 <div className="w-14 h-2 bg-emerald-500/20 rounded-full mx-auto -mt-1 blur-[1px]"></div>
                             </div>
                         </div>
