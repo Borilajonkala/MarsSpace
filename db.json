@@ -1436,6 +1436,14 @@
       "image": "/images/post1.jpg",
       "likedBy": [],
       "comments": []
+    },
+    {
+      "id": "ySupp_t81wo",
+      "author": "Yusupov Ulugbek",
+      "text": "salom",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzfhp1_xAEPYC5C_fxz2DQV4TtX7Wq1Xy2tbb473UGgUZZ-wW9Itz-FNK3&s=10",
+      "likedBy": [],
+      "comments": []
     }
   ],
   "users": [
@@ -1445,5 +1453,6 @@
       "email": "abdumavlon9999@gmail.com",
       "phone": "+9989823981321"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
