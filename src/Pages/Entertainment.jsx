@@ -281,7 +281,7 @@ export default function App() {
                   <circle cx="8.5" cy="15.5" r="1"></circle>
                   <circle cx="15.5" cy="15.5" r="1"></circle>
                 </svg>
-                <span>Играть (Яндекс)</span>
+                <span>Играть в (Яндекс)</span>
               </a>
             </div>
           )}
