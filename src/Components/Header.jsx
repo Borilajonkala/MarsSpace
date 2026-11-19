@@ -3,7 +3,7 @@ import { NavLink, Outlet, useLocation, useNavigate, Link } from 'react-router-do
 import {
     COIN_BALANCE_EVENT,
     getCoinBalance,
-} from '../coinBalance'
+} from '../coinBalance.jsx'
 
 const Header = ({ children }) => {
     const location = useLocation()

@@ -1384,6 +1384,126 @@
       "inStock": 100,
       "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=300&auto=format&fit=crop&q=80",
       "description": "React loyihalari uchun tayyor interfeys elementlari to'plami."
+    },
+    {
+      "id": "shop-19",
+      "name": "Mars Oversize Hoodie (Grey Edition)",
+      "titleUz": "Mars katta xudi (Kulrang)",
+      "priceCoins": 3200,
+      "category": "Kiyimlar",
+      "inStock": 14,
+      "image": "https://images.unsplash.com/photo-1509942774463-acf339cf87d5?w=300&auto=format&fit=crop&q=80",
+      "description": "Oversize bichimdagi yumshoq xudi, kundalik kiyish uchun qulay."
+    },
+    {
+      "id": "shop-20",
+      "name": "Mars IT Long Sleeve",
+      "titleUz": "Mars uzun yengli futbolka",
+      "priceCoins": 1700,
+      "category": "Kiyimlar",
+      "inStock": 22,
+      "image": "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=300&auto=format&fit=crop&q=80",
+      "description": "Yengil matoli uzun yengli futbolka, Mars logotipi bilan."
+    },
+    {
+      "id": "shop-21",
+      "name": "Mars Logo Socks (3 pairs)",
+      "titleUz": "Mars paypoqlari (3 juft)",
+      "priceCoins": 500,
+      "category": "Kiyimlar",
+      "inStock": 40,
+      "image": "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?w=300&auto=format&fit=crop&q=80",
+      "description": "Mars ranglaridagi 3 juft paxta paypoq."
+    },
+    {
+      "id": "shop-22",
+      "name": "Mars Wireless Keyboard",
+      "titleUz": "Mars simsiz klaviaturasi",
+      "priceCoins": 4200,
+      "category": "Elektronika",
+      "inStock": 9,
+      "image": "https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=300&auto=format&fit=crop&q=80",
+      "description": "Yassi dizaynli, jim tugmali simsiz klaviatura."
+    },
+    {
+      "id": "shop-23",
+      "name": "Mars Studio Headphones",
+      "titleUz": "Mars studiya naushnigi",
+      "priceCoins": 6200,
+      "category": "Elektronika",
+      "inStock": 7,
+      "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&auto=format&fit=crop&q=80",
+      "description": "Dars va musiqa uchun atrofdagi shovqinni to'suvchi naushnik."
+    },
+    {
+      "id": "shop-24",
+      "name": "Mars Power Bank 10000mAh",
+      "titleUz": "Mars quvvat banki 10000 mAh",
+      "priceCoins": 2900,
+      "category": "Elektronika",
+      "inStock": 13,
+      "image": "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300&auto=format&fit=crop&q=80",
+      "description": "Telefon va planshetni tez quvvatlaydigan ixcham bank."
+    },
+    {
+      "id": "shop-25",
+      "name": "Mars HD Webcam",
+      "titleUz": "Mars HD veb-kamera",
+      "priceCoins": 4800,
+      "category": "Elektronika",
+      "inStock": 6,
+      "image": "https://images.unsplash.com/photo-1587826080692-f439cd0b70da?w=300&auto=format&fit=crop&q=80",
+      "description": "Onlayn darslar va uchrashuvlar uchun 1080p veb-kamera."
+    },
+    {
+      "id": "shop-26",
+      "name": "Mars Laptop Stand",
+      "titleUz": "Mars noutbuk tagligi",
+      "priceCoins": 2100,
+      "category": "Aksessuarlar",
+      "inStock": 17,
+      "image": "https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=300&auto=format&fit=crop&q=80",
+      "description": "Bo'yin va qo'l holatini saqlash uchun alyuminiy taglik."
+    },
+    {
+      "id": "shop-27",
+      "name": "Mars XXL Mouse Pad",
+      "titleUz": "Mars katta gilamcha (XXL)",
+      "priceCoins": 900,
+      "category": "Aksessuarlar",
+      "inStock": 26,
+      "image": "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=300&auto=format&fit=crop&q=80",
+      "description": "Klaviatura va sichqoncha uchun katta o'lchamli gilamcha."
+    },
+    {
+      "id": "shop-28",
+      "name": "Mars Metal Keychain",
+      "titleUz": "Mars metall kalitdon",
+      "priceCoins": 250,
+      "category": "Aksessuarlar",
+      "inStock": 50,
+      "image": "https://images.unsplash.com/photo-1582139329536-e7284fece509?w=300&auto=format&fit=crop&q=80",
+      "description": "Mars logotipli mustahkam metall kalitdon."
+    },
+    {
+      "id": "shop-29",
+      "name": "Mars Laptop Sticker Set",
+      "titleUz": "Noutbuk uchun Mars stikerlari",
+      "priceCoins": 300,
+      "category": "Stickerlar",
+      "inStock": 70,
+      "image": "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=300&auto=format&fit=crop&q=80",
+      "description": "Noutbukni bezash uchun 20 dona yorqin stiker."
+    },
+    {
+      "id": "shop-30",
+      "name": "JavaScript Mastery eBook",
+      "titleUz": "JavaScript bo'yicha elektron kitob",
+      "priceCoins": 1100,
+      "category": "Raqamli mahsulotlar",
+      "inStock": 100,
+      "image": "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=300&auto=format&fit=crop&q=80",
+      "description": "ES6+, massivlar va asinxron kod bo'yicha amaliy qo'llanma."
     }
   ],
   "orders": [],
