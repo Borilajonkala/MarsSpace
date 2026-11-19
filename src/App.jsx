@@ -14,6 +14,7 @@ import SpaceShop from './Pages/SpaceShop'
 import Reyting from './Pages/Reyting'
 import BattleLobby from './Pages/BattleLobby'
 import Events from './Pages/Events'
+import Profil from './Pages/Profil'
 
 const App = () => {
   return (
@@ -39,6 +40,8 @@ const App = () => {
         <Route path="/rating" element={<Reyting />} />
         <Route path="/reyting" element={<Reyting />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/profile" element={<Profil />} />
+        <Route path="/profil" element={<Profil />} />
 
         {/* Qo'shimcha yo'nalishlar */}
         <Route path="/monkeytype" element={<Home />} />
