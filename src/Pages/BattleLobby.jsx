@@ -116,7 +116,6 @@ const Battle = ({ back }) => {
       </div>
     </div>
   );
-<<<<<<< HEAD:src/Pages/Entertainment.jsx
 };
 
 /* ---------------------------- BATTLE CSS ---------------------------- */
@@ -183,23 +182,19 @@ const battleCss = `
 
 @media(max-width:860px){
   .vs{gap:20px}
-=======
-
->>>>>>> 70a18aa07259c93d3e026f51bfbba699620e5b17:src/Pages/BattleLobby.jsx
 }
 `;
 
-<<<<<<< HEAD:src/Pages/Entertainment.jsx
 // ==========================================
-// ГЛАВНЫЙ КОМПОНЕНТ С ШАПКОЙ И ССЫЛКАМИ
+// GLAVNIY KOMPONENT BATTLE LOBBY
 // ==========================================
-export default function App() {
-  const [activeTab, setActiveTab] = useState('battle'); // По умолчанию открыт Battle
+export default function BattleLobby() {
+  const [activeTab, setActiveTab] = useState('battle'); // Standart holatda Battle ochiq
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const navigate = useNavigate();
 
-  // Закрытие меню при клике вне его области
+  // Menyudan tashqariga bosilganda yopish
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -212,14 +207,14 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-900 font-sans">
-      {/* Навбар */}
+      {/* Navbar */}
       <nav className="bg-white border-b border-slate-200 px-6 py-3 flex justify-between items-center sticky top-0 z-40">
         <div className="flex items-center gap-2 font-extrabold text-xl text-orange-500">
           <span>MARS</span>
           <span className="text-slate-800">SPACE</span>
         </div>
 
-        {/* Кнопка джойстика и выпадающее меню */}
+        {/* Joystick tugmasi va menyusi */}
         <div className="relative" ref={menuRef}>
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -236,10 +231,10 @@ export default function App() {
             </svg>
           </button>
 
-          {/* Выпадающее окно с 3 пунктами */}
+          {/* Tanlov oynasi */}
           {isMenuOpen && (
             <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl p-2.5 shadow-xl border border-slate-100 flex flex-col gap-1 z-50">
-              {/* 1. Battle (Остается внутри твоего сайта) */}
+              {/* 1. Battle */}
               <button
                 onClick={() => {
                   setActiveTab('battle');
@@ -255,7 +250,7 @@ export default function App() {
                 <span>Battle</span>
               </button>
 
-              {/* 2. MARSTYPE -> Ссылка на Monkeytype (откроется в новой вкладке) */}
+              {/* 2. MARSTYPE -> Monkeytype */}
               <a
                 href="https://monkeytype.com"
                 target="_blank"
@@ -270,7 +265,7 @@ export default function App() {
                 <span>MARSTYPE (Monkeytype)</span>
               </a>
 
-              {/* 3. Играть -> Ссылка на Яндекс Игры (откроется в новой вкладке) */}
+              {/* 3. O'yinlar -> Yandex */}
               <a
                 href="https://yandex.ru/games"
                 target="_blank"
@@ -286,18 +281,15 @@ export default function App() {
                   <circle cx="8.5" cy="15.5" r="1"></circle>
                   <circle cx="15.5" cy="15.5" r="1"></circle>
                 </svg>
-                <span>Играть в (Яндекс)</span>
+                <span>O'yinlar (Yandex)</span>
               </a>
             </div>
           )}
         </div>
       </nav>
 
-      {/* Отображаем Battle, если выбрана эта вкладка */}
+      {/* Battle komponenti */}
       {activeTab === 'battle' && <Battle back={() => navigate('/')} />}
     </div>
   );
 }
-=======
-export default BattleLobby
->>>>>>> 70a18aa07259c93d3e026f51bfbba699620e5b17:src/Pages/BattleLobby.jsx

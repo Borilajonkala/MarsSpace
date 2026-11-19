@@ -216,7 +216,7 @@ const Reyting = () => {
   return (
     <div className="rt">
       <style>{css}</style>
-      <h2 className="rt-title">Reytinglar</h2>
+      <h2 className="rt-title">Reyting va Yutuqlar 🏆</h2>
 
       {/* yuqoridagi tablar */}
       <div className="rt-chips">

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { useEffect, useState } from 'react'
-=======
-import  { useState } from 'react'
->>>>>>> 70a18aa07259c93d3e026f51bfbba699620e5b17
 import { NavLink, Outlet, useLocation, useNavigate, Link } from 'react-router-dom'
 import {
     COIN_BALANCE_EVENT,
@@ -382,7 +378,7 @@ const Header = ({ children }) => {
 
                         <div className="space-y-1 text-xs">
                             <a
-                                href="#eduverse"
+                                href="http://localhost:5173/"
                                 className="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-semibold transition"
                             >
                                 <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -390,9 +386,7 @@ const Header = ({ children }) => {
                                     <line x1="2" x2="22" y1="12" y2="12" />
                                     <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
                                 </svg>
-                                <a href="http://localhost:5173/" >
-                                    Eduverse
-                                </a>
+                                <span>Eduverse</span>
                             </a>
 
                             <a

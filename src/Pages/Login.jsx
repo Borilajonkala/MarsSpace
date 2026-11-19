@@ -39,7 +39,7 @@ const Login = () => {
 
     const foundMentor = mentors.find((m) => {
       const cleanPhone = (m.rawPhone || m.phone || '').replace(/[\s+\-()]/g, '').toLowerCase()
-      const cleanMarsId = (m.password || '').replace(/[\s+\-()]/g, '').toLowerCase()
+      const cleanMarsId = (m.marsId || '').replace(/[\s+\-()]/g, '').toLowerCase()
       const matchesPhone =
         inputDigits.length >= 7 &&
         (cleanPhone === inputDigits || cleanPhone.endsWith(inputDigits))
@@ -73,12 +73,14 @@ const Login = () => {
 
     // ===== O'ZGARTIRILGAN JOY (boshlandi) =====
     // Muvaffaqiyatli login: ClickUser funksiyasi shu yerda chaqiriladi
-    const ClickUser = () => {
-      localStorage.setItem('token', JSON.stringify())
+    const ClickUser = (mentor) => {
+      localStorage.setItem('token', JSON.stringify(mentor))
+      localStorage.setItem('mars_auth_user', JSON.stringify(mentor))
       navigate('/')
     }
 
     ClickUser(foundMentor)
+    // ===== O'ZGARTIRILGAN JOY (tugadi) =====
   }
 
   return (
