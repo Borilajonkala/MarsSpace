@@ -10,11 +10,12 @@ import Alogo from './Pages/Alogo'
 import BattleLobby from './Pages/BattleLobby'
 import PrivateRouter from './Components/PrivateRouter'
 import Events from './Pages/Events'
+import Register from './Pages/Register'
 const App = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-
+      <Route path='/register' element={<Register />} />
         
 
         {/* Qo'shimcha yo'nalishlar */}
