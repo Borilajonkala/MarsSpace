@@ -9,6 +9,7 @@ import Entertainment from './Pages/Entertainment'
 import TadbirVaTogareklar from './Pages/Events'
 import MyWorks from './Pages/My-works'
 import Alogo from './Pages/Alogo'
+import Reyting from './Pages/Reyting'
 
 const App = () => {
   return (
@@ -28,7 +29,11 @@ const App = () => {
         <Route path="/blog" element={<Blog />} />
         <Route path="/hackathon" element={<TadbirVaTogareklar />} />
         <Route path="/events" element={<TadbirVaTogareklar />} />
-        <Route path="/rating" element={<Home />} />
+
+        {/* Reyting: ikkala manzil ham yangi sahifani ochadi */}
+        <Route path="/rating" element={<Reyting />} />
+        <Route path="/reyting" element={<Reyting />} />
+
         <Route path="/payment" element={<About />} />
 
         {/* Qo'shimcha yo'nalishlar */}
