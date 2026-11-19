@@ -142,33 +142,39 @@
     {
       "rank": 1,
       "name": "Islomov H.",
-      "score": 5410
+      "score": 5410,
+      "id": "1924"
     },
     {
       "rank": 2,
       "name": "Hasanov A.",
-      "score": 4980
+      "score": 4980,
+      "id": "4ce4"
     },
     {
       "rank": 3,
       "name": "Erkinova M.",
-      "score": 4820
+      "score": 4820,
+      "id": "4ad0"
     },
     {
       "rank": 4,
       "name": "Toshmatov D.",
-      "score": 4650
+      "score": 4650,
+      "id": "2393"
     },
     {
       "rank": 5,
       "name": "Karimov J.",
-      "score": 4320
+      "score": 4320,
+      "id": "5f36"
     },
     {
       "rank": 6,
       "name": "Siz",
       "score": 0,
-      "isCurrent": true
+      "isCurrent": true,
+      "id": "9ba2"
     }
   ],
   "mentors": [
@@ -201,8 +207,8 @@
       "fullName": "Aziza Karimova",
       "firstName": "Aziza",
       "lastName": "Karimova",
-      "phone": "+998998765432",
-      "rawPhone": "998998765432",
+      "phone": "+99812345678",
+      "rawPhone": "99812345678",
       "password": "password123",
       "role": "Backend & AI Mentor",
       "specialty": "Python Backend & Machine Learning",
@@ -861,6 +867,12 @@
       "status": "active",
       "notes": "Python Django REST loyihasini mustaqil tugatdi.",
       "joinedDate": "2026-08-15"
+    },
+    {
+      "id": "0322",
+      "name": "dawada",
+      "email": "abdumavlon9999@gmail.com",
+      "phone": "+9989831231245"
     }
   ],
   "lessons": [
@@ -1424,6 +1436,14 @@
       "image": "/images/post1.jpg",
       "likedBy": [],
       "comments": []
+    }
+  ],
+  "users": [
+    {
+      "id": "ecf9",
+      "name": "2313131",
+      "email": "abdumavlon9999@gmail.com",
+      "phone": "+9989823981321"
     }
   ]
 }

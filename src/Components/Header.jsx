@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { useEffect, useState } from 'react'
+=======
+import  { useState } from 'react'
+>>>>>>> 70a18aa07259c93d3e026f51bfbba699620e5b17
 import { NavLink, Outlet, useLocation, useNavigate, Link } from 'react-router-dom'
 import {
     COIN_BALANCE_EVENT,
@@ -13,11 +17,10 @@ const Header = ({ children }) => {
     // Saqlangan mentor/foydalanuvchi ma'lumotlari (buzilgan JSON ilovani yiqitmasligi uchun)
     const [currentUser] = useState(() => {
         try {
-            const storedUser = localStorage.getItem('mars_auth_user') || localStorage.getItem('token')
+            const storedUser = localStorage.getItem('mars_auth_user') 
             return storedUser ? JSON.parse(storedUser) : null
         } catch {
-            localStorage.removeItem('mars_auth_user')
-            localStorage.removeItem('token')
+
             return null
         }
     })

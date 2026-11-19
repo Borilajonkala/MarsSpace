@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import dbData from '../../db.json'
 
 const Login = () => {
@@ -39,7 +39,7 @@ const Login = () => {
 
     const foundMentor = mentors.find((m) => {
       const cleanPhone = (m.rawPhone || m.phone || '').replace(/[\s+\-()]/g, '').toLowerCase()
-      const cleanMarsId = (m.marsId || '').replace(/[\s+\-()]/g, '').toLowerCase()
+      const cleanMarsId = (m.password || '').replace(/[\s+\-()]/g, '').toLowerCase()
       const matchesPhone =
         inputDigits.length >= 7 &&
         (cleanPhone === inputDigits || cleanPhone.endsWith(inputDigits))
@@ -73,15 +73,12 @@ const Login = () => {
 
     // ===== O'ZGARTIRILGAN JOY (boshlandi) =====
     // Muvaffaqiyatli login: ClickUser funksiyasi shu yerda chaqiriladi
-    const ClickUser = (mentor) => {
-      localStorage.setItem('token', JSON.stringify(mentor))
-      localStorage.setItem('mars_auth_user', JSON.stringify(mentor))
+    const ClickUser = () => {
+      localStorage.setItem('token', JSON.stringify())
       navigate('/')
     }
 
-    // Telefon/Mars ID va parol tekshiruvdan o'tdi -> ClickUser ni chaqiramiz
     ClickUser(foundMentor)
-    // ===== O'ZGARTIRILGAN JOY (tugadi) =====
   }
 
   return (
@@ -170,6 +167,11 @@ const Login = () => {
           </button>
         </form>
 
+
+
+      <div className='flex '>
+        <p>Akauntga ega emasmisiz <span className='text-blue-400'><Link to={'/register'}>Register</Link></span></p>
+      </div>
       </div>
 
       {/* Tillar tanlagichi */}
@@ -185,7 +187,9 @@ const Login = () => {
             {lang}
           </button>
         ))}
+        
       </div>
+
     </div>
   )
 }

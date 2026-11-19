@@ -116,6 +116,7 @@ const Battle = ({ back }) => {
       </div>
     </div>
   );
+<<<<<<< HEAD:src/Pages/Entertainment.jsx
 };
 
 /* ---------------------------- BATTLE CSS ---------------------------- */
@@ -182,9 +183,13 @@ const battleCss = `
 
 @media(max-width:860px){
   .vs{gap:20px}
+=======
+
+>>>>>>> 70a18aa07259c93d3e026f51bfbba699620e5b17:src/Pages/BattleLobby.jsx
 }
 `;
 
+<<<<<<< HEAD:src/Pages/Entertainment.jsx
 // ==========================================
 // ГЛАВНЫЙ КОМПОНЕНТ С ШАПКОЙ И ССЫЛКАМИ
 // ==========================================
@@ -293,3 +298,6 @@ export default function App() {
     </div>
   );
 }
+=======
+export default BattleLobby
+>>>>>>> 70a18aa07259c93d3e026f51bfbba699620e5b17:src/Pages/BattleLobby.jsx

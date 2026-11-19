@@ -3,12 +3,11 @@ import Header from './Components/Header'
 import Home from './Pages/Home'
 import About from './Pages/About'
 import Login from './Pages/Login'
-import Asosiy from './Pages/Asosiy'
+
 import Blog from './Pages/Blog'
-import Entertainment from './Pages/Entertainment'
-import TadbirVaTogareklar from './Pages/Events'
 import MyWorks from './Pages/My-works'
 import Alogo from './Pages/Alogo'
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 import Payment from './Pages/Payment'
@@ -20,11 +19,17 @@ import SpaceShop from './Pages/SpaceShop'
 import Reyting from './Pages/Reyting'
 >>>>>>> 99e361bcf033b5c58cd3a6711a46ae3d6b54a44c
 
+=======
+import BattleLobby from './Pages/BattleLobby'
+import PrivateRouter from './Components/PrivateRouter'
+import Events from './Pages/Events'
+import Register from './Pages/Register'
+>>>>>>> 70a18aa07259c93d3e026f51bfbba699620e5b17
 const App = () => {
   return (
     <Routes>
-      {/* Login sahifasi (To'liq ekran) */}
       <Route path="/login" element={<Login />} />
+<<<<<<< HEAD
 
       {/* Header barcha sahifalarda doimiy ishlaydi va sahifalar uning ichida almashadi */}
       <Route element={<Header />}>
@@ -54,14 +59,33 @@ const App = () => {
         <Route path="/payment" element={<About />} />
         <Route path="/space-shop" element={<SpaceShop />} />
 >>>>>>> fd9ecf6d361c6ab4a2f89f11d26ff1e25b1cc050
+=======
+      <Route path='/register' element={<Register />} />
+        
+>>>>>>> 70a18aa07259c93d3e026f51bfbba699620e5b17
 
         {/* Qo'shimcha yo'nalishlar */}
+      <Route element={<PrivateRouter />}>
         <Route path="/monkeytype" element={<Home />} />
         <Route path="/raqib-topish" element={<Home />} />
         <Route path="/uno" element={<Home />} />
 
-        {/* Noma'lum yo'nalishlar */}
-        <Route path="*" element={<Asosiy />} />
+        <Route path="*" element={<Home />} />
+
+        <Route element={<Header />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/courses" element={<About />} />
+          <Route path="/my-works" element={<MyWorks />} />
+          <Route path="/games" element={<BattleLobby />} />
+          <Route path="/algo" element={<Alogo />} />
+          <Route path="/blog" element={<Blog />} />
+          {/* <Route path="/hackathon" element={<Home />} /> */}
+          <Route path="/events" element={<Events />} />
+          <Route path="/rating" element={<Home />} />
+          <Route path="/payment" element={<About />} />
+          <Route path="*" element={<Home />} />
+        </Route>
       </Route>
     </Routes>
   )
