@@ -21,7 +21,7 @@ const About = () => {
             {currentUser?.avatar ? (
               <img src={currentUser.avatar} alt="Avatar" className="w-full h-full object-cover" />
             ) : (
-              '🚀'
+              ''
             )}
           </div>
           <div>
