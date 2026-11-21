@@ -1,4 +1,21 @@
 {
+  "TYPE_META": {
+    "tadbir": {
+      "label": "Tadbir",
+      "badge": "bg-blue-50 text-blue-700 border-blue-200",
+      "emoji": "🎉"
+    },
+    "togarak": {
+      "label": "To'garak",
+      "badge": "bg-emerald-50 text-emerald-700 border-emerald-200",
+      "emoji": "🧩"
+    },
+    "hackathon": {
+      "label": "Xakaton",
+      "badge": "bg-purple-50 text-purple-700 border-purple-200",
+      "emoji": "🚀"
+    }
+  },
   "currentUser": {
     "id": "std-current",
     "marsId": "M-31710",
@@ -881,6 +898,13 @@
       "email": "abdumavlon9999@gmail.com",
       "phone": "+998(90) 123-45-67",
       "password": "69696969966"
+    },
+    {
+      "id": "1e53",
+      "name": "rauf rich",
+      "email": "abdumavlon9999@gmail.com",
+      "phone": "+998675755467",
+      "password": "979876545678"
     }
   ],
   "lessons": [

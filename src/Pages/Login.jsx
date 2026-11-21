@@ -14,10 +14,8 @@ const Login = () => {
 
 
 
-  // Mentorlar ro'yxati (db.json dan)
   const mentors = dbData.mentors || []
 
-  // Kirish funksiyasi
   const handleSubmit = (e) => {
     if (e) e.preventDefault()
     setErrorMsg('')
@@ -34,7 +32,6 @@ const Login = () => {
     }
 
     const cleanInput = phoneInput.replace(/[\s+\-()]/g, '').trim().toLowerCase()
-    // Telefon faqat to'liq yoki kamida 7 xonali oxirgi qism bo'yicha qidiriladi
     const inputDigits = cleanInput.replace(/\D/g, '')
 
     const foundMentor = mentors.find((m) => {
@@ -69,8 +66,6 @@ const Login = () => {
       return
     }
 
-    // ===== O'ZGARTIRILGAN JOY (boshlandi) =====
-    // Muvaffaqiyatli login: ClickUser funksiyasi shu yerda chaqiriladi
     const ClickUser = () => {
       localStorage.setItem('token', JSON.stringify())
       navigate('/')
@@ -81,15 +76,12 @@ const Login = () => {
 
   return (
     <div className="min-h-screen w-full bg-linear-to-b from-[#180a08] via-[#240e0b] to-[#120605] flex flex-col items-center justify-center p-4 relative font-sans">
-      {/* Kosmik fon nurlari */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[650px] h-[650px] bg-red-600/10 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-40 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-[#d94826]/15 rounded-[100%] blur-2xl"></div>
       </div>
 
-      {/* Asosiy Karta */}
       <div className="w-full max-w-md bg-white rounded-3xl p-8 sm:p-10 shadow-2xl relative z-10 transition-all">
-        {/* Mars Logo */}
         <div className="flex flex-col items-center mb-6">
           <div className="flex items-center gap-1">
             <span className="text-4xl font-extrabold tracking-tight text-gray-900">mars</span>
@@ -104,7 +96,6 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Xatolik xabari */}
         {errorMsg && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl flex items-center gap-2">
             <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -116,7 +107,6 @@ const Login = () => {
           </div>
         )}
 
-        {/* Login Forma */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <input
@@ -172,7 +162,6 @@ const Login = () => {
       </div>
       </div>
 
-      {/* Tillar tanlagichi */}
       <div className="flex items-center gap-1.5 mt-6 bg-black/40 backdrop-blur-md p-1.5 rounded-full border border-white/10 z-10">
         {['En', 'Ru', 'Uz'].map((lang) => (
           <button

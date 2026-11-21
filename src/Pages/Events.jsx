@@ -10,32 +10,6 @@ const CLUB_STORAGE_KEY = 'mars_club_members'
 
 
 
-
-const TYPE_META = {
-	tadbir: { label: 'Tadbir', badge: 'bg-blue-50 text-blue-700 border-blue-200', emoji: '🎉' },
-	togarak: { label: "To'garak", badge: 'bg-emerald-50 text-emerald-700 border-emerald-200', emoji: '🧩' },
-	hackathon: { label: 'Xakaton', badge: 'bg-purple-50 text-purple-700 border-purple-200', emoji: '🚀' },
-}
-
-
-const normalizeType = (raw) => {
-	const t = String(raw || '').toLowerCase()
-	if (t.includes('hack') || t.includes('xak')) return 'hackathon'
-	if (t.includes('garak') || t.includes('club') || t.includes('kurs')) return 'togarak'
-	return 'tadbir'
-}
-
-const formatDate = (value) => {
-	if (!value) return ''
-	const d = new Date(value)
-	if (Number.isNaN(d.getTime())) return String(value)
-	try {
-		return d.toLocaleDateString('uz-UZ', { day: 'numeric', month: 'long', year: 'numeric' })
-	} catch {
-		return String(value)
-	}
-}
-
 const loadList = (key) => {
 	try {
 		const saved = localStorage.getItem(key)
@@ -86,6 +60,30 @@ console.log(clubs);
 
     getClubs()
   }, [])
+
+
+const normalizeType = (raw) => {
+	const t = String(raw || '').toLowerCase()
+	if (t.includes('hack') || t.includes('xak')) return 'hackathon'
+	if (t.includes('garak') || t.includes('club') || t.includes('kurs')) return 'togarak'
+	return 'tadbir'
+}
+
+const formatDate = (value) => {
+	if (!value) return ''
+	const d = new Date(value)
+	if (Number.isNaN(d.getTime())) return String(value)
+	try {
+		return d.toLocaleDateString('uz-UZ', { day: 'numeric', month: 'long', year: 'numeric' })
+	} catch {
+		return String(value)
+	}
+}
+
+
+
+
+
 
 	const events = useMemo(() => {
 		if (Array.isArray(dbData.events) && dbData.events.length > 0) return dbData.events
@@ -150,7 +148,7 @@ console.log(clubs);
 							{events.length}
 						</span>
 					</div>
-
+					
 					<div className="relative w-full sm:w-72">
 						<svg
 							className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
@@ -192,7 +190,7 @@ console.log(clubs);
 					<div className="mt-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
 						{filtered.map((event) => {
 							const type = normalizeType(event.type)
-							const meta = TYPE_META[type]
+							const meta = dbData.TYPE_META[type] ?? dbData.TYPE_META.tadbir
 							const seats = Number(event.seats) || 0
 							const baseRegistered = Number(event.registered) || 0
 							const isRegistered = registrations.includes(event.id)
@@ -252,8 +250,7 @@ console.log(clubs);
 										{event.description && (
 											<p className="text-xs text-gray-500 mt-1.5 line-clamp-3">{event.description}</p>
 										)}
-
-										<div className="mt-3 space-y-1 text-[11px] text-gray-500">
+												<div className="mt-3 space-y-1 text-[11px] text-gray-500">
 											{event.location && (
 												<div className="flex items-center gap-1.5">
 													<svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -327,8 +324,7 @@ console.log(clubs);
 					</div>
 				)}
 			</section>
-
-			<section className="mt-8">
+	<section className="mt-8">
 				<div className="flex items-center gap-2 border-t border-gray-200 pt-5">
 					<h2 className="text-[16px] font-bold text-gray-900">To'garaklar</h2>
 					<span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
