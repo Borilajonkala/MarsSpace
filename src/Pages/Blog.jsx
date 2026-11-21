@@ -9,7 +9,10 @@ function EngZor() {
   const [posts, setPosts] = useState(() => {
     try {
       const saved = localStorage.getItem("mars_blog_posts");
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+      }
     } catch {
       // ignore JSON parse errors
     }
@@ -32,6 +35,7 @@ function EngZor() {
         return res.json();
       })
       .then((data) => {
+        if (!Array.isArray(data)) return;
         setPosts(data);
         localStorage.setItem("mars_blog_posts", JSON.stringify(data));
       })

@@ -5,6 +5,7 @@ const Home = () => {
   const marstype = dbData.marstype || {}
 
   return (
+    
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm mb-8">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Reyting va Yutuqlar 🏆</h1>

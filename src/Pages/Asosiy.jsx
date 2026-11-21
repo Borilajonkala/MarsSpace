@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-
+/* ---------- Asosiy sahifa (3 ta ekran: home / typing / battle) ---------- */
 const Asosiy = () => {
   const [view, setView] = useState('home') // 'home' | 'typing' | 'battle'
 
@@ -14,7 +14,7 @@ const Asosiy = () => {
   )
 }
 
-
+/* ------------------------------ KURS XARITASI ------------------------------ */
 const MODULES = [
   {
     title: 'Modul 1',
@@ -31,7 +31,7 @@ const MODULES = [
       'Table',
       'Form taglari',
       'Box Modeling',
-      'Imtihon', 
+      'Imtihon',
     ],
   },
   { title: 'Modul 2', done: 12 },
@@ -53,12 +53,29 @@ const MODULES = [
 const TOTAL_LESSONS = MODULES.reduce((s, m) => s + m.lessons.length, 0)
 const DONE_LESSONS = MODULES.reduce((s, m) => s + m.done, 0)
 
+const Check = ({ color = '#fff', size = 22 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 12.5l4.5 4.5L19 7.5" />
+  </svg>
+)
+const Star = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3b2f06" strokeWidth="2" strokeLinejoin="round">
+    <path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" />
+  </svg>
+)
+const Lock = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a9acc2" strokeWidth="2" strokeLinecap="round">
+    <rect x="6" y="11" width="12" height="9" rx="2" fill="#a9acc2" />
+    <path d="M8.5 11V8.5a3.5 3.5 0 0 1 7 0V11" />
+  </svg>
+)
+
 const KursXaritasi = () => {
   // bir vaqtda bitta modul ochiq bo'ladi (null = hammasi yopiq)
   const [openIdx, setOpenIdx] = useState(0)
 
   return (
-    <div className="kx-card">
+    <div className="kx">
       <header className="kx-head">
         <div>
           <small>[NEW] FRONT-END</small>
@@ -75,19 +92,13 @@ const KursXaritasi = () => {
 
         return (
           <section key={i} className={'kx-mod' + (open ? ' open' : '')}>
-            <button
-              className="kx-row"
-              onClick={() => setOpenIdx(open ? null : i)}
-              aria-expanded={open}
-            >
+            <button className="kx-row" onClick={() => setOpenIdx(open ? null : i)} aria-expanded={open}>
               <span className="kx-arrow">▸</span>
               <span className="kx-info">
                 <strong>{m.title}</strong>
                 <small>{m.done}/{total} dars</small>
               </span>
-              <span className={'kx-pct' + (finished ? ' ok' : '')}>
-                {finished ? '✓ ' : ''}{pct}%
-              </span>
+              <span className={'kx-pct' + (finished ? ' ok' : '')}>{pct}%</span>
             </button>
 
             {open && (
@@ -96,13 +107,8 @@ const KursXaritasi = () => {
                   const isDone = j < m.done
                   const isCurrent = j === m.done
                   return (
-                    <div
-                      key={j}
-                      className={'kx-item' + (isDone ? ' done' : '') + (isCurrent ? ' current' : '')}
-                    >
-                      <span className="kx-node">
-                        {isDone ? '✓' : isCurrent ? '☆' : '🔒'}
-                      </span>
+                    <div key={j} className={'kx-item' + (isDone ? ' done' : '') + (isCurrent ? ' current' : '')}>
+                      <span className="kx-node">{isDone ? <Check /> : isCurrent ? <Star /> : <Lock />}</span>
                       <span className="kx-text">
                         <span className="kx-name">{l}</span>
                         {isCurrent && <em>BOSHLASH</em>}
@@ -113,7 +119,7 @@ const KursXaritasi = () => {
 
                 {/* Modul sovg'asi */}
                 <div className={'kx-item gift' + (finished ? ' ready' : '')}>
-                  <span className="kx-node">{finished ? '🎁' : '🔒'}</span>
+                  <span className="kx-node">{finished ? '🎁' : <Lock />}</span>
                   <span className="kx-text">
                     <span className="kx-name">Modul sovg'asi</span>
                     <em>{finished ? 'OLISH' : 'YOPIQ'}</em>
@@ -146,14 +152,21 @@ const Home = ({ go }) => {
     { icon: '⌨', title: 'MARSTYPE: «Kod» mashq', right: '—', onClick: () => go('typing') },
   ]
 
+  const BASE = 'https://lab.marsit.uz/media/hero_dashboard/None/'
+  const IMG = {
+    mushuk: BASE + 'BaseMushuk.webp',
+    bola: BASE + 'BaseBola.webp',
+    robot: BASE + 'BaseRobot.webp',
+  }
+
+  // img — rasm linki, e — rasm bo'lmasa emoji
   const group = [
-    { n: 'Siz', e: '🐱', me: true },
-    { n: 'Bahtiyorov', e: '🤖', on: true },
-    { n: 'Sunnatov', e: '👦', on: true },
-    { n: 'Abduramon…', e: '👦' },
-    { n: 'Behzod', e: '👦' },
-    { n: 'Musulmonov', e: '👦' },
-    { n: 'Yusupov', e: '🪖' },
+    { n: 'Siz', img: IMG.mushuk, me: true },
+    { n: 'Musulmonov', img: IMG.bola, on: true },
+    { n: 'Abduramon…', img: IMG.bola },
+    { n: 'Bahtiyorov', img: IMG.robot },
+    { n: 'Behzod', img: IMG.bola },
+    { n: 'Sunnatov', img: IMG.bola },
   ]
 
   return (
@@ -215,14 +228,22 @@ const Home = ({ go }) => {
             {/* GURUH — modullar tepasida */}
             <section className="card grp">
               <h3 className="card-h grp-h">
-                <span>👥 Guruh · YB-3158</span>
+                <span className="grp-t">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4a9be0" strokeWidth="1.8" strokeLinecap="round">
+                    <circle cx="9" cy="8" r="3.2" />
+                    <path d="M3 19c0-3.2 2.7-5 6-5s6 1.8 6 5" />
+                    <circle cx="17" cy="9" r="2.4" />
+                    <path d="M17 14c2.4 0 4 1.3 4 3.6" />
+                  </svg>
+                  Guruh · YB-3158
+                </span>
                 <span className="online"><i className="gdot" /> {group.filter((g) => g.on).length}</span>
               </h3>
               <div className="group">
                 {group.map((g, i) => (
                   <div className="gm" key={i}>
                     <span className="av">
-                      {g.e}
+                      {g.img ? <img src={g.img} alt={g.n} loading="lazy" /> : g.e}
                       {g.on && <i className="on-dot" />}
                     </span>
                     <span className={'gn' + (g.me ? ' me' : '')}>{g.n}</span>
@@ -353,22 +374,22 @@ const Sidebar = ({ go }) => {
 const WORDS =
   "kod yozish bu san'at har kuni mashq qilsang tezroq yozasan klaviatura ustida barmoqlar raqs tushadi sabr bilan davom et xatolardan qo'rqma ular o'rgatadi dastur tuzish mantiq talab qiladi o'zgaruvchi funksiya massiv obyekt komponent holat".split(' ')
 
+const makeText = () => {
+  const out = []
+  while (out.join(' ').length < 400) {
+    out.push(WORDS[Math.floor(Math.random() * WORDS.length)])
+  }
+  return out.join(' ').slice(0, 400)
+}
+
 const Typing = ({ back }) => {
   const TOTAL = 300
 
-  const [text] = useState(() => {
-    const out = []
-    let i = 0
-    while (out.join(' ').length < 400) {
-      out.push(WORDS[i % WORDS.length])
-      i++
-    }
-    return out.join(' ').slice(0, 400)
-  })
+  const [text] = useState(makeText)
 
   const [typed, setTyped] = useState('')
   const [time, setTime] = useState(300)
-  const [running, setRunning] = useState(false)
+  const [started, setStarted] = useState(false)
   const inputRef = useRef(null)
 
   useEffect(() => {
@@ -376,18 +397,10 @@ const Typing = ({ back }) => {
   }, [])
 
   useEffect(() => {
-    if (!running) return
-    const t = setInterval(() => {
-      setTime((s) => {
-        if (s <= 1) {
-          setRunning(false)
-          return 0
-        }
-        return s - 1
-      })
-    }, 1000)
+    if (!started) return
+    const t = setInterval(() => setTime((s) => (s > 0 ? s - 1 : 0)), 1000)
     return () => clearInterval(t)
-  }, [running])
+  }, [started])
 
   const correct = [...typed].filter((c, i) => c === text[i]).length
   const done = time === 0 || correct >= TOTAL
@@ -397,14 +410,14 @@ const Typing = ({ back }) => {
 
   const onChange = (e) => {
     if (done) return
-    if (!running) setRunning(true)
+    if (!started) setStarted(true)
     setTyped(e.target.value.slice(0, text.length))
   }
 
   const restart = () => {
     setTyped('')
     setTime(300)
-    setRunning(false)
+    setStarted(false)
     setTimeout(() => inputRef.current?.focus(), 0)
   }
 
@@ -557,6 +570,7 @@ const Battle = ({ back }) => {
 
 /* ------------------------------- CSS ------------------------------- */
 const css = `
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap');
 *{box-sizing:border-box}
 .page{min-height:100vh;background:#f6f5fb;font-family:'Nunito','Segoe UI',system-ui,sans-serif;color:#1d1b2e;padding:20px}
 .page.dark{background:radial-gradient(ellipse at 50% 0,#14173a 0,#0a0c1f 55%,#07081a 100%);color:#e8eaff;padding:20px 20px 60px}
@@ -603,9 +617,11 @@ h1{margin:0 0 8px;font-size:28px;font-weight:800}
 .grp-h{display:flex;justify-content:space-between;align-items:center}
 .online{display:flex;align-items:center;gap:6px;font-size:13px;color:#55546a}
 .group{display:flex;gap:18px;padding:16px 22px 0;overflow-x:auto;background:linear-gradient(to bottom,#fff calc(100% - 34px),#f3f2f9 calc(100% - 34px))}
-.gm{display:flex;flex-direction:column;align-items:center;width:74px;flex:none}
-.av{position:relative;font-size:44px;line-height:1.1;margin-bottom:12px}
-.on-dot{position:absolute;right:-6px;bottom:2px;width:8px;height:8px;border-radius:50%;background:#6cbf3f}
+.grp-t{display:flex;align-items:center;gap:10px;font-weight:700}
+.gm{display:flex;flex-direction:column;align-items:center;width:82px;flex:none}
+.av{position:relative;height:100px;display:flex;align-items:flex-end;justify-content:center;font-size:44px;line-height:1}
+.av img{height:100%;width:auto;max-width:82px;object-fit:contain;display:block}
+.on-dot{position:absolute;right:-4px;bottom:8px;width:8px;height:8px;border-radius:50%;background:#6cbf3f}
 .gn{height:34px;display:flex;align-items:center;font-size:12px;font-weight:600;color:#55546a;white-space:nowrap}
 .gn.me{height:auto;background:#fdf3d0;border-radius:10px;padding:3px 8px;margin-top:6px;font-weight:700;color:#1d1b2e}
 .side{padding:18px 20px;margin-bottom:26px}
@@ -650,42 +666,60 @@ h1{margin:0 0 8px;font-size:28px;font-weight:800}
 .games .gt{flex:1}
 .games b{font-size:13px;color:#55546a}
 
-/* kurs xaritasi */
-.kx-card{background:#fff;border:2px solid #ebe9f5;border-radius:20px;overflow:hidden}
-.kx-head{display:flex;justify-content:space-between;align-items:center;padding:20px 24px}
-.kx-head small{font-size:11px;letter-spacing:.08em;font-weight:700;color:#6b6a80}
-.kx-head h2{margin:4px 0 0;font-size:24px;font-weight:800}
-.kx-head b{font-size:15px}
-.kx-mod{border-top:2px solid #ebe9f5}
-.kx-row{width:100%;display:flex;align-items:center;gap:18px;background:#fff;border:0;padding:20px 24px;text-align:left;cursor:pointer;font-family:inherit;color:inherit}
-.kx-row:hover{background:#f6f5fb}
-.kx-mod.open .kx-row{background:#f6f5fb}
-.kx-arrow{font-size:10px;color:#6b6a80;transition:transform .2s;width:10px}
+/* ---------------- kurs xaritasi (yangi dizayn) ----------------
+   Hamma rang va chegara aniq yozilgan, shuning uchun sahifadagi boshqa
+   stillar bu blokka ta'sir qilmaydi. */
+.kx,.kx *{box-sizing:border-box}
+.kx{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:#fff;color:#1a1d33;border:1px solid #e6e8f2;border-radius:22px;overflow:hidden}
+.kx button{font-family:inherit;margin:0}
+
+.kx-head{display:flex;justify-content:space-between;align-items:center;padding:20px 22px 18px;border-bottom:1px solid #e6e8f2;background:#fff}
+.kx-head small{display:block;font-size:12px;font-weight:500;letter-spacing:.1em;color:#6b6f86}
+.kx-head h2{margin:4px 0 0;font-size:26px;font-weight:700;letter-spacing:-.025em;color:#1a1d33;line-height:1.15}
+.kx-head b{font-size:18px;font-weight:700;color:#3a3d52}
+
+.kx-mod{margin:0;padding:0;border:0;border-top:1px solid #e6e8f2;background:#fff;border-radius:0}
+.kx-mod:first-of-type{border-top:0}
+/* modul atrofidagi sariq-yashil gradient/chegaralarni butunlay o'chirish */
+.kx .kx-mod,.kx .kx-mod.open{background:#fff !important;background-image:none !important;border-image:none !important;border-left:0 !important;border-right:0 !important;border-bottom:0 !important;box-shadow:none !important;outline:0 !important;padding:0 !important;margin:0 !important}
+.kx .kx-mod::before,.kx .kx-mod::after{content:none !important;display:none !important}
+.kx .kx-row,.kx .kx-list{background-image:none !important;box-shadow:none !important}
+.kx-row{width:100%;display:flex;align-items:center;gap:16px;border:0;background:#fff;padding:20px 24px;text-align:left;cursor:pointer;color:#1a1d33}
+.kx-row:hover,.kx-mod.open .kx-row{background:#f5f7fd}
+.kx-arrow{width:10px;font-size:9px;color:#3a3d52;transition:transform .2s}
 .kx-mod.open .kx-arrow{transform:rotate(90deg)}
 .kx-info{flex:1;display:flex;flex-direction:column;gap:4px}
-.kx-info strong{font-size:17px;font-weight:800}
-.kx-info small{font-size:13px;color:#6b6a80}
-.kx-pct{font-weight:800;font-size:14px}
+.kx-info strong{font-size:20px;font-weight:600;letter-spacing:-.01em;color:#1a1d33;line-height:1.2}
+.kx-info small{font-size:14px;font-weight:500;color:#6b6f86}
+.kx-pct{font-size:14px;font-weight:700;color:#3a3d52}
 .kx-pct.ok{color:#4e9a28}
-.kx-list{padding:22px 24px 26px;background:#fff}
-.kx-item{position:relative;display:flex;align-items:center;gap:18px;padding:8px 0;min-height:56px}
-.kx-item::before{content:'';position:absolute;left:19px;top:0;bottom:0;width:3px;background:#cfe9bd}
+
+.kx-list{padding:14px 22px 22px;background:#fff}
+.kx-item{position:relative;display:flex;align-items:center;gap:14px;min-height:70px;border-radius:14px;cursor:default}
+.kx-item:hover{background:#f4f3f8}
+.kx-item:hover .kx-node{transform:translateX(2px)}
+
+/* tugunlar orasidagi chiziq */
+.kx-item::before{content:'';position:absolute;left:23px;top:0;bottom:0;width:3px;background:#e4e5ef}
 .kx-item:first-child::before{top:50%}
-.kx-item.done::before{background:#6cbf3f}
-.kx-item.current::before,.kx-item.gift::before{background:#e4e2ee}
+.kx-item.done::before{background:#74c244}
+.kx-item.current::before{background:linear-gradient(#74c244 50%,#e4e5ef 50%)}
 .kx-item.gift::before{bottom:50%}
-.kx-node{position:relative;z-index:1;flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:16px;font-weight:800;background:#f1f0f7;color:#9a99ad}
-.kx-item.done .kx-node{background:#6cbf3f;color:#fff;box-shadow:0 0 0 4px #fff}
-.kx-item.current .kx-node{background:#f6c443;color:#3b2f06;width:48px;height:48px;margin:0 -4px;font-size:20px;box-shadow:0 0 0 5px #fdf3d0}
+.kx-item.gift.ready::before{background:#74c244}
+
+.kx-node{position:relative;z-index:1;flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:20px;background:#eceef6;transition:transform .15s}
+.kx-item.done .kx-node{background:#74c244;box-shadow:inset 0 -4px 0 #55a02a}
+.kx-item.current .kx-node{background:#f6c443;box-shadow:inset 0 -4px 0 #d9a420,0 0 0 5px #fdf3d0}
+.kx-item.gift.ready .kx-node{background:#fdf3d0}
+
 .kx-text{display:flex;flex-direction:column;gap:2px}
-.kx-name{font-size:15px;font-weight:700}
-.kx-item.current .kx-name{font-size:16px}
-.kx-text em{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.1em;color:#f0a420}
-.kx-item.gift .kx-text em{color:#a9a8bd}
-.kx-item.gift:not(.ready) .kx-name{color:#9a99ad}
-.kx-item.gift.ready .kx-text em{color:#4e9a28}
+.kx-name{font-size:16px;font-weight:700;letter-spacing:-.005em;color:#1f2340}
+.kx-item:not(.done):not(.current) .kx-name{color:#a1a4b8}
 .kx-item.done{cursor:pointer}
-.kx-item.done:hover .kx-name{color:#4e9a28}
+.kx-text em{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.1em;color:#f0a420}
+.kx-item.gift .kx-text em{color:#a9acc2}
+.kx-item.gift.ready .kx-text em{color:#4e9a28}
+.kx-item.gift.ready .kx-name{color:#1f2340}
 
 /* dark pages */
 .nav{max-width:920px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;position:relative}
@@ -756,8 +790,9 @@ h1{margin:0 0 8px;font-size:28px;font-weight:800}
   .group{overflow-x:auto}
 }
 @media(max-width:600px){
-  .kx-row,.kx-head{padding-left:16px;padding-right:16px}
-  .kx-list{padding:18px 16px 22px}
+  .kx-head,.kx-row{padding-left:16px;padding-right:16px}
+  .kx-list{padding:10px 14px 18px}
+  .kx-info strong{font-size:18px}
 }
 `
 

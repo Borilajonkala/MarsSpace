@@ -73,9 +73,9 @@ async function runTests() {
     console.log('\n--- TEST 4: O\'yin-kulgi (/games) ---');
     await page.goto('http://localhost:5173/games');
     await page.waitForTimeout(500);
-    const hasBattle = (await page.locator('text=Быстрый бой').count()) > 0;
+    const hasBattle = (await page.locator('text=JANG XONASI').count()) > 0;
     assert(hasBattle, 'Entertainment battle lobby loaded');
-    const hasRoomBtn = (await page.locator('text=Открыть комнату').count()) > 0;
+    const hasRoomBtn = (await page.locator('text=XONA OCHISH').count()) > 0;
     assert(hasRoomBtn, 'Open room button loaded');
 
     // TEST 5: Alogo (/alogo)

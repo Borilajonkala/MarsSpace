@@ -1,5 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate, Link } from 'react-router-dom'
+import {
+    COIN_BALANCE_EVENT,
+    getCoinBalance,
+} from '../coinBalance.jsx'
 
 const Header = ({ children }) => {
     const location = useLocation()
@@ -7,16 +11,37 @@ const Header = ({ children }) => {
     const [selectedTheme, setSelectedTheme] = useState("YO'LAK")
 
     // Saqlangan mentor/foydalanuvchi ma'lumotlari (buzilgan JSON ilovani yiqitmasligi uchun)
-    const currentUser = (() => {
+    const [currentUser] = useState(() => {
         try {
-            const storedUser = localStorage.getItem('mars_auth_user') || localStorage.getItem('token')
+            const storedUser = localStorage.getItem('mars_auth_user') 
             return storedUser ? JSON.parse(storedUser) : null
         } catch {
-            localStorage.removeItem('mars_auth_user')
-            localStorage.removeItem('token')
+
             return null
         }
-    })()
+    })
+    const [coins, setCoins] = useState(() => getCoinBalance(currentUser))
+
+    useEffect(() => {
+        const syncCoins = () => setCoins(getCoinBalance(currentUser))
+        window.addEventListener(COIN_BALANCE_EVENT, syncCoins)
+        window.addEventListener('storage', syncCoins)
+        return () => {
+            window.removeEventListener(COIN_BALANCE_EVENT, syncCoins)
+            window.removeEventListener('storage', syncCoins)
+        }
+    }, [currentUser])
+
+    // Dropdown'ni yopish (daisyUI focus orqali ochiladi)
+    const closeDropdown = () => {
+        if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
+    }
+
+    // Profil sahifasiga o'tish + menyuni yopish
+    const handleOpenProfile = () => {
+        closeDropdown()
+        navigate('/profile')
+    }
 
     // Chiqish (Logout)
     const handleLogout = () => {
@@ -51,8 +76,13 @@ const Header = ({ children }) => {
                 return 'Reyting'
             case '/payment':
                 return "Onlayn to'lov"
+            case '/space-shop':
+                return 'SpaceShop'
             case '/login':
                 return 'Kirish'
+            case '/profile':
+            case '/profil':
+                return 'Profil'
             default:
                 return 'Asosiy'
         }
@@ -170,6 +200,16 @@ const Header = ({ children }) => {
             )
         },
         {
+            to: '/space-shop',
+            label: 'SpaceShop',
+            icon: (
+                <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M6 7h12l1 14H5L6 7Z" />
+                    <path d="M9 7a3 3 0 0 1 6 0" />
+                </svg>
+            )
+        },
+        {
             to: '/login',
             label: 'Xodimlar Logini',
             icon: (
@@ -210,7 +250,7 @@ const Header = ({ children }) => {
                         {/* Mars Coin */}
                         <div className="flex items-center gap-1.5 bg-[#fef9c3]/70 hover:bg-[#fef9c3] border border-amber-200/80 px-2.5 py-1 rounded-full text-xs font-bold text-amber-800 transition shadow-2xs">
                             <span className="text-sm">🪙</span>
-                            <span>{currentUser?.coins || 239}</span>
+                            <span>{coins}</span>
                         </div>
 
                         {/* Energy / XP */}
@@ -268,7 +308,15 @@ const Header = ({ children }) => {
                                         <li className="px-3 py-1 text-[11px] text-gray-500">
                                             {currentUser.marsId || currentUser.phone}
                                         </li>
-                                        <li><Link to="/about" className="rounded-lg font-semibold text-gray-700">Profilim</Link></li>
+                                        <li>
+                                            <button
+                                                type="button"
+                                                onClick={handleOpenProfile}
+                                                className="rounded-lg font-semibold text-gray-700"
+                                            >
+                                                Profil
+                                            </button>
+                                        </li>
                                         <div className="divider my-1"></div>
                                         <li>
                                             <button onClick={handleLogout} className="rounded-lg font-semibold text-red-600 hover:bg-red-50">
@@ -278,6 +326,16 @@ const Header = ({ children }) => {
                                     </>
                                 ) : (
                                     <>
+                                        <li>
+                                            <button
+                                                type="button"
+                                                onClick={handleOpenProfile}
+                                                className="rounded-lg font-semibold text-gray-700"
+                                            >
+                                                Profil
+                                            </button>
+                                        </li>
+                                        <div className="divider my-1"></div>
                                         <li><Link to="/login" className="rounded-lg font-bold text-red-600 hover:bg-red-50">Tizimga kirish</Link></li>
                                     </>
                                 )}
@@ -352,7 +410,7 @@ const Header = ({ children }) => {
 
                         <div className="space-y-1 text-xs">
                             <a
-                                href="#eduverse"
+                                href="http://localhost:5173/"
                                 className="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-semibold transition"
                             >
                                 <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
