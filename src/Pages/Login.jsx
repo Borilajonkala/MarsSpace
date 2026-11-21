@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import dbData from '../../db.json'
+import { signInWithPopup } from 'firebase/auth'
+import { auth, googleProvider } from '../firebase'
+
 
 const Login = () => {
   const navigate = useNavigate()
@@ -12,7 +15,14 @@ const Login = () => {
 
 
 
-
+async function handleGoogleLogin() {
+  try {
+    await signInWithPopup(auth, googleProvider)
+    navigate('/', { replace: true })
+  } catch (error) {
+    console.error('Google login xatosi:', error.code, error.message)
+  }
+}
 
   const mentors = dbData.mentors || []
 
@@ -106,6 +116,12 @@ const Login = () => {
             <span>{errorMsg}</span>
           </div>
         )}
+
+        <button type="button" onClick={handleGoogleLogin}>
+  Google bilan kirish
+</button>
+
+
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
