@@ -3,12 +3,146 @@
     "id": "std-current",
     "marsId": "M-31710",
     "fullName": "Siz",
+    "avatar": "/avatar-default.jpg",
     "groupCode": "YB-3171",
     "coins": 10000,
     "xp": 650,
     "theme": "YO'LAK",
     "debtWarning": true
   },
+  "profiles": [
+    {
+      "id": "profile-current",
+      "userId": "std-current",
+      "marsId": "M-31710",
+      "groupCode": "YB-3171",
+      "nickname": "siz_mars",
+      "firstName": "Siz",
+      "lastName": "O'quvchi",
+      "bio": "",
+      "avatar": "/avatar-default.jpg",
+      "level": 1,
+      "xp": 650,
+      "coins": 10000,
+      "lastActivity": "Ma'lum emas",
+      "selectedBackground": "bg-desert",
+      "selectedOutfit": "outfit-cosmonaut",
+      "inventory": {
+        "backgrounds": ["bg-desert"],
+        "outfits": ["outfit-cosmonaut"]
+      },
+      "certificates": [
+        {
+          "id": "cert-1",
+          "title": "Frontend asoslari",
+          "issuer": "Mars IT School",
+          "module": "Modul 1",
+          "date": "12.09.2026",
+          "status": "done"
+        },
+        {
+          "id": "cert-2",
+          "title": "HTML va CSS",
+          "issuer": "Mars IT School",
+          "module": "Modul 2",
+          "date": "24.10.2026",
+          "status": "done"
+        },
+        {
+          "id": "cert-3",
+          "title": "JavaScript ES6+",
+          "issuer": "Mars IT School",
+          "module": "Modul 3",
+          "date": "Jarayonda",
+          "status": "progress"
+        }
+      ],
+      "badges": [
+        {"id": "badge-task-1", "title": "Vazifa", "count": 1, "icon": "task"},
+        {"id": "badge-exam-1", "title": "Imtixon", "count": 1, "icon": "exam"},
+        {"id": "badge-streak-1", "title": "Streak", "count": 1, "icon": "streak"},
+        {"id": "badge-task-3", "title": "Vazifa", "count": 3, "icon": "task"}
+      ],
+      "history": [
+        {
+          "id": "hist-1",
+          "title": "Profil yaratildi",
+          "description": "Mars Space profiliga xush kelibsiz.",
+          "date": "2026-11-14T09:30:00"
+        },
+        {
+          "id": "hist-2",
+          "title": "Frontend moduli boshlandi",
+          "description": "HTML5 va CSS3 asoslari o'rganila boshlandi.",
+          "date": "2026-11-16T14:00:00"
+        },
+        {
+          "id": "hist-3",
+          "title": "1-vazifa topshirildi",
+          "description": "React Counter ilovasi muvaffaqiyatli yuklandi.",
+          "date": "2026-11-19T18:20:00"
+        }
+      ]
+    }
+  ],
+  "cosmetics": [
+    {
+      "id": "bg-desert",
+      "type": "background",
+      "name": "Cho'l gorizonti",
+      "description": "Mars cho'lining iliq qumtepalari.",
+      "priceCoins": 0,
+      "preview": "desert"
+    },
+    {
+      "id": "bg-nebula",
+      "type": "background",
+      "name": "Indigo tumanlik",
+      "description": "Chuqur indigo rangdagi yulduzlar tumanligi.",
+      "priceCoins": 1200,
+      "preview": "nebula"
+    },
+    {
+      "id": "bg-mars",
+      "type": "background",
+      "name": "Mars vodiysi",
+      "description": "Qizil sayyoradagi sokin vodiysi.",
+      "priceCoins": 1800,
+      "preview": "mars"
+    },
+    {
+      "id": "bg-midnight",
+      "type": "background",
+      "name": "Yulduzli tun",
+      "description": "Tiniq tungi osmon va sovuq yulduzlar.",
+      "priceCoins": 900,
+      "preview": "midnight"
+    },
+    {
+      "id": "outfit-cosmonaut",
+      "type": "outfit",
+      "name": "Kosmonavt",
+      "description": "Standart Mars kosmonavti kiyimi.",
+      "priceCoins": 0,
+      "preview": "https://api.dicebear.com/7.x/bottts/svg?seed=MarsStudent&backgroundColor=c0aede"
+    },
+    {
+      "id": "outfit-navigator",
+      "type": "outfit",
+      "name": "Navigator",
+      "description": "Navigatsiya bo'yicha tajribali qahramon.",
+      "priceCoins": 800,
+      "preview": "https://api.dicebear.com/7.x/bottts/svg?seed=MarsNavigator&backgroundColor=b6e3f4"
+    },
+    {
+      "id": "outfit-cadet",
+      "type": "outfit",
+      "name": "Kadet",
+      "description": "Mars kadetlari uchun maxsus kiyim.",
+      "priceCoins": 1500,
+      "preview": "https://api.dicebear.com/7.x/bottts/svg?seed=MarsCadet&backgroundColor=ffdfbf"
+    }
+  ],
   "courses": [
     {
       "id": "course-frontend",
@@ -1567,6 +1701,16 @@
     }
   ],
   "users": [
+    {
+      "id": "user-timur",
+      "login": "timur",
+      "password": "12345",
+      "name": "Timur",
+      "role": "student",
+      "marsId": "M-31710",
+      "profileId": "profile-current",
+      "avatar": "/avatar-default.jpg"
+    },
     {
       "id": "ecf9",
       "name": "2313131",

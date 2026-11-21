@@ -1,4 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
+import {
+  LuBot,
+  LuCheck,
+  LuCrown,
+  LuFlame,
+  LuGift,
+  LuGraduationCap,
+  LuKeyboard,
+  LuLock,
+  LuPencil,
+  LuShoppingBag,
+  LuSparkles,
+  LuStar,
+  LuTrophy,
+  LuUsers,
+  LuVolume2,
+  LuZap,
+} from 'react-icons/lu'
+import { DEFAULT_AVATAR, useProfile } from '../profile/ProfileContext.js'
 /* ---------- Asosiy sahifa (3 ta ekran: home / typing / battle) ---------- */
 const Asosiy = () => {
   const [view, setView] = useState('home') // 'home' | 'typing' | 'battle'
@@ -85,7 +104,8 @@ const KursXaritasi = () => {
                 <small>{m.done}/{total} dars</small>
               </span>
               <span className={'kx-pct' + (finished ? ' ok' : '')}>
-                {finished ? '✓ ' : ''}{pct}%
+                {finished && <LuCheck aria-hidden="true" />}
+                {pct}%
               </span>
             </button>
 
@@ -100,7 +120,13 @@ const KursXaritasi = () => {
                       className={'kx-item' + (isDone ? ' done' : '') + (isCurrent ? ' current' : '')}
                     >
                       <span className="kx-node">
-                        {isDone ? '✓' : isCurrent ? '☆' : '🔒'}
+                        {isDone ? (
+                          <LuCheck aria-hidden="true" />
+                        ) : isCurrent ? (
+                          <LuStar aria-hidden="true" />
+                        ) : (
+                          <LuLock aria-hidden="true" />
+                        )}
                       </span>
                       <span className="kx-text">
                         <span className="kx-name">{l}</span>
@@ -112,7 +138,9 @@ const KursXaritasi = () => {
 
                 {/* Modul sovg'asi */}
                 <div className={'kx-item gift' + (finished ? ' ready' : '')}>
-                  <span className="kx-node">{finished ? '🎁' : '🔒'}</span>
+                  <span className="kx-node">
+                    {finished ? <LuGift aria-hidden="true" /> : <LuLock aria-hidden="true" />}
+                  </span>
                   <span className="kx-text">
                     <span className="kx-name">Modul sovg'asi</span>
                     <em>{finished ? 'OLISH' : 'YOPIQ'}</em>
@@ -129,6 +157,7 @@ const KursXaritasi = () => {
 
 /* ------------------------------ HOME ------------------------------ */
 const Home = ({ go }) => {
+  const { profile, fullName } = useProfile()
   const [left, setLeft] = useState(9 * 60 + 28)
 
   useEffect(() => {
@@ -140,19 +169,19 @@ const Home = ({ go }) => {
   const ss = String(left % 60).padStart(2, '0')
 
   const tasks = [
-    { icon: '⌨', title: 'MARSTYPE: 5 daqiqa', right: '0 / 300', active: true, onClick: () => go('typing') },
-    { icon: '⚡', title: "Jang o'ynash", right: '—', onClick: () => go('battle') },
-    { icon: '⌨', title: 'MARSTYPE: «Kod» mashq', right: '—', onClick: () => go('typing') },
+    { icon: <LuKeyboard aria-hidden="true" />, title: 'MARSTYPE: 5 daqiqa', right: '0 / 300', active: true, onClick: () => go('typing') },
+    { icon: <LuZap aria-hidden="true" />, title: "Jang o'ynash", right: '—', onClick: () => go('battle') },
+    { icon: <LuKeyboard aria-hidden="true" />, title: 'MARSTYPE: «Kod» mashq', right: '—', onClick: () => go('typing') },
   ]
 
   const group = [
-    { n: 'Siz', e: '🐱', me: true },
-    { n: 'Bahtiyorov', e: '🤖', on: true },
-    { n: 'Sunnatov', e: '👦', on: true },
-    { n: 'Abduramon…', e: '👦' },
-    { n: 'Behzod', e: '👦' },
-    { n: 'Musulmonov', e: '👦' },
-    { n: 'Yusupov', e: '🪖' },
+    { n: fullName.split(' ')[0] || 'Siz', avatar: profile.avatar, me: true },
+    { n: 'Bahtiyorov', avatar: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Bahtiyorov', on: true },
+    { n: 'Sunnatov', avatar: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Sunnatov', on: true },
+    { n: 'Abduramon…', avatar: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Abduramon' },
+    { n: 'Behzod', avatar: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Behzod' },
+    { n: 'Musulmonov', avatar: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Musulmonov' },
+    { n: 'Yusupov', avatar: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Yusupov' },
   ]
 
   return (
@@ -176,13 +205,16 @@ const Home = ({ go }) => {
             <div className="comet-head">
               <span className="ball" />
               <div className="dots">
-                <span className="dot on">⌨</span>
-                <span className="dot">⚡</span>
-                <span className="dot">⌨</span>
+                <span className="dot on"><LuKeyboard aria-hidden="true" /></span>
+                <span className="dot"><LuZap aria-hidden="true" /></span>
+                <span className="dot"><LuKeyboard aria-hidden="true" /></span>
               </div>
               <div className="comet-txt">
                 <small>
-                  BUGUNGI KOMETA · 0 / 3 · <b>🔥 KETMA-KET 2 KUN — HAR KUNI +1 COIN</b>
+                  BUGUNGI KOMETA · 0 / 3 ·{' '}
+                  <b>
+                    <LuFlame className="inline align-[-2px]" aria-hidden="true" /> KETMA-KET 2 KUN — HAR KUNI +1 COIN
+                  </b>
                 </small>
                 <strong>MARSTYPE: 5 daqiqa — 0 / 300</strong>
               </div>
@@ -203,7 +235,7 @@ const Home = ({ go }) => {
 
             <p className="note">Har bir vazifa uchun +1 coin, uchalasi uchun +2. Ertaga yangi uchlik.</p>
             <p className="note">
-              🔥 Ketma-ket yig'ilgan kunlar: 2-kundan +1 coin, 15-kundan +2 coin, 30-kundan +3 coin. Bir kun
+              Ketma-ket yig'ilgan kunlar: 2-kundan +1 coin, 15-kundan +2 coin, 30-kundan +3 coin. Bir kun
               yig'ilmasa, hisob noldan boshlanadi. Yana 2 kundan keyin — har kuni +1 coin.
             </p>
           </div>
@@ -214,14 +246,27 @@ const Home = ({ go }) => {
             {/* GURUH — modullar tepasida */}
             <section className="card grp">
               <h3 className="card-h grp-h">
-                <span>👥 Guruh · YB-3158</span>
+                <span className="inline-flex items-center gap-2">
+                  <LuUsers aria-hidden="true" /> Guruh · YB-3158
+                </span>
                 <span className="online"><i className="gdot" /> {group.filter((g) => g.on).length}</span>
               </h3>
               <div className="group">
                 {group.map((g, i) => (
                   <div className="gm" key={i}>
                     <span className="av">
-                      {g.e}
+                      {g.avatar ? (
+                        <img
+                          src={g.avatar}
+                          alt=""
+                          className="av-img"
+                          onError={(event) => {
+                            event.currentTarget.src = DEFAULT_AVATAR
+                          }}
+                        />
+                      ) : (
+                        <span className="av-letter">{g.n.slice(0, 1)}</span>
+                      )}
                       {g.on && <i className="on-dot" />}
                     </span>
                     <span className={'gn' + (g.me ? ' me' : '')}>{g.n}</span>
@@ -253,16 +298,17 @@ const RATING = [
 const DAYS = ['Dush', 'Sesh', 'Chor', 'Pay', 'Jum', 'Shan']
 
 const Sidebar = ({ go }) => {
+  const { fullName, xp } = useProfile()
   // qo'shimcha dars uchun tanlangan kunlar (Dush — yopiq)
   const [picked, setPicked] = useState([])
   const toggle = (d) =>
     setPicked((p) => (p.includes(d) ? p.filter((x) => x !== d) : [...p, d]))
 
   const games = [
-    { icon: '⚡', title: 'MARSTYPE', onClick: () => go('typing') },
-    { icon: '🏆', title: 'Battle', onClick: () => go('battle') },
+    { icon: <LuZap aria-hidden="true" />, title: 'MARSTYPE', onClick: () => go('typing') },
+    { icon: <LuTrophy aria-hidden="true" />, title: 'Battle', onClick: () => go('battle') },
     { icon: '</>', title: 'Algo' },
-    { icon: '🛍', title: 'Space shop', right: '7' },
+    { icon: <LuShoppingBag aria-hidden="true" />, title: 'Space shop', right: '7' },
   ]
 
   return (
@@ -287,14 +333,16 @@ const Sidebar = ({ go }) => {
           ))}
           <li className="me">
             <span className="rn">—</span>
-            <span className="rname">Siz</span>
-            <b>30</b>
+            <span className="rname">{fullName}</span>
+            <b>{xp}</b>
           </li>
         </ul>
       </section>
 
       <section className="card side premium">
-        <h4 className="prem-h">👑 SPACE PREMIUM</h4>
+        <h4 className="prem-h">
+          <LuCrown aria-hidden="true" /> SPACE PREMIUM
+        </h4>
         <p>Mars IT School'da o'qish orqali yoqilgan</p>
         <button className="prem-btn">Premium nima beradi</button>
       </section>
@@ -310,7 +358,7 @@ const Sidebar = ({ go }) => {
                 disabled={i === 0}
                 onClick={() => toggle(d)}
               >
-                {picked.includes(d) ? '✓' : '+'}
+                {picked.includes(d) ? <LuCheck aria-hidden="true" /> : '+'}
               </button>
             </div>
           ))}
@@ -337,7 +385,7 @@ const Sidebar = ({ go }) => {
         <ul className="games">
           <li>
             <button>
-              <span className="gi">🎓</span>
+              <span className="gi"><LuGraduationCap aria-hidden="true" /></span>
               <span className="gt">Darslarni baholash</span>
               <b>+16</b>
             </button>
@@ -415,7 +463,10 @@ const Typing = ({ back }) => {
 
         {done ? (
           <div className="mt-done">
-            <h2>{correct >= TOTAL ? 'Vazifa bajarildi! 🎉' : 'Vaqt tugadi'}</h2>
+            <h2 className="inline-flex items-center gap-2">
+              {correct >= TOTAL ? 'Vazifa bajarildi!' : 'Vaqt tugadi'}
+              {correct >= TOTAL && <LuSparkles aria-hidden="true" />}
+            </h2>
             <p>{wpm} wpm · aniqlik {acc}%</p>
             <button className="b-green" onClick={restart}>Qayta boshlash</button>
           </div>
@@ -445,6 +496,7 @@ const Typing = ({ back }) => {
 
 /* ------------------------------ BATTLE ------------------------------ */
 const Battle = ({ back }) => {
+  const { profile, fullName } = useProfile()
   const [tab, setTab] = useState('BATTLE')
   const [seats, setSeats] = useState(4)
   const [searching, setSearching] = useState(false)
@@ -477,7 +529,7 @@ const Battle = ({ back }) => {
             <button key={t} className={tab === t ? 'on' : ''} onClick={() => setTab(t)}>{t}</button>
           ))}
         </div>
-        <span className="vol">🔊</span>
+        <span className="vol"><LuVolume2 aria-hidden="true" /></span>
       </div>
 
       <div className="bt">
@@ -488,20 +540,30 @@ const Battle = ({ back }) => {
             <b className="o">677</b> <small>JANGDA</small>
           </div>
           <div className="pill2">
-            ⚡ <b>0</b> <small>CHAQMOQLAR</small>
-            🔥 <b>0</b> <small>SERIYA</small>
-            🏆 <b>0</b> <small>G'ALABALAR</small>
+            <LuZap aria-hidden="true" /> <b>0</b> <small>CHAQMOQLAR</small>
+            <LuFlame aria-hidden="true" /> <b>0</b> <small>SERIYA</small>
+            <LuTrophy aria-hidden="true" /> <b>0</b> <small>G'ALABALAR</small>
           </div>
         </div>
 
         <div className="vs">
           <div className="side-p">
-            <span className="ring">👨‍🚀</span>
-            <small>SIZ</small>
+            <span className="ring">
+              <img
+                src={profile.avatar || DEFAULT_AVATAR}
+                alt={`${fullName} avatari`}
+                onError={(event) => {
+                  event.currentTarget.src = DEFAULT_AVATAR
+                }}
+              />
+            </span>
+            <small>{fullName.split(' ')[0] || 'SIZ'}</small>
           </div>
           <span className="vs-t">VS</span>
           <div className="side-p">
-            <span className={'ring empty' + (found ? ' got' : '')}>{found ? '🤖' : '+'}</span>
+            <span className={'ring empty' + (found ? ' got' : '')}>
+              {found ? <LuBot aria-hidden="true" /> : '+'}
+            </span>
             <small>{found ? 'RAQIB' : 'TANLASH'}</small>
           </div>
         </div>
@@ -510,8 +572,12 @@ const Battle = ({ back }) => {
           {searching ? 'QIDIRILMOQDA… (bekor qilish)' : found ? 'JANGNI BOSHLASH' : 'RAQIB TOPISH'}
         </button>
 
-        <p className="first">Bugungi birinchi g'alaba: ×2 ⚡</p>
-        <button className="topic">PYTHON · BOSHLANG'ICH ✎</button>
+        <p className="first">
+          Bugungi birinchi g'alaba: ×2 <LuZap className="inline align-[-2px]" aria-hidden="true" />
+        </p>
+        <button className="topic">
+          PYTHON · BOSHLANG'ICH <LuPencil className="inline align-[-2px]" aria-hidden="true" />
+        </button>
 
         <div className="room">
           <div className="room-h">
@@ -539,7 +605,9 @@ const Battle = ({ back }) => {
           <button className="rq" onClick={() => setTab('RAQIBLAR')}>RAQIBLAR →</button>
         </div>
 
-        <button className="bot">🤖 BOT BILAN MASHQ</button>
+        <button className="bot">
+          <LuBot className="inline align-[-2px]" aria-hidden="true" /> BOT BILAN MASHQ
+        </button>
         <p className="foot">Mashq uchun chaqmoq berilmaydi.</p>
       </div>
     </div>
@@ -571,6 +639,7 @@ h1{margin:0 0 8px;font-size:28px;font-weight:800}
 .ball{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ffd77a,#f09a1a);box-shadow:-18px -6px 18px rgba(255,190,80,.35)}
 .dots{display:flex;gap:6px}
 .dot{width:30px;height:30px;border-radius:50%;border:2px dashed #55608f;display:grid;place-items:center;font-size:12px;color:#aab3e0}
+.dot svg{width:14px;height:14px}
 .dot.on{border:3px solid #4b9be0;background:#1c2b63;color:#fff}
 .comet-txt{flex:1;display:flex;flex-direction:column;gap:2px}
 .comet-txt small{font-size:10.5px;letter-spacing:.04em;color:#9fb0f0;font-weight:700}
@@ -582,6 +651,7 @@ h1{margin:0 0 8px;font-size:28px;font-weight:800}
 .task.active{border-color:#4b9be0;background:rgba(75,155,224,.12)}
 .task:hover{background:rgba(255,255,255,.12)}
 .ti{width:26px;height:26px;border-radius:8px;border:2px solid #5a6498;display:grid;place-items:center;font-size:12px}
+.ti svg{width:14px;height:14px}
 .task.active .ti{border-color:#4b9be0}
 .tt{flex:1}
 .tr{color:#9fb0f0;font-size:13px}
@@ -595,7 +665,9 @@ h1{margin:0 0 8px;font-size:28px;font-weight:800}
 .online{display:flex;align-items:center;gap:6px;font-size:13px;color:#55546a}
 .group{display:flex;gap:18px;padding:16px 22px 0;overflow-x:auto;background:linear-gradient(to bottom,#fff calc(100% - 34px),#f3f2f9 calc(100% - 34px))}
 .gm{display:flex;flex-direction:column;align-items:center;width:74px;flex:none}
-.av{position:relative;font-size:44px;line-height:1.1;margin-bottom:12px}
+.av{position:relative;width:48px;height:48px;display:grid;place-items:center;font-size:44px;line-height:1.1;margin-bottom:12px}
+.av-img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #d8d5e8;background:#fff}
+.av-letter{font-size:18px;font-weight:800;color:#6b6a80}
 .on-dot{position:absolute;right:-6px;bottom:2px;width:8px;height:8px;border-radius:50%;background:#6cbf3f}
 .gn{height:34px;display:flex;align-items:center;font-size:12px;font-weight:600;color:#55546a;white-space:nowrap}
 .gn.me{height:auto;background:#fdf3d0;border-radius:10px;padding:3px 8px;margin-top:6px;font-weight:700;color:#1d1b2e}
@@ -618,7 +690,8 @@ h1{margin:0 0 8px;font-size:28px;font-weight:800}
 
 /* premium */
 .side.premium{background:linear-gradient(180deg,#f3e8ff 0,#fff 60%);border-color:#efe3fb}
-.prem-h{color:#a855f7 !important;margin-bottom:6px !important}
+.prem-h{color:#a855f7 !important;margin-bottom:6px !important;display:flex;align-items:center;gap:6px}
+.prem-h svg{width:16px;height:16px}
 .side.premium p{margin:0 0 14px;font-size:13px;color:#55546a}
 .prem-btn{background:#fff;border:2px solid #ebe9f5;border-radius:12px;padding:10px 16px;font-weight:800;font-size:13px;color:#1d1b2e}
 .prem-btn:hover{background:#f6f5fb}
@@ -637,7 +710,8 @@ h1{margin:0 0 8px;font-size:28px;font-weight:800}
 .games li:last-child{border:0}
 .games button{width:100%;display:flex;align-items:center;gap:12px;background:none;border:0;padding:10px 0;text-align:left;font-size:13px;color:#1d1b2e}
 .games button:hover .gt{color:#3a9fe0}
-.games .gi{width:18px;font-size:12px;color:#7c7b92;text-align:center}
+.games .gi{width:18px;font-size:12px;color:#7c7b92;text-align:center;display:inline-grid;place-items:center}
+.games .gi svg{width:14px;height:14px}
 .games .gt{flex:1}
 .games b{font-size:13px;color:#55546a}
 
@@ -656,8 +730,9 @@ h1{margin:0 0 8px;font-size:28px;font-weight:800}
 .kx-info{flex:1;display:flex;flex-direction:column;gap:4px}
 .kx-info strong{font-size:17px;font-weight:800}
 .kx-info small{font-size:13px;color:#6b6a80}
-.kx-pct{font-weight:800;font-size:14px}
+.kx-pct{display:inline-flex;align-items:center;gap:4px;font-weight:800;font-size:14px}
 .kx-pct.ok{color:#4e9a28}
+.kx-pct svg{width:13px;height:13px}
 .kx-list{padding:22px 24px 26px;background:#fff}
 .kx-item{position:relative;display:flex;align-items:center;gap:18px;padding:8px 0;min-height:56px}
 .kx-item::before{content:'';position:absolute;left:19px;top:0;bottom:0;width:3px;background:#cfe9bd}
@@ -666,6 +741,7 @@ h1{margin:0 0 8px;font-size:28px;font-weight:800}
 .kx-item.current::before,.kx-item.gift::before{background:#e4e2ee}
 .kx-item.gift::before{bottom:50%}
 .kx-node{position:relative;z-index:1;flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:16px;font-weight:800;background:#f1f0f7;color:#9a99ad}
+.kx-node svg{width:17px;height:17px}
 .kx-item.done .kx-node{background:#6cbf3f;color:#fff;box-shadow:0 0 0 4px #fff}
 .kx-item.current .kx-node{background:#f6c443;color:#3b2f06;width:48px;height:48px;margin:0 -4px;font-size:20px;box-shadow:0 0 0 5px #fdf3d0}
 .kx-text{display:flex;flex-direction:column;gap:2px}
@@ -684,7 +760,8 @@ h1{margin:0 0 8px;font-size:28px;font-weight:800}
 .tabs{display:flex;border:1px solid #2b3262;background:#0e1230}
 .tabs button{background:none;border:0;color:#aab3e0;font-size:11px;letter-spacing:.14em;font-weight:700;padding:10px 16px}
 .tabs button.on{background:#6cbf3f;color:#fff}
-.vol{opacity:.7}
+.vol{opacity:.7;display:inline-flex;align-items:center}
+.vol svg{width:18px;height:18px}
 .bt{max-width:910px;margin:44px auto 0;display:flex;flex-direction:column;align-items:center}
 .pills{display:flex;gap:22px;margin-bottom:18px;flex-wrap:wrap;justify-content:center}
 .pill2{display:flex;align-items:center;gap:8px;border:1px solid #2b3262;background:rgba(20,26,60,.7);border-radius:30px;padding:9px 18px;font-size:13px}
@@ -692,12 +769,14 @@ h1{margin:0 0 8px;font-size:28px;font-weight:800}
 .pill2 b{font-size:17px}
 .pill2 b.g{color:#6cd44a}
 .pill2 b.o{color:#ff7a45;font-size:20px}
+.pill2 svg{width:16px;height:16px;color:#9aa3d6}
 .gdot{width:8px;height:8px;border-radius:50%;background:#6cd44a}
 .sep{width:1px;height:20px;background:#2b3262;margin:0 8px}
 .vs{display:flex;align-items:center;gap:46px;margin-top:6px}
 .side-p{display:flex;flex-direction:column;align-items:center;gap:12px}
 .side-p small{font-size:11px;letter-spacing:.14em;color:#aab3e0;font-weight:700}
-.ring{width:86px;height:86px;border-radius:50%;border:3px solid #34406f;background:#10163a;display:grid;place-items:center;font-size:42px}
+.ring{width:86px;height:86px;border-radius:50%;border:3px solid #34406f;background:#10163a;display:grid;place-items:center;font-size:42px;overflow:hidden}
+.ring img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .ring.empty{border:2px dashed #3b4478;font-size:30px;color:#7b86bd;background:transparent}
 .ring.got{border-style:solid;color:#fff;font-size:42px}
 .vs-t{font-size:26px;font-weight:900;color:#c4592c;letter-spacing:.1em;margin-top:-22px}

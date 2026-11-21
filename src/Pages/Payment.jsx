@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import dbData from '../../db.json'
+import { useProfile } from '../profile/ProfileContext.js'
 
 const QUICK_AMOUNTS = [990000, 10000, 980000]
 
@@ -51,14 +51,7 @@ const nowString = () => {
 const Payment = () => {
     const navigate = useNavigate()
 
-    const currentUser = useMemo(() => {
-        try {
-            const stored = localStorage.getItem('mars_auth_user') || localStorage.getItem('token')
-            return stored ? JSON.parse(stored) : dbData.currentUser
-        } catch {
-            return dbData.currentUser
-        }
-    }, [])
+    const { profile, fullName } = useProfile()
 
     const [amount, setAmount] = useState(100000)
     const [history, setHistory] = useState(INITIAL_PAYMENTS)
@@ -129,13 +122,13 @@ const Payment = () => {
                             <div className="flex items-center justify-between gap-4">
                                 <span className="text-gray-500 font-medium">O'quvchi</span>
                                 <span className="text-gray-900 font-bold text-right">
-                                    {currentUser?.fullName || 'Yusupov Ulugbek'}
+                                    {fullName}
                                 </span>
                             </div>
                             <div className="flex items-center justify-between gap-4">
                                 <span className="text-gray-500 font-medium">Filial</span>
                                 <span className="text-gray-900 font-bold text-right uppercase">
-                                    {currentUser?.branch || currentUser?.groupCode || 'YUNUSABAD'}
+                                    {profile.branch || profile.groupCode || 'YUNUSABAD'}
                                 </span>
                             </div>
                         </div>

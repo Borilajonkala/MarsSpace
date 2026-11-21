@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { LuCheck } from 'react-icons/lu'
 import dbData from '../../../db.json'
 import { TEAM_STORAGE_KEY, loadJSON, saveJSON } from './hackathonData'
 
@@ -115,7 +116,13 @@ const MyTeamTab = () => {
                         onClick={copyCode}
                         className="ml-auto text-[11px] font-bold text-emerald-700 hover:text-emerald-800 cursor-pointer"
                     >
-                        {copied ? 'Nusxalandi ✓' : 'Nusxalash'}
+                        {copied ? (
+                            <span className="inline-flex items-center gap-1">
+                                Nusxalandi <LuCheck aria-hidden="true" />
+                            </span>
+                        ) : (
+                            'Nusxalash'
+                        )}
                     </button>
                 </div>
 

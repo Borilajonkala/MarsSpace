@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import { LuHeart, LuLightbulb, LuMessageCircle } from "react-icons/lu";
 import dbData from "../../db.json";
 
 const API = "http://localhost:3000/posts";
@@ -185,9 +186,10 @@ function EngZor() {
     <div className="mx-auto max-w-xl p-4">
       <button
         onClick={() => setOpen(true)}
-        className="w-full rounded-xl border p-4 text-left"
+        className="w-full rounded-xl border p-4 text-left inline-flex items-center gap-2"
       >
-        Darsda nima o'rgandingiz? 💡
+        <LuLightbulb aria-hidden="true" />
+        Darsda nima o'rgandingiz?
       </button>
 
       <div className="my-4 rounded-xl bg-green-500 p-3 text-center text-white">
@@ -248,13 +250,20 @@ function EngZor() {
           )}
 
           <div className="my-4 flex gap-5">
-            <button onClick={() => toggleLike(post)}>
-              {post.likedBy?.includes(USER_ID) ? "❤️" : "🤍"}
-              {" "}{post.likedBy?.length || 0}
+            <button
+              onClick={() => toggleLike(post)}
+              className="inline-flex items-center gap-1.5"
+            >
+              <LuHeart
+                aria-hidden="true"
+                fill={post.likedBy?.includes(USER_ID) ? "currentColor" : "none"}
+              />
+              {post.likedBy?.length || 0}
             </button>
 
-            <span>
-              💬 {post.comments?.length || 0}
+            <span className="inline-flex items-center gap-1.5">
+              <LuMessageCircle aria-hidden="true" />
+              {post.comments?.length || 0}
             </span>
           </div>
 

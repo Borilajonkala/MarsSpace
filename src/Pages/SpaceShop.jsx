@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { LuCoins, LuShoppingBag } from 'react-icons/lu'
 import dbData from '../../db.json'
-import { getCoinBalance, setCoinBalance } from '../coinBalance.jsx'
+import { useProfile } from '../profile/ProfileContext.js'
 
 const SHOP_STATE_KEY = 'mars_space_shop_state'
 const localShopItems = Array.isArray(dbData.shopItems) ? dbData.shopItems : []
@@ -22,8 +23,7 @@ const readSavedShopState = () => {
     const savedState = JSON.parse(localStorage.getItem(SHOP_STATE_KEY) || 'null')
     return savedState &&
       Array.isArray(savedState.items) &&
-      Array.isArray(savedState.orders) &&
-      savedState.user
+      Array.isArray(savedState.orders)
       ? savedState
       : null
   } catch (error) {
@@ -43,16 +43,13 @@ const readAuthenticatedUser = () => {
 }
 
 const SpaceShop = () => {
+  const { profile, saveProfile } = useProfile()
   const [savedShopState] = useState(readSavedShopState)
   const [authUser] = useState(readAuthenticatedUser)
   const [active, setActive] = useState('HERO') // 'HERO' | 'SPACE' | 'DIGITAL' | 'HISTORY'
   const [items, setItems] = useState(() =>
     mergeShopItems(localShopItems, savedShopState?.items || [])
   )
-  const [user, setUser] = useState(() => ({
-    ...(savedShopState?.user || authUser || dbData.currentUser || {}),
-    coins: getCoinBalance(authUser),
-  }))
   const [orders, setOrders] = useState(
     savedShopState?.orders || (Array.isArray(dbData.orders) ? dbData.orders : [])
   )
@@ -69,7 +66,7 @@ const SpaceShop = () => {
     setSuccessMsg('')
   }
 
-  const handleConfirmPurchase = (event) => {
+  const handleConfirmPurchase = async (event) => {
     event.preventDefault()
     if (!pendingItem || buyingId) return
 
@@ -84,7 +81,7 @@ const SpaceShop = () => {
     }
 
     const item = items.find((currentItem) => currentItem.id === pendingItem.id)
-    const currentCoins = Number(user?.coins)
+    const currentCoins = Number(profile.coins)
     if (!item || item.inStock <= 0) {
       setPurchaseError('Товар закончился.')
       return
@@ -102,7 +99,6 @@ const SpaceShop = () => {
     const nextItems = items.map((currentItem) =>
       currentItem.id === item.id ? { ...currentItem, inStock: nextStock } : currentItem
     )
-    const nextUser = { ...user, coins: nextCoins }
     const order = {
       id: `order-${Date.now()}`,
       itemId: item.id,
@@ -114,18 +110,31 @@ const SpaceShop = () => {
     const nextOrders = [order, ...orders]
 
     try {
-      localStorage.setItem(
-        SHOP_STATE_KEY,
-        JSON.stringify({ items: nextItems, user: nextUser, orders: nextOrders })
-      )
-      setCoinBalance(nextCoins)
+      localStorage.setItem(SHOP_STATE_KEY, JSON.stringify({ items: nextItems, orders: nextOrders }))
+
+      const savedToDb = await saveProfile({
+        coins: nextCoins,
+        lastActivity: `${order.title} · SpaceShop xaridi`,
+        history: [
+          {
+            id: order.id,
+            title: 'SpaceShop xaridi',
+            description: order.title,
+            date: order.purchasedAt,
+          },
+          ...(profile.history || []),
+        ].slice(0, 20),
+      })
 
       setItems(nextItems)
-      setUser(nextUser)
       setOrders(nextOrders)
       setPendingItem(null)
       setPasswordInput('')
-      setSuccessMsg('Покупка успешно оформлена.')
+      setSuccessMsg(
+        savedToDb
+          ? 'Покупка оформлена и сохранена в db.json.'
+          : 'Покупка сохранена в браузере. При запуске json-server синхронизируется.'
+      )
     } catch (error) {
       console.error('Ошибка сохранения покупки:', error)
       setPurchaseError('Не удалось сохранить покупку.')
@@ -215,7 +224,8 @@ const SpaceShop = () => {
                 Подтвердите покупку
               </h2>
               <p className="mt-1 text-sm text-base-content/70">
-                {pendingItem.titleUz || pendingItem.name} · {pendingItem.priceCoins} 🪙
+                {pendingItem.titleUz || pendingItem.name} · {pendingItem.priceCoins}{' '}
+                <LuCoins className="inline align-[-2px]" aria-hidden="true" />
               </p>
             </div>
 
@@ -271,7 +281,7 @@ const isBuying = buyingId === item.id
               >
                 <div className="space-y-3">
                   <div className="relative flex h-40 w-full items-center justify-center overflow-hidden rounded-xl bg-base-200">
-                    <span className="text-4xl">🛍️</span>
+                    <LuShoppingBag className="text-4xl text-base-content/35" aria-hidden="true" />
                     {item.image && (
                       <img
                         src={item.image}
@@ -287,7 +297,7 @@ const isBuying = buyingId === item.id
                   <h3 className="text-lg font-bold">{item.titleUz || item.name}</h3>
                   <p className="text-sm text-base-content/70 mt-1 flex items-center gap-1.5">
                     <span className="font-bold text-base-content">{item.priceCoins}</span>
-                    <span>🪙</span>
+                    <LuCoins aria-hidden="true" />
                     <span className="text-base-content/40">|</span>
                     <span>{item.inStock} шт осталось</span>
                   </p>
@@ -325,7 +335,11 @@ const isBuying = buyingId === item.id
                   <li key={order.id} className="py-3 flex justify-between items-center text-sm">
                     <span className="font-semibold">{order.title}</span>
                     <span>
-                      {order.priceCoins} 🪙 · {order.tab}
+                      <span className="inline-flex items-center gap-1">
+                        {order.priceCoins}
+                        <LuCoins aria-hidden="true" />
+                      </span>{' '}
+                      · {order.tab}
                     </span>
                   </li>
                 ))}

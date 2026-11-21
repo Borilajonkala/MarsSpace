@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { LuCheck } from 'react-icons/lu'
 import { TOPIC_STORAGE_KEY, TOPICS, loadJSON, saveJSON } from './hackathonData'
+import TopicIcon from './TopicIcon'
 
 const LEVEL_STYLE = {
     Oson: 'bg-emerald-50 text-emerald-700 border-emerald-200',
@@ -48,8 +50,8 @@ const TopicsTab = ({ onChangeTab }) => {
                             }`}
                         >
                             <div className="flex items-start justify-between gap-2">
-                                <span className="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-xl shadow-2xs">
-                                    {topic.emoji}
+                                <span className="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-xl text-slate-600 shadow-2xs">
+                                    <TopicIcon name={topic.icon} />
                                 </span>
                                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${LEVEL_STYLE[topic.level] || LEVEL_STYLE.Oson}`}>
                                     {topic.level}
@@ -73,7 +75,13 @@ const TopicsTab = ({ onChangeTab }) => {
                                         : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                                 }`}
                             >
-                                {isActive ? '✓ Tanlandi' : 'Mavzuni tanlash'}
+                                {isActive ? (
+                                    <span className="inline-flex items-center gap-1">
+                                        <LuCheck aria-hidden="true" /> Tanlandi
+                                    </span>
+                                ) : (
+                                    'Mavzuni tanlash'
+                                )}
                             </button>
                         </article>
                     )

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { LuX } from 'react-icons/lu'
 import { GALLERY } from './hackathonData'
 
 const GalleryTab = () => {
@@ -49,9 +50,9 @@ const GalleryTab = () => {
                             <button
                                 type="button"
                                 onClick={() => setPreview(null)}
-                                className="text-xs font-bold text-white/80 hover:text-white cursor-pointer"
+                                className="inline-flex items-center gap-1 text-xs font-bold text-white/80 hover:text-white cursor-pointer"
                             >
-                                Yopish ✕
+                                Yopish <LuX aria-hidden="true" />
                             </button>
                         </div>
                     </div>

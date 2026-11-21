@@ -1,20 +1,28 @@
 import { useMemo, useState } from 'react'
+import {
+	LuCalendarDays,
+	LuCheck,
+	LuClock,
+	LuPartyPopper,
+	LuPuzzle,
+	LuRocket,
+	LuSearch,
+} from 'react-icons/lu'
 import dbData from '../../db.json'
 
 const STORAGE_KEY = 'mars_event_registrations'
 const CLUB_STORAGE_KEY = 'mars_club_members'
 
 const TYPE_META = {
-	tadbir: { label: 'Tadbir', badge: 'bg-blue-50 text-blue-700 border-blue-200', emoji: '🎉' },
-	togarak: { label: "To'garak", badge: 'bg-emerald-50 text-emerald-700 border-emerald-200', emoji: '🧩' },
-	hackathon: { label: 'Xakaton', badge: 'bg-purple-50 text-purple-700 border-purple-200', emoji: '🚀' },
+	tadbir: { label: 'Tadbir', badge: 'bg-blue-50 text-blue-700 border-blue-200', icon: <LuPartyPopper aria-hidden="true" /> },
+	togarak: { label: "To'garak", badge: 'bg-emerald-50 text-emerald-700 border-emerald-200', icon: <LuPuzzle aria-hidden="true" /> },
+	hackathon: { label: 'Xakaton', badge: 'bg-purple-50 text-purple-700 border-purple-200', icon: <LuRocket aria-hidden="true" /> },
 }
 
 const CLUBS = [
 	{
 		id: 'club-shaxmat',
 		name: 'Shaxmat',
-		emoji: '♟️',
 		image: 'https://picsum.photos/seed/mars-shaxmat/600/400',
 		description: "Ochiq turnirlar, debyut nazariyasi va endshpil mashg'ulotlari. Boshlovchilar uchun alohida guruh bor.",
 		schedule: 'Seshanba va payshanba · 15:00',
@@ -25,7 +33,6 @@ const CLUBS = [
 	{
 		id: 'club-krestiki-noliki',
 		name: 'Krestiki-noliki',
-		emoji: '⭕',
 		image: 'https://picsum.photos/seed/mars-krestiki/600/400',
 		description: "Mantiqiy o'yinlar klubi: krestiki-noliki, karto4kalar va tezkor fikrlash musobaqalari.",
 		schedule: 'Chorshanba · 16:30',
@@ -36,7 +43,6 @@ const CLUBS = [
 	{
 		id: 'club-movie-day',
 		name: 'Movie Day',
-		emoji: '🎬',
 		image: 'https://picsum.photos/seed/mars-movie/600/400',
 		description: "Har juma film tomosha qilamiz va ingliz tilida muhokama qilamiz. Popkorn bizdan.",
 		schedule: 'Juma · 17:00',
@@ -178,7 +184,9 @@ const Events = () => {
 				{/* Bo'sh holat */}
 				{filtered.length === 0 && (
 					<div className="mt-5 bg-white border border-dashed border-gray-200 rounded-2xl p-10 text-center">
-						<div className="text-4xl mb-3">{events.length === 0 ? '📅' : '🔍'}</div>
+						<div className="mb-3 flex justify-center text-4xl text-gray-400">
+							{events.length === 0 ? <LuCalendarDays aria-hidden="true" /> : <LuSearch aria-hidden="true" />}
+						</div>
 						<h3 className="font-bold text-gray-800">
 							{events.length === 0 ? "Hozircha tadbirlar yo'q" : 'Hech narsa topilmadi'}
 						</h3>
@@ -219,8 +227,8 @@ const Events = () => {
 												loading="lazy"
 											/>
 										) : (
-											<div className="w-full h-full flex items-center justify-center text-5xl bg-gray-50">
-												{meta.emoji}
+											<div className="w-full h-full flex items-center justify-center text-5xl text-gray-400 bg-gray-50">
+												{meta.icon}
 											</div>
 										)}
 										<span
@@ -229,8 +237,8 @@ const Events = () => {
 											{meta.label}
 										</span>
 										{isRegistered && (
-											<span className="absolute top-3 right-3 text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-600 text-white shadow-sm">
-												✓ Ro'yxatdansiz
+											<span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-600 text-white shadow-sm">
+												<LuCheck aria-hidden="true" /> Ro'yxatdansiz
 											</span>
 										)}
 									</div>
@@ -247,7 +255,11 @@ const Events = () => {
 													{formatDate(event.date)}
 												</span>
 											)}
-											{event.time && <span>🕒 {event.time}</span>}
+											{event.time && (
+												<span className="inline-flex items-center gap-1">
+													<LuClock aria-hidden="true" /> {event.time}
+												</span>
+											)}
 										</div>
 
 										<h3 className="mt-1.5 font-bold text-gray-900 text-[15px] leading-snug line-clamp-2">
@@ -363,8 +375,8 @@ const Events = () => {
 										loading="lazy"
 									/>
 									{isMember && (
-										<span className="absolute top-3 right-3 text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-600 text-white shadow-sm">
-											✓ A'zo
+										<span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-600 text-white shadow-sm">
+											<LuCheck aria-hidden="true" /> A'zo
 										</span>
 									)}
 								</div>

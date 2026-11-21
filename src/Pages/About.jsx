@@ -1,15 +1,9 @@
 import dbData from '../../db.json'
+import { LuCoins, LuZap } from 'react-icons/lu'
+import { DEFAULT_AVATAR, useProfile } from '../profile/ProfileContext.js'
 
 const About = () => {
-  const currentUser = (() => {
-    try {
-      const stored = localStorage.getItem('mars_auth_user') || localStorage.getItem('token')
-      return stored ? JSON.parse(stored) : dbData.currentUser
-    } catch {
-      return dbData.currentUser
-    }
-  })()
-
+  const { profile, fullName, coins, xp } = useProfile()
   const courses = dbData.courses || []
 
   return (
@@ -17,22 +11,24 @@ const About = () => {
       {/* Profil Header */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm mb-8 flex flex-col sm:flex-row items-center gap-6 justify-between">
         <div className="flex items-center gap-5">
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center text-4xl shadow-md overflow-hidden">
-            {currentUser?.avatar ? (
-              <img src={currentUser.avatar} alt="Avatar" className="w-full h-full object-cover" />
-            ) : (
-              ''
-            )}
+          <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center shadow-md overflow-hidden">
+            <img
+              src={profile.avatar || DEFAULT_AVATAR}
+              alt={`${fullName} avatari`}
+              className="w-full h-full object-cover"
+              onError={(event) => {
+                event.currentTarget.src = DEFAULT_AVATAR
+              }}
+            />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              {currentUser?.fullName || 'Mars Student'}
-            </h1>
+            <h1 className="text-2xl font-bold text-gray-900">{fullName}</h1>
             <p className="text-sm text-gray-500 font-medium mt-1">
-              Mars ID: <span className="font-mono text-gray-800">{currentUser?.marsId || 'MID-31710'}</span>
-              {currentUser?.groupCode && (
+              @{profile.nickname} · Mars ID:{' '}
+              <span className="font-mono text-gray-800">{profile.marsId || 'MID-31710'}</span>
+              {profile.groupCode && (
                 <span className="ml-3 px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold">
-                  Guruh: {currentUser.groupCode}
+                  Guruh: {profile.groupCode}
                 </span>
               )}
             </p>
@@ -42,11 +38,17 @@ const About = () => {
         <div className="flex items-center gap-4">
           <div className="bg-[#fef9c3] border border-amber-200 px-4 py-2 rounded-2xl text-center">
             <span className="text-xs text-amber-700 font-semibold block">Mars Coin</span>
-            <span className="text-lg font-black text-amber-800">🪙 {currentUser?.coins || 239}</span>
+            <span className="inline-flex items-center justify-center gap-1.5 text-lg font-black text-amber-800">
+              <LuCoins aria-hidden="true" />
+              {coins.toLocaleString('en-US')}
+            </span>
           </div>
           <div className="bg-[#eff6ff] border border-blue-200 px-4 py-2 rounded-2xl text-center">
             <span className="text-xs text-blue-700 font-semibold block">Tajriba (XP)</span>
-            <span className="text-lg font-black text-blue-800">⚡ {currentUser?.xp || 650}</span>
+            <span className="inline-flex items-center justify-center gap-1.5 text-lg font-black text-blue-800">
+              <LuZap aria-hidden="true" />
+              {xp}
+            </span>
           </div>
         </div>
       </div>

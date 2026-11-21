@@ -1,198 +1,313 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import dbData from '../../db.json'
+import { FaTelegramPlane } from 'react-icons/fa'
+import {
+  LuCircleAlert,
+  LuEye,
+  LuEyeOff,
+  LuFileText,
+  LuLock,
+  LuUser,
+} from 'react-icons/lu'
+import AuthShell, { LanguageSwitcher } from '../Components/AuthShell.jsx'
+import { useProfile } from '../profile/ProfileContext.js'
+import { normalizeLogin, resolveAccount } from '../profile/authAccounts.js'
+
+const LANG_STORAGE_KEY = 'mars_login_lang'
+
+const TRANSLATIONS = {
+  ru: {
+    offerta: 'Offerta',
+    title: 'Добро пожаловать в Space',
+    subtitle: 'Что изучим сегодня?',
+    student: 'Студент',
+    parent: 'Родитель',
+    telegram: 'Войти через Telegram',
+    otherTelegram: 'Войти с другим Telegram',
+    divider: 'или по ID и паролю',
+    marsId: 'MARS ID',
+    marsIdPlaceholder: 'Введите MARS ID или логин',
+    password: 'ПАРОЛЬ',
+    passwordPlaceholder: '•••••',
+    submit: 'Войти',
+    pending: 'Входим…',
+    noAccount: 'Нет аккаунта?',
+    register: 'Регистрация',
+    errorEmpty: 'Введите логин и пароль.',
+    errorWrong: 'Неверный логин или пароль.',
+    infoTelegram: 'Вход через Telegram скоро станет доступен.',
+    badgeClose: 'Скрыть',
+  },
+  uz: {
+    offerta: 'Offerta',
+    title: "Space'ga xush kelibsiz",
+    subtitle: "Bugun nimalarni o'rganamiz?",
+    student: "O'quvchi",
+    parent: 'Ota-ona',
+    telegram: 'Telegram orqali kirish',
+    otherTelegram: 'Boshqa Telegram bilan kirish',
+    divider: 'yoki ID va parol bilan',
+    marsId: 'MARS ID',
+    marsIdPlaceholder: 'MARS ID yoki loginni kiriting',
+    password: 'PAROL',
+    passwordPlaceholder: '•••••',
+    submit: 'Kirish',
+    pending: 'Kirilmoqda…',
+    noAccount: "Akkountingiz yo'qmi?",
+    register: "Ro'yxatdan o'tish",
+    errorEmpty: 'Login va parolni kiriting.',
+    errorWrong: "Login yoki parol noto'g'ri.",
+    infoTelegram: 'Telegram orqali kirish tez orada ishga tushadi.',
+    badgeClose: 'Yashirish',
+  },
+  en: {
+    offerta: 'Offerta',
+    title: 'Welcome to Space',
+    subtitle: 'What will we learn today?',
+    student: 'Student',
+    parent: 'Parent',
+    telegram: 'Sign in with Telegram',
+    otherTelegram: 'Sign in with another Telegram',
+    divider: 'or with ID and password',
+    marsId: 'MARS ID',
+    marsIdPlaceholder: 'Enter MARS ID or login',
+    password: 'PASSWORD',
+    passwordPlaceholder: '•••••',
+    submit: 'Sign in',
+    pending: 'Signing in…',
+    noAccount: "Don't have an account?",
+    register: 'Sign up',
+    errorEmpty: 'Enter your login and password.',
+    errorWrong: 'Wrong login or password.',
+    infoTelegram: 'Telegram sign-in is coming soon.',
+    badgeClose: 'Hide',
+  },
+}
+
+const readStoredLang = () => {
+  try {
+    const stored = localStorage.getItem(LANG_STORAGE_KEY)
+    return TRANSLATIONS[stored] ? stored : 'ru'
+  } catch {
+    return 'ru'
+  }
+}
 
 const Login = () => {
   const navigate = useNavigate()
-  const [phoneInput, setPhoneInput] = useState('')
+  const { loginUser, refreshProfile, apiOnline } = useProfile()
+
+  const [loginInput, setLoginInput] = useState('')
   const [passwordInput, setPasswordInput] = useState('')
-  const [errorMsg, setErrorMsg] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [activeLang, setActiveLang] = useState('Uz')
+  const [lang, setLang] = useState(readStoredLang)
+  const [role, setRole] = useState('student')
+  const [status, setStatus] = useState(null)
+  const [pending, setPending] = useState(false)
 
+  const t = TRANSLATIONS[lang]
 
+  const changeLang = (code) => {
+    setLang(code)
+    try {
+      localStorage.setItem(LANG_STORAGE_KEY, code)
+    } catch {
+      // Xotira yopilgan bo'lsa, til faqat shu sessiyada saqlanadi.
+    }
+  }
 
+  const showStatus = (type, text) => setStatus({ type, text })
 
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setStatus(null)
 
-  // Mentorlar ro'yxati (db.json dan)
-  const mentors = dbData.mentors || []
+    const login = normalizeLogin(loginInput)
+    const password = passwordInput.trim()
 
-  // Kirish funksiyasi
-  const handleSubmit = (e) => {
-    if (e) e.preventDefault()
-    setErrorMsg('')
-
-    if (!phoneInput || !passwordInput) {
-      setErrorMsg(
-        activeLang === 'Ru'
-          ? 'Пожалуйста, введите номер телефона и пароль!'
-          : activeLang === 'En'
-          ? 'Please enter phone number and password!'
-          : "Iltimos, telefon raqami va parolni kiriting!"
-      )
+    if (!login || !password) {
+      showStatus('error', t.errorEmpty)
       return
     }
 
-    const cleanInput = phoneInput.replace(/[\s+\-()]/g, '').trim().toLowerCase()
-    // Telefon faqat to'liq yoki kamida 7 xonali oxirgi qism bo'yicha qidiriladi
-    const inputDigits = cleanInput.replace(/\D/g, '')
+    setPending(true)
 
-    const foundMentor = mentors.find((m) => {
-      const cleanPhone = (m.rawPhone || m.phone || '').replace(/[\s+\-()]/g, '').toLowerCase()
-      const cleanMarsId = (m.marsId || '').replace(/[\s+\-()]/g, '').toLowerCase()
-      const matchesPhone =
-        inputDigits.length >= 7 &&
-        (cleanPhone === inputDigits || cleanPhone.endsWith(inputDigits))
-      const matchesMarsId =
-        cleanMarsId === cleanInput ||
-        (cleanInput.length >= 3 && cleanMarsId.endsWith(cleanInput))
-      return matchesPhone || matchesMarsId
-    })
+    // json-server o'chirilgani ma'lum bo'lsa, behuda so'rov yubormaymiz.
+    const account = await resolveAccount(login, { offline: apiOnline === false })
 
-    if (!foundMentor) {
-      setErrorMsg(
-        activeLang === 'Ru'
-          ? 'Сотрудник с таким номером или Mars ID не найден!'
-          : activeLang === 'En'
-          ? 'Staff member with this phone or Mars ID not found!'
-          : "Bunday telefon raqam yoki Mars ID li xodim topilmadi!"
-      )
+    const expectedPassword =
+      account?.password ?? (login === 'timur' ? '12345' : null)
+
+    if (!expectedPassword || password !== String(expectedPassword).trim()) {
+      setPending(false)
+      showStatus('error', t.errorWrong)
       return
     }
 
-    if (foundMentor.password !== passwordInput) {
-      setErrorMsg(
-        activeLang === 'Ru'
-          ? 'Неверный пароль!'
-          : activeLang === 'En'
-          ? 'Invalid password!'
-          : "Parol noto'g'ri kiritildi!"
-      )
-      return
+    const session = {
+      id: account.id || 'user-timur',
+      login,
+      name: account.name || 'Timur',
+      role,
+      marsId: account.marsId || 'M-31710',
+      profileId: account.profileId || 'profile-current',
+      avatar: account.avatar || '/avatar-default.jpg',
+      loggedInAt: new Date().toISOString(),
     }
 
-    // ===== O'ZGARTIRILGAN JOY (boshlandi) =====
-    // Muvaffaqiyatli login: ClickUser funksiyasi shu yerda chaqiriladi
-    const ClickUser = (mentor) => {
-      localStorage.setItem('token', JSON.stringify(mentor))
-      localStorage.setItem('mars_auth_user', JSON.stringify(mentor))
-      navigate('/')
-    }
-
-    ClickUser(foundMentor)
-    // ===== O'ZGARTIRILGAN JOY (tugadi) =====
+    loginUser(session)
+    refreshProfile({ silent: true })
+    navigate('/', { replace: true })
   }
 
   return (
-    <div className="min-h-screen w-full bg-linear-to-b from-[#180a08] via-[#240e0b] to-[#120605] flex flex-col items-center justify-center p-4 relative font-sans">
-      {/* Kosmik fon nurlari */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[650px] h-[650px] bg-red-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-40 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-[#d94826]/15 rounded-[100%] blur-2xl"></div>
+    <AuthShell closeLabel={t.badgeClose}>
+      {/* Yuqori qator: Offerta + til */}
+      <div className="flex items-center justify-between">
+        <span className="flex items-center gap-1.5 text-[11px] font-medium text-[#4c4c4c]">
+          <LuFileText className="h-3.5 w-3.5" />
+          {t.offerta}
+        </span>
+        <LanguageSwitcher lang={lang} onChange={changeLang} />
       </div>
 
-      {/* Asosiy Karta */}
-      <div className="w-full max-w-md bg-white rounded-3xl p-8 sm:p-10 shadow-2xl relative z-10 transition-all">
-        {/* Mars Logo */}
-        <div className="flex flex-col items-center mb-6">
-          <div className="flex items-center gap-1">
-            <span className="text-4xl font-extrabold tracking-tight text-gray-900">mars</span>
-            <span className="w-3.5 h-3.5 rounded-full border-3 border-red-500 bg-white inline-block -mt-4"></span>
-          </div>
-          <p className="text-sm font-medium text-gray-500 mt-2">
-            {activeLang === 'Ru'
-              ? 'Вход для сотрудников'
-              : activeLang === 'En'
-              ? 'Staff Login'
-              : 'Xodimlar uchun kirish'}
-          </p>
+      {/* Sarlavha */}
+      <h1 className="mt-3 text-center text-[22px] font-semibold leading-tight text-[#2b2b2f]">
+        {t.title}
+      </h1>
+      <p className="mt-1 text-center text-xs text-[#5f5f63]">{t.subtitle}</p>
+
+      {/* Rol tanlash */}
+      <div className="mt-4 grid grid-cols-2 gap-1 rounded-xl bg-white/25 p-1">
+        {[
+          { key: 'student', label: t.student },
+          { key: 'parent', label: t.parent },
+        ].map((item) => (
+          <button
+            key={item.key}
+            type="button"
+            aria-pressed={role === item.key}
+            onClick={() => setRole(item.key)}
+            className={`h-9 cursor-pointer rounded-lg text-sm transition ${
+              role === item.key
+                ? 'bg-white font-semibold text-[#2b2b2f] shadow-sm'
+                : 'font-medium text-[#6b6b6f] hover:text-[#3a3a3d]'
+            }`}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Telegram */}
+      <button
+        type="button"
+        onClick={() => showStatus('info', t.infoTelegram)}
+        className="mt-3 flex h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#2aabee] text-sm font-semibold text-white transition hover:bg-[#229ed9] active:scale-[0.995]"
+      >
+        <FaTelegramPlane className="h-4 w-4" />
+        {t.telegram}
+      </button>
+      <button
+        type="button"
+        onClick={() => showStatus('info', t.infoTelegram)}
+        className="mt-2 cursor-pointer text-left text-[11px] font-medium text-[#2f5c74] transition hover:text-[#1f4457] hover:underline"
+      >
+        {t.otherTelegram}
+      </button>
+
+      {/* Ajratgich */}
+      <div className="my-3 flex items-center gap-2 text-[11px] text-[#63636a]">
+        <span className="h-px flex-1 bg-black/15" />
+        {t.divider}
+        <span className="h-px flex-1 bg-black/15" />
+      </div>
+
+      {/* Forma */}
+      <form onSubmit={handleSubmit} noValidate>
+        <label
+          htmlFor="mars-id"
+          className="mb-1 block text-[10px] font-bold tracking-[0.14em] text-[#5a5a5e]"
+        >
+          {t.marsId}
+        </label>
+        <div className="relative">
+          <LuUser className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#8a8a8f]" />
+          <input
+            id="mars-id"
+            name="login"
+            type="text"
+            autoComplete="username"
+            autoCapitalize="none"
+            spellCheck="false"
+            value={loginInput}
+            onChange={(event) => setLoginInput(event.target.value)}
+            placeholder={t.marsIdPlaceholder}
+            className="h-11 w-full rounded-lg border border-white/60 bg-white pl-10 pr-3 text-sm text-[#2b2b2f] outline-none transition placeholder:text-[#9a9a9f] focus:border-[#2aabee] focus:ring-2 focus:ring-white/50"
+          />
         </div>
 
-        {/* Xatolik xabari */}
-        {errorMsg && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl flex items-center gap-2">
-            <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="8" x2="12" y2="12" />
-              <line x1="12" y1="16" x2="12.01" y2="16" />
-            </svg>
-            <span>{errorMsg}</span>
+        <label
+          htmlFor="mars-password"
+          className="mb-1 mt-3 block text-[10px] font-bold tracking-[0.14em] text-[#5a5a5e]"
+        >
+          {t.password}
+        </label>
+        <div className="relative">
+          <LuLock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#8a8a8f]" />
+          <input
+            id="mars-password"
+            name="password"
+            type={showPassword ? 'text' : 'password'}
+            autoComplete="current-password"
+            value={passwordInput}
+            onChange={(event) => setPasswordInput(event.target.value)}
+            placeholder={t.passwordPlaceholder}
+            className="h-11 w-full rounded-lg border border-white/60 bg-white pl-10 pr-11 text-sm text-[#2b2b2f] outline-none transition placeholder:text-[#9a9a9f] focus:border-[#2aabee] focus:ring-2 focus:ring-white/50"
+          />
+          <button
+            type="button"
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+            onClick={() => setShowPassword((value) => !value)}
+            className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md text-[#6d6d72] transition hover:bg-black/5 hover:text-[#3a3a3d]"
+          >
+            {showPassword ? <LuEyeOff className="h-4 w-4" /> : <LuEye className="h-4 w-4" />}
+          </button>
+        </div>
+
+        {status && (
+          <div
+            role={status.type === 'error' ? 'alert' : 'status'}
+            className={`mt-3 flex items-start gap-2 rounded-lg border px-3 py-2 text-[11px] font-medium ${
+              status.type === 'error'
+                ? 'border-red-950/20 bg-red-100/85 text-red-800'
+                : 'border-sky-950/15 bg-sky-100/85 text-sky-800'
+            }`}
+          >
+            <LuCircleAlert className="mt-px h-3.5 w-3.5 shrink-0" />
+            <span>{status.text}</span>
           </div>
         )}
 
-        {/* Login Forma */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <input
-              type="text"
-              placeholder="+998"
-              value={phoneInput}
-              onChange={(e) => setPhoneInput(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-800 focus:outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100 transition placeholder-gray-400 text-sm"
-            />
-          </div>
+        <button
+          type="submit"
+          disabled={pending}
+          className="mt-3 h-11 w-full cursor-pointer rounded-lg bg-[#c78a70] text-sm font-semibold text-white transition hover:bg-[#bd7d62] active:scale-[0.995] disabled:cursor-wait disabled:opacity-70"
+        >
+          {pending ? t.pending : t.submit}
+        </button>
+      </form>
 
-          <div className="relative">
-            <input
-              type={showPassword ? 'text' : 'password'}
-              placeholder={activeLang === 'Ru' ? 'Пароль' : activeLang === 'En' ? 'Password' : 'Parol'}
-              value={passwordInput}
-              onChange={(e) => setPasswordInput(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-800 focus:outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100 transition placeholder-gray-400 text-sm pr-11"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1"
-            >
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                {showPassword ? (
-                  <>
-                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
-                    <line x1="1" y1="1" x2="23" y2="23" />
-                  </>
-                ) : (
-                  <>
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                    <circle cx="12" cy="12" r="3" />
-                  </>
-                )}
-              </svg>
-            </button>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-[#fca590] hover:bg-[#fa8b71] text-white py-3.5 px-4 rounded-xl font-bold transition shadow-sm active:scale-[0.99] cursor-pointer"
-          >
-            {activeLang === 'Ru' ? 'Войти' : activeLang === 'En' ? 'Log In' : 'Kirish'}
-          </button>
-        </form>
-
-
-
-      <div className='flex '>
-        <p>Akauntga ega emasmisiz <span className='text-blue-400'><Link to={'/register'}>Register</Link></span></p>
-      </div>
-      </div>
-
-      {/* Tillar tanlagichi */}
-      <div className="flex items-center gap-1.5 mt-6 bg-black/40 backdrop-blur-md p-1.5 rounded-full border border-white/10 z-10">
-        {['En', 'Ru', 'Uz'].map((lang) => (
-          <button
-            key={lang}
-            onClick={() => setActiveLang(lang)}
-            className={`px-3 py-1 rounded-full text-xs font-medium transition cursor-pointer ${
-              activeLang === lang ? 'bg-white/20 text-white shadow-xs' : 'text-gray-400 hover:text-white'
-            }`}
-          >
-            {lang}
-          </button>
-        ))}
-        
-      </div>
-
-    </div>
+      <p className="mt-3 text-center text-[11px] text-[#55555a]">
+        {t.noAccount}{' '}
+        <Link
+          to="/register"
+          className="font-semibold text-[#2b2b2f] underline underline-offset-2 transition hover:text-black"
+        >
+          {t.register}
+        </Link>
+      </p>
+    </AuthShell>
   )
 }
 

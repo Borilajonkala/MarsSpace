@@ -1,36 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate, Link } from 'react-router-dom'
-import {
-    COIN_BALANCE_EVENT,
-    getCoinBalance,
-} from '../coinBalance.jsx'
+import { LuCoins, LuZap } from 'react-icons/lu'
+import { DEFAULT_AVATAR, useProfile } from '../profile/ProfileContext.js'
 
 const Header = ({ children }) => {
     const location = useLocation()
     const navigate = useNavigate()
     const [selectedTheme, setSelectedTheme] = useState("YO'LAK")
-
-    // Saqlangan mentor/foydalanuvchi ma'lumotlari (buzilgan JSON ilovani yiqitmasligi uchun)
-    const [currentUser] = useState(() => {
-        try {
-            const storedUser = localStorage.getItem('mars_auth_user') 
-            return storedUser ? JSON.parse(storedUser) : null
-        } catch {
-
-            return null
-        }
-    })
-    const [coins, setCoins] = useState(() => getCoinBalance(currentUser))
-
-    useEffect(() => {
-        const syncCoins = () => setCoins(getCoinBalance(currentUser))
-        window.addEventListener(COIN_BALANCE_EVENT, syncCoins)
-        window.addEventListener('storage', syncCoins)
-        return () => {
-            window.removeEventListener(COIN_BALANCE_EVENT, syncCoins)
-            window.removeEventListener('storage', syncCoins)
-        }
-    }, [currentUser])
+    const { profile, fullName, coins, xp, logoutUser } = useProfile()
 
     // Dropdown'ni yopish (daisyUI focus orqali ochiladi)
     const closeDropdown = () => {
@@ -45,9 +22,8 @@ const Header = ({ children }) => {
 
     // Chiqish (Logout)
     const handleLogout = () => {
-        // Himoyalangan route'lar token'ni tekshiradi, shuni tozalash kifoya
-        localStorage.removeItem('token')
-        localStorage.removeItem('mars_auth_user')
+        // Sessiya profilda saqlanadi, shuning uchun uni kontekst orqali tozalaymiz.
+        logoutUser()
         navigate('/login')
     }
 
@@ -249,14 +225,14 @@ const Header = ({ children }) => {
                     <div className="flex items-center gap-2 sm:gap-3">
                         {/* Mars Coin */}
                         <div className="flex items-center gap-1.5 bg-[#fef9c3]/70 hover:bg-[#fef9c3] border border-amber-200/80 px-2.5 py-1 rounded-full text-xs font-bold text-amber-800 transition shadow-2xs">
-                            <span className="text-sm">🪙</span>
-                            <span>{coins}</span>
+                            <LuCoins className="text-sm" aria-hidden="true" />
+                            <span>{coins.toLocaleString('en-US')}</span>
                         </div>
 
                         {/* Energy / XP */}
                         <div className="flex items-center gap-1.5 bg-[#eff6ff] hover:bg-[#dbeafe] border border-blue-200/70 px-2.5 py-1 rounded-full text-xs font-bold text-blue-700 transition shadow-2xs">
-                            <span className="text-sm">⚡</span>
-                            <span>{currentUser?.xp || 650}</span>
+                            <LuZap className="text-sm" aria-hidden="true" />
+                            <span>{xp}</span>
                         </div>
 
                         {/* Rejimlar tanlagichi (ESKI, YO'LAK, PIXEL, NEON) */}
@@ -291,54 +267,37 @@ const Header = ({ children }) => {
                             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle btn-sm avatar cursor-pointer">
                                 <div className="w-8 rounded-full border border-gray-300">
                                     <img
-                                        alt="Profil"
-                                        src={
-                                            currentUser?.avatar ||
-                                            "https://api.dicebear.com/7.x/bottts/svg?seed=MarsStudent&backgroundColor=ffd5dc"
-                                        }
+                                        alt={`${fullName} profili`}
+                                        src={profile.avatar || DEFAULT_AVATAR}
+                                        className="object-cover"
+                                        onError={(event) => {
+                                            event.currentTarget.src = DEFAULT_AVATAR
+                                        }}
                                     />
                                 </div>
                             </div>
                             <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-50 p-2 shadow-lg bg-white rounded-2xl w-56 border border-gray-100">
-                                <li className="menu-title px-3 py-1 text-xs text-gray-400">
-                                    {currentUser ? currentUser.fullName : 'Mars Space'}
+                                <li className="menu-title px-3 py-1 text-xs text-gray-500">
+                                    {fullName}
                                 </li>
-                                {currentUser ? (
-                                    <>
-                                        <li className="px-3 py-1 text-[11px] text-gray-500">
-                                            {currentUser.marsId || currentUser.phone}
-                                        </li>
-                                        <li>
-                                            <button
-                                                type="button"
-                                                onClick={handleOpenProfile}
-                                                className="rounded-lg font-semibold text-gray-700"
-                                            >
-                                                Profil
-                                            </button>
-                                        </li>
-                                        <div className="divider my-1"></div>
-                                        <li>
-                                            <button onClick={handleLogout} className="rounded-lg font-semibold text-red-600 hover:bg-red-50">
-                                                Chiqish (Logout)
-                                            </button>
-                                        </li>
-                                    </>
-                                ) : (
-                                    <>
-                                        <li>
-                                            <button
-                                                type="button"
-                                                onClick={handleOpenProfile}
-                                                className="rounded-lg font-semibold text-gray-700"
-                                            >
-                                                Profil
-                                            </button>
-                                        </li>
-                                        <div className="divider my-1"></div>
-                                        <li><Link to="/login" className="rounded-lg font-bold text-red-600 hover:bg-red-50">Tizimga kirish</Link></li>
-                                    </>
-                                )}
+                                <li className="px-3 py-1 text-[11px] text-gray-500">
+                                    @{profile.nickname} · {profile.marsId || profile.groupCode}
+                                </li>
+                                <li>
+                                    <button
+                                        type="button"
+                                        onClick={handleOpenProfile}
+                                        className="rounded-lg font-semibold text-gray-700"
+                                    >
+                                        Profil
+                                    </button>
+                                </li>
+                                <div className="divider my-1"></div>
+                                <li>
+                                    <button onClick={handleLogout} className="rounded-lg font-semibold text-red-600 hover:bg-red-50">
+                                        Chiqish (Logout)
+                                    </button>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -400,9 +359,12 @@ const Header = ({ children }) => {
                         <div className="flex flex-col items-center justify-center p-2">
                             <div className="relative">
                                 <img
-                                    src="https://api.dicebear.com/7.x/bottts/svg?seed=MarsBoy&backgroundColor=c0aede"
-                                    alt="Mars Qahramon"
-                                    className="w-16 h-16 object-contain drop-shadow-md hover:scale-105 transition"
+                                    src={profile.avatar || DEFAULT_AVATAR}
+                                    alt={`${fullName} qahramoni`}
+                                    className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md hover:scale-105 transition"
+                                    onError={(event) => {
+                                        event.currentTarget.src = DEFAULT_AVATAR
+                                    }}
                                 />
                                 <div className="w-14 h-2 bg-emerald-500/20 rounded-full mx-auto -mt-1 blur-[1px]"></div>
                             </div>
