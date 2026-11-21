@@ -1,54 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { LuChevronDown, LuGlobe, LuX } from 'react-icons/lu'
+import MarsParticleLogo from './MarsParticleLogo.jsx'
 
 const LANGUAGES = [
   { code: 'ru', label: 'Рус' },
   { code: 'uz', label: "O'z" },
   { code: 'en', label: 'Eng' },
 ]
-
-const LETTERS = {
-  m: ['11011', '10101', '10101', '10001', '10001', '10001', '10001'],
-  a: ['00000', '01110', '00001', '01111', '10001', '01111', '00000'],
-  r: ['00000', '10110', '11001', '10000', '10000', '10000', '00000'],
-  s: ['00000', '01111', '10000', '01110', '00001', '11110', '00000'],
-}
-
-const PIXEL_COLORS = [
-  '#a9f3c0',
-  '#a9f3c0',
-  '#8fe9b0',
-  '#c8ffdd',
-  '#a9f3c0',
-  '#f4b3d2',
-]
-
-const pixelColor = (row, col) => PIXEL_COLORS[(row * 7 + col * 3) % PIXEL_COLORS.length]
-
-const MarsPixelLogo = () => (
-  <div className="flex items-center gap-1 sm:gap-2">
-    <div className="flex items-end gap-[3px]">
-      {Object.entries(LETTERS).map(([letter, rows]) => (
-        <div key={letter} className="flex flex-col gap-[2px]">
-          {rows.map((row, rowIndex) => (
-            <div key={`${letter}-${rowIndex}`} className="flex gap-[2px]">
-              {row.split('').map((cell, colIndex) => (
-                <span
-                  key={`${letter}-${rowIndex}-${colIndex}`}
-                  className="h-[7px] w-[7px] sm:h-2 sm:w-2"
-                  style={{
-                    backgroundColor: cell === '1' ? pixelColor(rowIndex, colIndex) : 'transparent',
-                  }}
-                />
-              ))}
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
-    <span className="mb-3 ml-1 inline-block h-8 w-8 rounded-full border-[4px] border-[#ff7a18] shadow-[0_0_22px_rgba(255,122,24,0.45)] sm:mb-4 sm:h-10 sm:w-10 sm:border-[5px]" />
-  </div>
-)
 
 const CodeRain = () => {
   const canvasRef = useRef(null)
@@ -198,7 +156,7 @@ const AuthShell = ({ children, closeLabel = 'Hide' }) => {
       <CodeRain />
 
       <div className="relative z-10 flex w-full flex-col items-center">
-        <MarsPixelLogo />
+        <MarsParticleLogo />
 
         <div className="mt-6 w-full max-w-[378px] rounded-[26px] border border-white/30 bg-[#a7a7a7]/95 px-5 pb-5 pt-4 shadow-[0_30px_90px_-25px_rgba(0,0,0,0.95)] backdrop-blur-sm sm:px-6 sm:pb-6">
           {children}

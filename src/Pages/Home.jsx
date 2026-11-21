@@ -4,6 +4,7 @@ import dbData from '../../db.json'
 const Home = () => {
   const ratings = dbData.ratings || []
   const marstype = dbData.marstype || {}
+  
 
   return (
     
