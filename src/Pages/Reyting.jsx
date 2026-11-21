@@ -1,17 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
-/* ------------------------------ SOZLAMALAR ------------------------------ */
-// json-server manzili:  npx json-server --watch db.json --port 3000
+
 const API = 'http://localhost:3000'
-// Joriy foydalanuvchining guruhi va filiali (db.json'da currentUser'ga bog'lanmagan)
+
 const MY_GROUP_ID = 'grp-fe-142'
 const MY_BRANCH_ID = 'branch-chilonzor'
 const ME_LABEL = 'Men' // sizning qatoringizdagi nom
 
-// Har bir tab qanday ko'rinishi:
-//  top    — yuqoridan nechta qator ko'rsatiladi
-//  around — Siz pastroq bo'lsangiz, o'zingiz va ustingiz/ostingizdagi qatorlar ham chiqadi
-//  badge  — avatar ustida daraja (level) belgisi
+
 const VIEW = {
   quvvat: { top: 10, around: false, badge: true },
   coin: { top: 4, around: true, badge: false },
@@ -30,10 +26,7 @@ const TABS = [
   { key: 'yutuq', label: 'Yutuqlar' },
 ]
 
-/* ----------------------- db.json'da yo'q ko'rsatkichlar -----------------------
-   Battle, WPM, yutuq va gran-pri db.json'da yo'q, shuning uchun o'quvchining xp,
-   davomat va uy vazifasi foizlaridan hisoblanadi. Haqiqiy maydonlar qo'shilsa,
-   faqat shu funksiyalarni almashtirish kifoya. */
+
 const level = (xp) => Math.min(9, Math.floor(xp / 700) + 1)
 const rankName = (xp) =>
   xp < 3000 ? 'Space Rookie' : xp < 5000 ? 'Cyber Scout' : xp < 6000 ? 'Mars Cadet' : 'Mars Explorer'
@@ -48,16 +41,16 @@ const granpriOf = (s) => Math.round((s.xp / 70) * (s.homeworkRate / 100)) // gra
 const categoryOf = (courseId) =>
   courseId === 'course-python' ? 'Xakerlar' : courseId === 'course-scratch' ? 'Geymerlar' : 'Koderlar'
 
-/* --------------------------------- YORDAMCHI --------------------------------- */
+
 const fmt = (n) => Number(n).toLocaleString('en-US')
 
-// bir xil qiymat = bir xil o'rin (5, 5, 7 ...)
+
 const rankList = (items) => {
   const sorted = [...items].sort((a, b) => b.value - a.value)
   return sorted.map((it) => ({ ...it, rank: 1 + sorted.filter((o) => o.value > it.value).length }))
 }
 
-// top qatorlar + (kerak bo'lsa) bo'sh joy + Siz va qo'shnilari
+
 const visible = (rows, { top, around }) => {
   const head = rows.slice(0, top)
   const i = rows.findIndex((r) => r.me)
@@ -88,7 +81,6 @@ const Reyting = () => {
         return r.json()
       })
 
-    // 1) json-server orqali, 2) bo'lmasa public/db.json fayldan
     Promise.all(['students', 'ratings', 'currentUser', 'groups'].map((k) => get(`${API}/${k}`)))
       .then(([students, ratings, me, groups]) => ({ students, ratings, me, groups }))
       .catch(() =>
@@ -106,7 +98,7 @@ const Reyting = () => {
     }
   }, [])
 
-  // o'quvchilarga guruh, filial va kurs ma'lumotini biriktiramiz
+
   const players = useMemo(() => {
     if (!data) return []
     const gmap = Object.fromEntries(data.groups.map((g) => [g.id, g]))
@@ -267,7 +259,7 @@ const Reyting = () => {
   )
 }
 
-/* ---------------------------------- IKONKALAR ---------------------------------- */
+
 const Icon = ({ k, size = 20 }) => {
   const p = { width: size, height: size, viewBox: '0 0 24 24' }
   switch (k) {

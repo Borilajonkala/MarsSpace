@@ -4,8 +4,11 @@
     "marsId": "M-31710",
     "fullName": "Siz",
     "groupCode": "YB-3171",
+    "groupId": "grp-fe-142",
     "coins": 239,
     "xp": 650,
+    "attendanceRate": 90,
+    "homeworkRate": 85,
     "theme": "YO'LAK",
     "debtWarning": true
   },
