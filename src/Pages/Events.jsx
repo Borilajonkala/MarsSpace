@@ -1,8 +1,15 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import dbData from '../../db.json'
 
 const STORAGE_KEY = 'mars_event_registrations'
 const CLUB_STORAGE_KEY = 'mars_club_members'
+
+
+
+
+
+
+
 
 const TYPE_META = {
 	tadbir: { label: 'Tadbir', badge: 'bg-blue-50 text-blue-700 border-blue-200', emoji: '🎉' },
@@ -10,41 +17,6 @@ const TYPE_META = {
 	hackathon: { label: 'Xakaton', badge: 'bg-purple-50 text-purple-700 border-purple-200', emoji: '🚀' },
 }
 
-const CLUBS = [
-	{
-		id: 'club-shaxmat',
-		name: 'Shaxmat',
-		emoji: '♟️',
-		image: 'https://picsum.photos/seed/mars-shaxmat/600/400',
-		description: "Ochiq turnirlar, debyut nazariyasi va endshpil mashg'ulotlari. Boshlovchilar uchun alohida guruh bor.",
-		schedule: 'Seshanba va payshanba · 15:00',
-		mentor: 'Sardor Aliyev',
-		location: 'Chilonzor filiali · 204-xona',
-		members: 18,
-	},
-	{
-		id: 'club-krestiki-noliki',
-		name: 'Krestiki-noliki',
-		emoji: '⭕',
-		image: 'https://picsum.photos/seed/mars-krestiki/600/400',
-		description: "Mantiqiy o'yinlar klubi: krestiki-noliki, karto4kalar va tezkor fikrlash musobaqalari.",
-		schedule: 'Chorshanba · 16:30',
-		mentor: 'Dilnoza Karimova',
-		location: 'Yunusobod filiali · 101-xona',
-		members: 12,
-	},
-	{
-		id: 'club-movie-day',
-		name: 'Movie Day',
-		emoji: '🎬',
-		image: 'https://picsum.photos/seed/mars-movie/600/400',
-		description: "Har juma film tomosha qilamiz va ingliz tilida muhokama qilamiz. Popkorn bizdan.",
-		schedule: 'Juma · 17:00',
-		mentor: 'Aziza Yusupova',
-		location: 'Chilonzor filiali · Konferens-zal',
-		members: 26,
-	},
-]
 
 const normalizeType = (raw) => {
 	const t = String(raw || '').toLowerCase()
@@ -75,10 +47,15 @@ const loadList = (key) => {
 }
 
 const saveList = (key, value) => {
+
+
+
+
 	try {
 		localStorage.setItem(key, JSON.stringify(value))
 	} catch {
-		// localStorage yopiq bo'lsa ham sahifa ishlashda davom etadi
+		console.log('locolstorege yopilsayam sayt iwlaydi');
+		
 	}
 }
 
@@ -87,7 +64,29 @@ const Events = () => {
 	const [registrations, setRegistrations] = useState(() => loadList(STORAGE_KEY))
 	const [memberships, setMemberships] = useState(() => loadList(CLUB_STORAGE_KEY))
 
-	// tadbirlar db.json dan keladi (mavjud bo'lmasa announcements dan olinadi)
+		
+const [clubs, setClubs] = useState([])
+console.log(clubs);
+
+  useEffect(() => {
+    async function getClubs() {
+      try {
+        const response = await fetch('http://localhost:3001/CLUBS')
+
+        if (!response.ok) {
+          throw new Error(`Server xatosi: ${response.status}`)
+        }
+
+        const data = await response.json()
+        setClubs(data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    getClubs()
+  }, [])
+
 	const events = useMemo(() => {
 		if (Array.isArray(dbData.events) && dbData.events.length > 0) return dbData.events
 		if (Array.isArray(dbData.announcements)) {
@@ -175,7 +174,6 @@ const Events = () => {
 					</div>
 				</div>
 
-				{/* Bo'sh holat */}
 				{filtered.length === 0 && (
 					<div className="mt-5 bg-white border border-dashed border-gray-200 rounded-2xl p-10 text-center">
 						<div className="text-4xl mb-3">{events.length === 0 ? '📅' : '🔍'}</div>
@@ -190,7 +188,6 @@ const Events = () => {
 					</div>
 				)}
 
-				{/* Kartalar */}
 				{filtered.length > 0 && (
 					<div className="mt-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
 						{filtered.map((event) => {
@@ -209,7 +206,6 @@ const Events = () => {
 									key={event.id}
 									className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col"
 								>
-									{/* Rasm + badge */}
 									<div className="relative h-40 bg-gray-100">
 										{event.image ? (
 											<img
@@ -235,7 +231,6 @@ const Events = () => {
 										)}
 									</div>
 
-									{/* Kontent */}
 									<div className="p-4 flex flex-col flex-1">
 										<div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-semibold text-gray-500">
 											{event.date && (
@@ -279,7 +274,6 @@ const Events = () => {
 											)}
 										</div>
 
-										{/* Teglar */}
 										{Array.isArray(event.tags) && event.tags.length > 0 && (
 											<div className="mt-3 flex flex-wrap gap-1.5">
 												{event.tags.map((tag) => (
@@ -293,7 +287,6 @@ const Events = () => {
 											</div>
 										)}
 
-										{/* Joylar */}
 										{seats > 0 && (
 											<div className="mt-4">
 												<div className="flex items-center justify-between text-[11px] font-semibold text-gray-500 mb-1">
@@ -313,7 +306,6 @@ const Events = () => {
 											</div>
 										)}
 
-										{/* Tugma */}
 										<button
 											type="button"
 											disabled={isClosed && !isRegistered}
@@ -336,17 +328,15 @@ const Events = () => {
 				)}
 			</section>
 
-			{/* ===== TO'GARAKLAR (qo'lda yozilgan) ===== */}
 			<section className="mt-8">
 				<div className="flex items-center gap-2 border-t border-gray-200 pt-5">
 					<h2 className="text-[16px] font-bold text-gray-900">To'garaklar</h2>
 					<span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-						{CLUBS.length}
 					</span>
 				</div>
 
 				<div className="mt-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-					{CLUBS.map((club) => {
+					{clubs.map((club) => {
 						const isMember = memberships.includes(club.id)
 
 						return (
@@ -354,7 +344,6 @@ const Events = () => {
 								key={club.id}
 								className="h-[400px] bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col"
 							>
-								{/* Rasm — kartaning 45% ini egallaydi */}
 								<div className="relative h-[45%] shrink-0 bg-gray-100">
 									<img
 										src={club.image}
@@ -364,7 +353,7 @@ const Events = () => {
 									/>
 									{isMember && (
 										<span className="absolute top-3 right-3 text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-600 text-white shadow-sm">
-											✓ A'zo
+											 A'zo
 										</span>
 									)}
 								</div>
