@@ -7,7 +7,7 @@ import Login from './Pages/Login'
 import Register from './Pages/Register'
 import Blog from './Pages/Blog'
 import MyWorks from './Pages/My-works'
-import Alogo from './Pages/Alogo'
+import Algo from './Pages/Algo'
 import Payment from './Pages/Payment'
 import Hackathon from './Pages/Hackathon'
 import SpaceShop from './Pages/SpaceShop'
@@ -31,8 +31,8 @@ const App = () => {
         <Route path="/my-works" element={<MyWorks />} />
         <Route path="/games" element={<BattleLobby />} />
         <Route path="/battle" element={<BattleLobby />} />
-        <Route path="/alogo" element={<Alogo />} />
-        <Route path="/algo" element={<Alogo />} />
+        <Route path="/algo" element={<Algo />} />
+        <Route path="/alogo" element={<Algo />} />
         <Route path="/space-shop" element={<SpaceShop />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/hackathon" element={<Hackathon />} />
