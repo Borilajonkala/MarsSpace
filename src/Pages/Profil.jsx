@@ -125,7 +125,7 @@ const Profil = () => {
   const badges = safeArray(profile.badges)
   const history = safeArray(profile.history)
   const doneCertificates = certificates.filter((item) => item.status === 'done').length
-  const outfitTone = (selectedOutfit?.id || 'outfit-cosmonaut').replace('outfit-', '')
+  const outfitTone = (selectedOutfit?.id || 'outfit-wahlberg').replace('outfit-', '')
 
   // Modal Escape bilan yopiladi.
   useEffect(() => {
@@ -263,6 +263,26 @@ const Profil = () => {
     setModal(null)
   }
 
+  const applyAvatar = async (item) => {
+    if (!isOwned(item) || saving) return
+
+    const nextProfile = withHistory(
+      { ...profile, avatar: item.preview },
+      'Avatar yangilandi',
+      `${item.name} surati avatarga qo'yildi.`
+    )
+
+    setSaving(`avatar-${item.id}`)
+    const savedToDb = await saveProfile(nextProfile)
+    setSaving('')
+    setShopMessage({
+      type: savedToDb ? 'success' : 'info',
+      text: savedToDb
+        ? "Surat avatarga qo'yildi va db.json'ga saqlandi."
+        : "Surat avatarga qo'yildi, lekin faqat brauzerda saqlandi.",
+    })
+  }
+
   const buyCosmetic = async (item) => {
     if (isOwned(item) || saving) return
 
@@ -308,6 +328,11 @@ const Profil = () => {
   const openBackgrounds = () => {
     setShopMessage(null)
     setModal('backgrounds')
+  }
+
+  const openOutfits = () => {
+    setShopMessage(null)
+    setModal('outfits')
   }
 
   return (
@@ -470,7 +495,7 @@ const Profil = () => {
                   <LuImage aria-hidden="true" />
                   <span>Fon</span>
                 </button>
-                <button type="button" onClick={() => setModal('outfits')}>
+                <button type="button" onClick={openOutfits}>
                   <LuShirt aria-hidden="true" />
                   <span>Kiyim</span>
                 </button>
@@ -836,40 +861,69 @@ const Profil = () => {
       {modal === 'outfits' && (
         <Modal
           title="Kiyim tanlash"
-          subtitle="Qahramon uchun mavjud kiyimlardan birini tanlang"
+          subtitle="Mashhur qahramonlar suratini tanlang yoki uni avatarga qo'ying"
           onClose={() => setModal(null)}
           wide
         >
+          {shopMessage && (
+            <p className={`pfx-shop-message ${shopMessage.type}`}>{shopMessage.text}</p>
+          )}
+
           <div className="pfx-cosmetic-grid">
             {outfits.map((item) => {
               const owned = isOwned(item)
               const active = profile.selectedOutfit === item.id
+              const isAvatar = profile.avatar === item.preview
+              const isApplyingAvatar = saving === `avatar-${item.id}`
               return (
-                <button
-                  type="button"
+                <div
                   key={item.id}
-                  className={`pfx-cosmetic${active ? ' active' : ''}`}
-                  onClick={() => owned && applyCosmetic(item)}
-                  disabled={!owned || Boolean(saving)}
+                  className={`pfx-cosmetic${active ? ' active' : ''}${owned ? '' : ' locked'}`}
                 >
-                  <span className="pfx-cosmetic-preview outfit">
-                    <img src={item.preview} alt="" />
-                    {active && (
-                      <span className="pfx-selected-mark">
-                        <LuCheck aria-hidden="true" />
-                      </span>
-                    )}
-                    {!owned && (
-                      <span className="pfx-lock">
-                        <LuLock aria-hidden="true" />
-                      </span>
-                    )}
-                  </span>
-                  <span className="pfx-cosmetic-text">
-                    <b>{item.name}</b>
-                    <small>{owned ? (active ? 'Tanlangan' : 'Tanlash') : `${item.priceCoins} coin`}</small>
-                  </span>
-                </button>
+                  <button
+                    type="button"
+                    className="pfx-cosmetic-select"
+                    onClick={() => owned && applyCosmetic(item)}
+                    disabled={!owned || Boolean(saving)}
+                    aria-label={owned ? `${item.name} kiyimini tanlash` : item.name}
+                  >
+                    <span className="pfx-cosmetic-preview outfit">
+                      <img src={item.preview} alt={item.name} />
+                      {active && (
+                        <span className="pfx-selected-mark">
+                          <LuCheck aria-hidden="true" />
+                        </span>
+                      )}
+                      {!owned && (
+                        <span className="pfx-lock">
+                          <LuLock aria-hidden="true" />
+                        </span>
+                      )}
+                    </span>
+                    <span className="pfx-cosmetic-text">
+                      <b>{item.name}</b>
+                      <small>
+                        {owned ? (active ? 'Tanlangan' : 'Tanlash') : `${item.priceCoins} coin`}
+                      </small>
+                    </span>
+                  </button>
+
+                  {owned && (
+                    <button
+                      type="button"
+                      className={`pfx-avatar-btn${isAvatar ? ' applied' : ''}`}
+                      onClick={() => applyAvatar(item)}
+                      disabled={Boolean(saving) || isAvatar}
+                    >
+                      {isApplyingAvatar ? (
+                        <LuLoader className="pfx-spin" aria-hidden="true" />
+                      ) : (
+                        <LuUser aria-hidden="true" />
+                      )}
+                      {isAvatar ? 'Avatarda' : "Avatarga qo'yish"}
+                    </button>
+                  )}
+                </div>
               )
             })}
           </div>
@@ -1081,9 +1135,10 @@ button.pfx-link-card:hover{border-color:rgba(146,174,255,.45);background:linear-
   border:4px solid rgba(143,179,255,.55);background:#0b1233;
   box-shadow:0 0 0 10px rgba(93,139,255,.15),0 26px 40px rgba(0,0,0,.48);
   animation:pfx-float 6s ease-in-out infinite}
-.pfx-outfit-cosmonaut img{border-color:rgba(143,179,255,.65);box-shadow:0 0 0 10px rgba(93,139,255,.16),0 0 44px rgba(93,139,255,.28),0 26px 40px rgba(0,0,0,.48)}
-.pfx-outfit-navigator img{border-color:rgba(111,226,200,.65);box-shadow:0 0 0 10px rgba(75,221,154,.14),0 0 44px rgba(75,221,154,.23),0 26px 40px rgba(0,0,0,.48)}
-.pfx-outfit-cadet img{border-color:rgba(255,213,126,.7);box-shadow:0 0 0 10px rgba(240,186,79,.15),0 0 44px rgba(240,186,79,.22),0 26px 40px rgba(0,0,0,.48)}
+.pfx-outfit-wahlberg img{border-color:rgba(143,179,255,.65);box-shadow:0 0 0 10px rgba(93,139,255,.16),0 0 44px rgba(93,139,255,.28),0 26px 40px rgba(0,0,0,.48)}
+.pfx-outfit-laid img{border-color:rgba(111,226,200,.65);box-shadow:0 0 0 10px rgba(75,221,154,.14),0 0 44px rgba(75,221,154,.23),0 26px 40px rgba(0,0,0,.48)}
+.pfx-outfit-lachowski img{border-color:rgba(255,213,126,.7);box-shadow:0 0 0 10px rgba(240,186,79,.15),0 0 44px rgba(240,186,79,.22),0 26px 40px rgba(0,0,0,.48)}
+.pfx-outfit-pitt img{border-color:rgba(255,168,190,.7);box-shadow:0 0 0 10px rgba(236,114,152,.14),0 0 44px rgba(236,114,152,.22),0 26px 40px rgba(0,0,0,.48)}
 .pfx-character-shadow{position:absolute;bottom:14%;width:180px;height:26px;border-radius:50%;
   background:rgba(0,0,0,.38);filter:blur(9px)}
 @keyframes pfx-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
@@ -1187,13 +1242,19 @@ button.pfx-link-card:hover{border-color:rgba(146,174,255,.45);background:linear-
 .pfx-cosmetic:hover{border-color:rgba(146,174,255,.5);transform:translateY(-2px)}
 .pfx-cosmetic.active{border-color:rgba(146,174,255,.6);box-shadow:0 0 0 2px rgba(93,139,255,.18)}
 .pfx-cosmetic-select{display:flex;flex-direction:column;gap:9px;padding:0;border:0;background:none;color:inherit;
-  font:inherit;text-align:left;cursor:pointer}
+  width:100%;font:inherit;text-align:left;cursor:pointer}
 .pfx-cosmetic-select:disabled{cursor:not-allowed}
 .pfx-cosmetic.locked .pfx-cosmetic-select{opacity:.72}
 .pfx-cosmetic-buy{width:100%;justify-content:center}
 .pfx-cosmetic-preview{position:relative;display:block;height:92px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.1)}
-.pfx-cosmetic-preview.outfit{display:grid;place-items:center;background:rgba(255,255,255,.04)}
-.pfx-cosmetic-preview.outfit img{width:82px;height:82px;object-fit:contain}
+.pfx-cosmetic-preview.outfit{display:block;background:#0b1233}
+.pfx-cosmetic-preview.outfit img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.pfx-avatar-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.07);color:#e8efff;border-radius:9px;padding:8px 10px;font:inherit;font-size:10.5px;font-weight:800;cursor:pointer;
+  transition:background .18s,border-color .18s}
+.pfx-avatar-btn:hover:not(:disabled){background:rgba(255,255,255,.15);border-color:rgba(146,174,255,.45)}
+.pfx-avatar-btn.applied,.pfx-avatar-btn:disabled{opacity:.55;cursor:not-allowed}
+.pfx-avatar-btn.applied{color:#bff0d5;border-color:rgba(75,221,154,.35);background:rgba(75,221,154,.12)}
 .pfx-selected-mark{position:absolute;right:7px;top:7px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;
   font-size:11px;color:#062014;background:#62dfa4;border:2px solid rgba(5,20,45,.55)}
 .pfx-lock{position:absolute;right:7px;top:7px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;
@@ -1212,8 +1273,8 @@ button.pfx-link-card:hover{border-color:rgba(146,174,255,.45);background:linear-
 .pfx-shop-row{display:flex;align-items:center;gap:12px;padding:9px;border-radius:13px;background:rgba(255,255,255,.04);
   border:1px solid rgba(255,255,255,.08)}
 .pfx-shop-preview{flex:none;width:58px;height:58px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.1)}
-.pfx-shop-preview.outfit{display:grid;place-items:center;background:rgba(255,255,255,.04)}
-.pfx-shop-preview.outfit img{width:52px;height:52px;object-fit:contain}
+.pfx-shop-preview.outfit{display:block;background:#0b1233}
+.pfx-shop-preview.outfit img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
 .pfx-shop-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .pfx-shop-text b{font-size:12px;font-weight:800}
 .pfx-shop-text small{font-size:10px;color:var(--pfx-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

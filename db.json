@@ -26,10 +26,10 @@
       "coins": 10000,
       "lastActivity": "Ma'lum emas",
       "selectedBackground": "bg-desert",
-      "selectedOutfit": "outfit-cosmonaut",
+      "selectedOutfit": "outfit-wahlberg",
       "inventory": {
         "backgrounds": ["bg-desert"],
-        "outfits": ["outfit-cosmonaut"]
+        "outfits": ["outfit-wahlberg"]
       },
       "certificates": [
         {
@@ -119,28 +119,36 @@
       "preview": "midnight"
     },
     {
-      "id": "outfit-cosmonaut",
+      "id": "outfit-wahlberg",
       "type": "outfit",
-      "name": "Kosmonavt",
-      "description": "Standart Mars kosmonavti kiyimi.",
+      "name": "Mark Wahlberg",
+      "description": "Yoshligidagi Mark Uolberg portreti — avatarga qo'yish uchun.",
       "priceCoins": 0,
-      "preview": "https://api.dicebear.com/7.x/bottts/svg?seed=MarsStudent&backgroundColor=c0aede"
+      "preview": "/outfits/wahlberg.jpg"
     },
     {
-      "id": "outfit-navigator",
+      "id": "outfit-laid",
       "type": "outfit",
-      "name": "Navigator",
-      "description": "Navigatsiya bo'yicha tajribali qahramon.",
+      "name": "David Laid",
+      "description": "David Leydning 18 yoshidagi surati.",
       "priceCoins": 800,
-      "preview": "https://api.dicebear.com/7.x/bottts/svg?seed=MarsNavigator&backgroundColor=b6e3f4"
+      "preview": "/outfits/laid.jpg"
     },
     {
-      "id": "outfit-cadet",
+      "id": "outfit-lachowski",
       "type": "outfit",
-      "name": "Kadet",
-      "description": "Mars kadetlari uchun maxsus kiyim.",
+      "name": "Chico Lachowski",
+      "description": "Chiko Lachovskiyning yosh model surati.",
       "priceCoins": 1500,
-      "preview": "https://api.dicebear.com/7.x/bottts/svg?seed=MarsCadet&backgroundColor=ffdfbf"
+      "preview": "/outfits/lachowski.jpg"
+    },
+    {
+      "id": "outfit-pitt",
+      "type": "outfit",
+      "name": "Brad Pitt",
+      "description": "Bred Pittning yoshligidagi portreti.",
+      "priceCoins": 2200,
+      "preview": "/outfits/pitt.jpg"
     }
   ],
   "courses": [

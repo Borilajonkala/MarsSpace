@@ -13,6 +13,15 @@ export const SYNC_RETRY_MS = 12000
 
 export const safeArray = (value) => (Array.isArray(value) ? value : [])
 
+// Eski kiyim id'lari yangi qahramonlar id'lariga ko'chiriladi.
+export const OUTFIT_ALIASES = {
+  'outfit-cosmonaut': 'outfit-wahlberg',
+  'outfit-navigator': 'outfit-laid',
+  'outfit-cadet': 'outfit-lachowski',
+}
+
+const mapOutfitId = (id) => OUTFIT_ALIASES[id] || id
+
 const REQUEST_TIMEOUT = 3800
 
 export const request = async (url, options = {}, timeout = REQUEST_TIMEOUT) => {
@@ -56,14 +65,16 @@ export const normalizeProfile = (value, base) => {
     coins: Number.isFinite(Number(raw.coins)) ? Number(raw.coins) : Number(fallback.coins) || 0,
     lastActivity: raw.lastActivity || fallback.lastActivity || "Ma'lum emas",
     selectedBackground: raw.selectedBackground || fallback.selectedBackground || 'bg-desert',
-    selectedOutfit: raw.selectedOutfit || fallback.selectedOutfit || 'outfit-cosmonaut',
+    selectedOutfit: mapOutfitId(
+      raw.selectedOutfit || fallback.selectedOutfit || 'outfit-wahlberg'
+    ),
     inventory: {
       backgrounds: Array.isArray(inventory.backgrounds)
         ? inventory.backgrounds
         : safeArray(baseInventory.backgrounds),
-      outfits: Array.isArray(inventory.outfits)
-        ? inventory.outfits
-        : safeArray(baseInventory.outfits),
+      outfits: safeArray(
+        Array.isArray(inventory.outfits) ? inventory.outfits : baseInventory.outfits
+      ).map(mapOutfitId),
     },
     certificates: Array.isArray(raw.certificates)
       ? raw.certificates
@@ -91,8 +102,8 @@ const BASE_PROFILE = {
   coins: Number(currentUser.coins) || 0,
   lastActivity: "Ma'lum emas",
   selectedBackground: 'bg-desert',
-  selectedOutfit: 'outfit-cosmonaut',
-  inventory: { backgrounds: ['bg-desert'], outfits: ['outfit-cosmonaut'] },
+  selectedOutfit: 'outfit-wahlberg',
+  inventory: { backgrounds: ['bg-desert'], outfits: ['outfit-wahlberg'] },
   certificates: [],
   badges: [],
   history: [],
@@ -116,11 +127,11 @@ const FALLBACK_COSMETICS = [
     preview: 'desert',
   },
   {
-    id: 'outfit-cosmonaut',
+    id: 'outfit-wahlberg',
     type: 'outfit',
-    name: 'Kosmonavt',
+    name: 'Mark Wahlberg',
     priceCoins: 0,
-    preview: DEFAULT_AVATAR,
+    preview: '/outfits/wahlberg.jpg',
   },
 ]
 
