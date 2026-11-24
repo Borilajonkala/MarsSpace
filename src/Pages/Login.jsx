@@ -1,6 +1,9 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import dbData from '../db.json'
+import { Link, useNavigate } from 'react-router-dom'
+import dbData from '../../db.json'
+import { signInWithPopup } from 'firebase/auth'
+import { auth, googleProvider } from '../firebase'
+
 
 const Login = () => {
 	const navigate = useNavigate()
@@ -10,11 +13,22 @@ const Login = () => {
 	const [showPassword, setShowPassword] = useState(false)
 	const [activeLang, setActiveLang] = useState('Uz')
 
-	const mentors = dbData.mentors || []
 
-	const handleSubmit = e => {
-		if (e) e.preventDefault()
-		setErrorMsg('')
+
+async function handleGoogleLogin() {
+  try {
+    await signInWithPopup(auth, googleProvider)
+    navigate('/', { replace: true })
+  } catch (error) {
+    console.error('Google login xatosi:', error.code, error.message)
+  }
+}
+
+  const mentors = dbData.mentors || []
+
+  const handleSubmit = (e) => {
+    if (e) e.preventDefault()
+    setErrorMsg('')
 
 		if (!phoneInput || !passwordInput) {
 			setErrorMsg(
@@ -27,21 +41,18 @@ const Login = () => {
 			return
 		}
 
-		const cleanInput = phoneInput
-			.replace(/[\s+\-()]/g, '')
-			.trim()
-			.toLowerCase()
+    const cleanInput = phoneInput.replace(/[\s+\-()]/g, '').trim().toLowerCase()
+    const inputDigits = cleanInput.replace(/\D/g, '')
 
-		const foundMentor = mentors.find(m => {
-			const cleanPhone = m.phone.replace(/[\s+\-()]/g, '').toLowerCase()
-			const cleanMarsId = (m.marsId || '').toLowerCase()
-			const matchesPhone =
-				cleanPhone.includes(cleanInput) ||
-				cleanPhone.endsWith(cleanInput) ||
-				m.rawPhone === cleanInput
-			const matchesMarsId = cleanMarsId === cleanInput
-			return matchesPhone || matchesMarsId
-		})
+    const foundMentor = mentors.find((m) => {
+      const cleanPhone = (m.rawPhone || m.phone || '').replace(/[\s+\-()]/g, '').toLowerCase()
+      const cleanMarsId = (m.password || '').replace(/[\s+\-()]/g, '').toLowerCase()
+      const matchesPhone =
+        inputDigits.length >= 7 &&
+        (cleanPhone === inputDigits || cleanPhone.endsWith(inputDigits))
+      const matchesMarsId = cleanMarsId === cleanInput || cleanMarsId.endsWith(cleanInput)
+      return matchesPhone || matchesMarsId
+    })
 
 		if (!foundMentor) {
 			setErrorMsg(
@@ -65,107 +76,63 @@ const Login = () => {
 			return
 		}
 
-		localStorage.setItem('mars_auth_user', JSON.stringify(foundMentor))
-		navigate('/')
-	}
+    const ClickUser = () => {
+      localStorage.setItem('token', JSON.stringify())
+      navigate('/')
+    }
 
-	const handleQuickLogin = mentor => {
-		localStorage.setItem('mars_auth_user', JSON.stringify(mentor))
-		navigate('/')
-	}
+    ClickUser(foundMentor)
+  }
 
-	return (
-		<div className='min-h-screen w-full bg-linear-to-b from-[#180a08] via-[#240e0b] to-[#120605] flex flex-col items-center justify-center p-4 relative font-sans'>
-			
-			<div className='absolute inset-0 overflow-hidden pointer-events-none'>
-				<div className='absolute top-1/4 left-1/2 -translate-x-1/2 w-[650px] h-[650px] bg-red-600/10 rounded-full blur-3xl'></div>
-				<div className='absolute -bottom-40 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-[#d94826]/15 rounded-[100%] blur-2xl'></div>
-			</div>
+  return (
+    <div className="min-h-screen w-full bg-linear-to-b from-[#180a08] via-[#240e0b] to-[#120605] flex flex-col items-center justify-center p-4 relative font-sans">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[650px] h-[650px] bg-red-600/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-[#d94826]/15 rounded-[100%] blur-2xl"></div>
+      </div>
 
-			<div className='w-full max-w-md bg-white rounded-3xl p-8 sm:p-10 shadow-2xl relative z-10 transition-all'>
-				<div className='flex flex-col items-center mb-6'>
-					<div className='flex items-center gap-1'>
-						<span className='text-4xl font-extrabold tracking-tight text-gray-900'>
-							mars
-						</span>
-						<span className='w-3.5 h-3.5 rounded-full border-3 border-red-500 bg-white inline-block -mt-4'></span>
-					</div>
-					<p className='text-sm font-medium text-gray-500 mt-2'>
-						{activeLang === 'Ru'
-							? 'Вход для сотрудников'
-							: activeLang === 'En'
-								? 'Staff Login'
-								: 'Xodimlar uchun kirish'}
-					</p>
-				</div>
+      <div className="w-full max-w-md bg-white rounded-3xl p-8 sm:p-10 shadow-2xl relative z-10 transition-all">
+        <div className="flex flex-col items-center mb-6">
+          <div className="flex items-center gap-1">
+            <span className="text-4xl font-extrabold tracking-tight text-gray-900">mars</span>
+            <span className="w-3.5 h-3.5 rounded-full border-3 border-red-500 bg-white inline-block -mt-4"></span>
+          </div>
+          <p className="text-sm font-medium text-gray-500 mt-2">
+            {activeLang === 'Ru'
+              ? 'Вход для сотрудников'
+              : activeLang === 'En'
+              ? 'Staff Login'
+              : 'Xodimlar uchun kirish'}
+          </p>
+        </div>
 
-				<button
-					type='button'
-					onClick={() => mentors[0] && handleQuickLogin(mentors[0])}
-					className='w-full bg-[#1b223c] hover:bg-[#252f52] text-white py-3.5 px-4 rounded-xl font-semibold flex items-center justify-center gap-3 transition shadow-md active:scale-[0.99] cursor-pointer'
-				>
-					<svg
-						className='w-6 h-6 text-red-400'
-						viewBox='0 0 24 24'
-						fill='none'
-						stroke='currentColor'
-						strokeWidth='2'
-						strokeLinecap='round'
-						strokeLinejoin='round'
-					>
-						<path d='M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4' />
-						<path d='M14 13.12c0 2.38 0 6.38-1 8.88' />
-						<path d='M17.29 21.02c.12-.6.43-2.3.5-3.02' />
-						<path d='M2 12a10 10 0 0 1 18-6' />
-						<path d='M2 16h.01' />
-						<path d='M21.8 16c.2-2 .131-5.354 0-6' />
-						<path d='M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2' />
-						<path d='M8.65 22c.21-.66.45-1.32.57-2' />
-						<path d='M9 6.8a6 6 0 0 1 9 5.2v2' />
-					</svg>
-					<span>
-						{activeLang === 'Ru'
-							? 'Войти через Mars ID'
-							: activeLang === 'En'
-								? 'Sign in with Mars ID'
-								: 'Mars ID orqali kirish'}
-					</span>
-				</button>
+        {errorMsg && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl flex items-center gap-2">
+            <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <span>{errorMsg}</span>
+          </div>
+        )}
 
-				<div className='relative my-6 flex items-center justify-center'>
-					<div className='border-t border-gray-200 w-full'></div>
-					<span className='bg-white px-3 text-xs uppercase font-medium text-gray-400 absolute'>
-						{activeLang === 'Ru' ? 'или' : activeLang === 'En' ? 'or' : 'yoki'}
-					</span>
-				</div>
+        <button type="button" onClick={handleGoogleLogin}>
+  Google bilan kirish
+</button>
 
-				{errorMsg && (
-					<div className='mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl flex items-center gap-2'>
-						<svg
-							className='w-4 h-4 shrink-0'
-							viewBox='0 0 24 24'
-							fill='none'
-							stroke='currentColor'
-							strokeWidth='2'
-						>
-							<circle cx='12' cy='12' r='10' />
-							<line x1='12' y1='8' x2='12' y2='12' />
-							<line x1='12' y1='16' x2='12.01' y2='16' />
-						</svg>
-						<span>{errorMsg}</span>
-					</div>
-				)}
 
-				<form onSubmit={handleSubmit} className='space-y-4'>
-					<div>
-						<input
-							type='text'
-							placeholder='+998'
-							value={phoneInput}
-							onChange={e => setPhoneInput(e.target.value)}
-							className='w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-800 focus:outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100 transition placeholder-gray-400 text-sm'
-						/>
-					</div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <input
+              type="text"
+              placeholder="+998"
+              value={phoneInput}
+              onChange={(e) => setPhoneInput(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-800 focus:outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100 transition placeholder-gray-400 text-sm"
+            />
+          </div>
 
 					<div className='relative'>
 						<input
@@ -220,50 +187,30 @@ const Login = () => {
 					</button>
 				</form>
 
-				<div className='mt-6 pt-5 border-t border-gray-100'>
-					<p className='text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2.5 text-center'>
-						Tezkor sinov uchun mentor hisobi:
-					</p>
-					<div className='grid grid-cols-2 gap-2'>
-						{mentors.slice(0, 4).map(m => (
-							<button
-								key={m.id}
-								onClick={() => handleQuickLogin(m)}
-								className='text-left text-xs p-2.5 rounded-xl border border-gray-200 hover:border-red-300 hover:bg-red-50/50 transition cursor-pointer'
-							>
-								<p className='font-bold text-gray-900 truncate'>{m.fullName}</p>
-								<p className='text-[10px] text-gray-500 truncate'>
-									{m.marsId} • {m.role.split(' ')[0]}
-								</p>
-							</button>
-						))}
-					</div>
-					<p className='text-[11px] text-gray-400 text-center mt-2.5'>
-						Default parol:{' '}
-						<code className='bg-gray-100 px-1 py-0.5 rounded text-gray-700'>
-							password123
-						</code>
-					</p>
-				</div>
-			</div>
 
-			<div className='flex items-center gap-1.5 mt-6 bg-black/40 backdrop-blur-md p-1.5 rounded-full border border-white/10 z-10'>
-				{['En', 'Ru', 'Uz'].map(lang => (
-					<button
-						key={lang}
-						onClick={() => setActiveLang(lang)}
-						className={`px-3 py-1 rounded-full text-xs font-medium transition cursor-pointer ${
-							activeLang === lang
-								? 'bg-white/20 text-white shadow-xs'
-								: 'text-gray-400 hover:text-white'
-						}`}
-					>
-						{lang}
-					</button>
-				))}
-			</div>
-		</div>
-	)
+
+      <div className='flex '>
+        <p>Akauntga ega emasmisiz <span className='text-blue-400'><Link to={'/register'}>Register</Link></span></p>
+      </div>
+      </div>
+
+      <div className="flex items-center gap-1.5 mt-6 bg-black/40 backdrop-blur-md p-1.5 rounded-full border border-white/10 z-10">
+        {['En', 'Ru', 'Uz'].map((lang) => (
+          <button
+            key={lang}
+            onClick={() => setActiveLang(lang)}
+            className={`px-3 py-1 rounded-full text-xs font-medium transition cursor-pointer ${
+              activeLang === lang ? 'bg-white/20 text-white shadow-xs' : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            {lang}
+          </button>
+        ))}
+        
+      </div>
+
+    </div>
+  )
 }
 
 export default Login

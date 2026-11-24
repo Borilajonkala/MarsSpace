@@ -1,4 +1,21 @@
 {
+  "TYPE_META": {
+    "tadbir": {
+      "label": "Tadbir",
+      "badge": "bg-blue-50 text-blue-700 border-blue-200",
+      "emoji": "🎉"
+    },
+    "togarak": {
+      "label": "To'garak",
+      "badge": "bg-emerald-50 text-emerald-700 border-emerald-200",
+      "emoji": "🧩"
+    },
+    "hackathon": {
+      "label": "Xakaton",
+      "badge": "bg-purple-50 text-purple-700 border-purple-200",
+      "emoji": "🚀"
+    }
+  },
   "currentUser": {
     "id": "std-current",
     "marsId": "M-31710",
@@ -142,33 +159,39 @@
     {
       "rank": 1,
       "name": "Islomov H.",
-      "score": 5410
+      "score": 5410,
+      "id": "1924"
     },
     {
       "rank": 2,
       "name": "Hasanov A.",
-      "score": 4980
+      "score": 4980,
+      "id": "4ce4"
     },
     {
       "rank": 3,
       "name": "Erkinova M.",
-      "score": 4820
+      "score": 4820,
+      "id": "4ad0"
     },
     {
       "rank": 4,
       "name": "Toshmatov D.",
-      "score": 4650
+      "score": 4650,
+      "id": "2393"
     },
     {
       "rank": 5,
       "name": "Karimov J.",
-      "score": 4320
+      "score": 4320,
+      "id": "5f36"
     },
     {
       "rank": 6,
       "name": "Siz",
       "score": 0,
-      "isCurrent": true
+      "isCurrent": true,
+      "id": "9ba2"
     }
   ],
   "mentors": [
@@ -201,8 +224,8 @@
       "fullName": "Aziza Karimova",
       "firstName": "Aziza",
       "lastName": "Karimova",
-      "phone": "+998998765432",
-      "rawPhone": "998998765432",
+      "phone": "+99812345678",
+      "rawPhone": "99812345678",
       "password": "password123",
       "role": "Backend & AI Mentor",
       "specialty": "Python Backend & Machine Learning",
@@ -861,6 +884,27 @@
       "status": "active",
       "notes": "Python Django REST loyihasini mustaqil tugatdi.",
       "joinedDate": "2026-08-15"
+    },
+    {
+      "id": "7e02",
+      "name": "Madara the ghost",
+      "email": "abdumavlon9999@gmail.com",
+      "phone": "+998(90) 123-45-67",
+      "password": "996398403985093"
+    },
+    {
+      "id": "6cec",
+      "name": "Madara the ghost",
+      "email": "abdumavlon9999@gmail.com",
+      "phone": "+998(90) 123-45-67",
+      "password": "69696969966"
+    },
+    {
+      "id": "1e53",
+      "name": "rauf rich",
+      "email": "abdumavlon9999@gmail.com",
+      "phone": "+998675755467",
+      "password": "979876545678"
     }
   ],
   "lessons": [
@@ -1303,6 +1347,49 @@
       "image": "/images/post1.jpg",
       "likedBy": [],
       "comments": []
+    }
+  ],
+  "users": [
+    {
+      "id": "ecf9",
+      "name": "2313131",
+      "email": "abdumavlon9999@gmail.com",
+      "phone": "+9989823981321"
+    }
+  ],
+  "CLUBS": [
+    {
+      "id": "club-shaxmat",
+      "name": "Shaxmat - Turniri",
+      "emoji": "",
+      "image": "https://lab.marsit.uz/media/kruzhki/c3c6d1b2a2694c53961a0f417fd1fa15.png",
+      "description": "Ochiq turnirlar, debyut nazariyasi va endshpil mashg'ulotlari. Boshlovchilar uchun alohida guruh bor.",
+      "schedule": "Seshanba va payshanba · 15:00",
+      "mentor": "Sardor Aliyev",
+      "location": "Chilonzor filiali · 204-xona",
+      "members": 18
+    },
+    {
+      "id": "club-krestiki-noliki",
+      "name": "Krestiki-noliki",
+      "emoji": "",
+      "image": "https://young-teacher.site/wp-content/uploads/2020/12/krestiki-noliki.jpg",
+      "description": "Mantiqiy o'yinlar klubi: krestiki-noliki, karto4kalar va tezkor fikrlash musobaqalari.",
+      "schedule": "Chorshanba · 16:30",
+      "mentor": "Dilnoza Karimova",
+      "location": "Yunusobod filiali · 101-xona",
+      "members": 12
+    },
+    {
+      "id": "club-movie-day",
+      "name": "Movie Day",
+      "emoji": "",
+      "image": "https://aroundthekampfire.com/wp-content/uploads/2018/05/classrooom-movie-day-ideas-educational-2.jpg",
+      "description": "Har juma film tomosha qilamiz va ingliz tilida muhokama qilamiz. Popkorn bizdan.",
+      "schedule": "Juma · 17:00",
+      "mentor": "Aziza Yusupova",
+      "location": "Chilonzor filiali · Konferens-zal",
+      "members": 26
     }
   ]
 }
