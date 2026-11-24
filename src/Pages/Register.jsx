@@ -9,7 +9,7 @@ async function handleSubmit(event) {
   const user = Object.fromEntries(new FormData(form))
 
   try {
-    const response = await fetch('http://localhost:3001/students', {
+    const response = await fetch('http://localhost:3000/students', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user),

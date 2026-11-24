@@ -46,7 +46,7 @@ async function handleGoogleLogin() {
 
     const foundMentor = mentors.find((m) => {
       const cleanPhone = (m.rawPhone || m.phone || '').replace(/[\s+\-()]/g, '').toLowerCase()
-      const cleanMarsId = (m.password || '').replace(/[\s+\-()]/g, '').toLowerCase()
+      const cleanMarsId = (m.marsId || '').replace(/[\s+\-()]/g, '').toLowerCase()
       const matchesPhone =
         inputDigits.length >= 7 &&
         (cleanPhone === inputDigits || cleanPhone.endsWith(inputDigits))
@@ -84,6 +84,7 @@ async function handleGoogleLogin() {
     }
 
     ClickUser(foundMentor)
+    // ===== O'ZGARTIRILGAN JOY (tugadi) =====
   }
 
   return (
