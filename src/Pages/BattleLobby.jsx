@@ -182,8 +182,6 @@ const battleCss = `
 
 @media(max-width:860px){
   .vs{gap:20px}
-<<<<<<< HEAD
->>>>>>> 16aa550210adab982ff9c040691117c6c467dcfa:src/Pages/Entertainment.jsx
 }
 `;
 

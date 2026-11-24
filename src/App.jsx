@@ -1,22 +1,21 @@
 import { Route, Routes } from 'react-router-dom'
 import Header from './Components/Header'
 import About from './Pages/About'
-import Alogo from './Pages/Alogo'
 import Asosiy from './Pages/Asosiy'
 import Blog from './Pages/Blog'
 import Home from './Pages/Home'
 import Login from './Pages/Login'
 import MyWorks from './Pages/My-works'
 import Register from './Pages/Register'
-
+import Algo from './Pages/Algo'
+import Payment from './Pages/Payment'
+import Hackathon from './Pages/Hackathon'
+import SpaceShop from './Pages/SpaceShop'
+import Reyting from './Pages/Reyting'
 import BattleLobby from './Pages/BattleLobby'
 import Events from './Pages/Events'
-
-import Hackathon from './Pages/Hackathon'
-import Payment from './Pages/Payment'
 import Profil from './Pages/Profil'
-import Reyting from './Pages/Reyting'
-import SpaceShop from './Pages/SpaceShop'
+
 const App = () => {
 	return (
 		<Routes>
@@ -29,14 +28,10 @@ const App = () => {
 				<Route path='/my-works' element={<MyWorks />} />
 				<Route path='/games' element={<BattleLobby />} />
 				<Route path='/battle' element={<BattleLobby />} />
-				<Route path='/alogo' element={<Alogo />} />
-				<Route path='/algo' element={<Alogo />} />
+				<Route path='/algo' element={<Algo />} />
+				<Route path='/alogo' element={<Algo />} />
 				<Route path='/space-shop' element={<SpaceShop />} />
 				<Route path='/blog' element={<Blog />} />
-				<Route path='/events' element={<Events />} />
-				<Route path='/rating' element={<Home />} />
-				<Route path='/payment' element={<About />} />
-				<Route path='/space-shop' element={<SpaceShop />} />
 				<Route path='/hackathon' element={<Hackathon />} />
 				<Route path='/events' element={<Events />} />
 				<Route path='/rating' element={<Reyting />} />

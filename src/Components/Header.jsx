@@ -1,12 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-import  { useState } from 'react'
-=======
 import { useEffect, useState } from 'react'
->>>>>>> 16aa550210adab982ff9c040691117c6c467dcfa
-=======
-import { useEffect, useState } from 'react'
->>>>>>> 9479d815f412338224381c0ba55b8053c8890263
 import { NavLink, Outlet, useLocation, useNavigate, Link } from 'react-router-dom'
 import {
     COIN_BALANCE_EVENT,
@@ -72,8 +64,9 @@ const Header = ({ children }) => {
                 return 'Mening ishlarim'
             case '/games':
                 return "O'yin-kulgi"
+            case '/algo':
             case '/alogo':
-                return "Alogo"
+                return "Algo"
             case '/blog':
                 return 'Blog'
             case '/hackathon':
@@ -144,8 +137,8 @@ const Header = ({ children }) => {
             )
         },
         {
-            to: '/alogo',
-            label: 'Alogo',
+            to: '/algo',
+            label: 'Algo',
             icon: (
                 <span className="font-mono font-bold text-sm tracking-tight">&lt;/&gt;</span>
             )
@@ -416,7 +409,7 @@ const Header = ({ children }) => {
 
                         <div className="space-y-1 text-xs">
                             <a
-                                href="http://localhost:5173/"
+                                href="http://localhost:5173/eduverse"
                                 className="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-semibold transition"
                             >
                                 <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -426,7 +419,6 @@ const Header = ({ children }) => {
                                 </svg>
                                 <span>Eduverse</span>
                             </a>
-
                             <a
                                 href="#pochta"
                                 className="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-semibold transition"

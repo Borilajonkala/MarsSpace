@@ -41,22 +41,6 @@
       "description": "HTML5, CSS3, Tailwind CSS, JavaScript ES6+, React.js va Redux Toolkit orqali professional veb ilovalar yaratish."
     },
     {
-     "id": "std-current",
-  "marsId": "M-31710",
-  "fullName": "Siz",
-  "groupCode": "YB-3171",
-  "coins": 239,
-  "xp": 650,
-  "theme": "YO'LAK",
-  "debtWarning": true,
-  "level": 3,
-  "rank": "Space Rookie",
-  "groupId": "grp-fe-142",
-  "branchId": "branch-chilonzor",
-  "trophies": 7,
-  "category": "Koderlar"
-},
-    {
       "id": "course-python",
       "title": "Python Backend & AI",
       "shortTitle": "Python",
@@ -1403,5 +1387,570 @@
       "location": "Chilonzor filiali · Konferens-zal",
       "members": 26
     }
-  ]
+  ],
+  "companies": [
+    {
+      "id": "amazon",
+      "name": "Amazon",
+      "logo": "https://lab.marsit.uz/media/quiz_theme_images/Amazon/Amazon-512.webp",
+      "logoClass": "rounded-full object-cover",
+      "tasks": [
+        "Buyurtmalar Summasini Hisoblash",
+        "Mahsulot Narxlarini Chegirma Bilan Qayta Hisoblash",
+        "Ombor Qoldiqlarini Filtrlash",
+        "Eng Ko'p Sotilgan Mahsulotni Topish",
+        "Yetkazib Berish Kunlarini Hisoblash",
+        "Mijoz Sharhlarini Baholash",
+        "Takroriy Mahsulot IDlarini Olib Tashlash",
+        "Savatdagi Mahsulotlar Sonini Aniqlash",
+        "Valyuta Kursi Bo'yicha Narxlarni Aylantirish",
+        "Qaytarilgan Buyurtmalarni Ajratish"
+      ],
+      "questions": [
+        {
+          "question": "Buyurtmalar summasini hisoblash uchun qaysi yondashuv to'g'ri?",
+          "options": [
+            "orders.map((order) => order.price * order.qty)",
+            "orders.reduce((sum, order) => sum + order.price * order.qty, 0)",
+            "orders.filter((order) => order.price > 0)",
+            "orders.length * orders[0].price"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "[10, 20, 30].filter((n) => n > 15) ning natijasi qanday?",
+          "options": [
+            "[20, 30]",
+            "[10, 20]",
+            "[30]",
+            "[10, 20, 30]"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "Mahsulot narxiga 20% chegirma qo'llash uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "price * 1.2",
+            "price - 20",
+            "price * 0.8",
+            "price / 0.8"
+          ],
+          "answer": 2
+        },
+        {
+          "question": "Takroriy mahsulot IDlarini olib tashlash uchun nima ishlatiladi?",
+          "options": [
+            "ids.map((id) => id)",
+            "[...new Set(ids)]",
+            "ids.sort()",
+            "ids.join(',')"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "'12.5' matnini songa qanday aylantirish mumkin?",
+          "options": [
+            "Boolean('12.5')",
+            "parseInt('12.5')",
+            "Number('12.5')",
+            "'12.5'.length"
+          ],
+          "answer": 2
+        },
+        {
+          "question": "Omborda qoldig'i 0 dan katta mahsulotlarni qanday ajratish mumkin?",
+          "options": [
+            "products.map((p) => p.stock > 0)",
+            "products.filter((p) => p.stock > 0)",
+            "products.find((p) => p.stock > 0)",
+            "products.reduce((p) => p.stock > 0)"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "Yetkazib berish kunlarini hisoblash uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "(new Date(b) - new Date(a)) / 100",
+            "(new Date(b) + new Date(a)) / 86400000",
+            "b - a",
+            "(new Date(b) - new Date(a)) / (1000 * 60 * 60 * 24)"
+          ],
+          "answer": 3
+        },
+        {
+          "question": "Eng qimmat mahsulot narxini topish uchun nima ishlatiladi?",
+          "options": [
+            "Math.max(...prices)",
+            "Math.min(...prices)",
+            "prices.sort()",
+            "Math.round(prices)"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "Dollar narxini so'mga aylantirish uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "price / rate",
+            "price * rate",
+            "price + rate",
+            "rate / price"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "Qaytarilgan buyurtmalarni qanday ajratish mumkin?",
+          "options": [
+            "orders.filter((o) => o.status === 'returned')",
+            "orders.find((o) => o.status === 'returned')",
+            "orders.map((o) => o.status === 'returned')",
+            "orders.sort((o) => o.status)"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "Savatdagi mahsulotlar sonini aniqlash uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "cart.length",
+            "cart.sum()",
+            "cart.size()",
+            "cart.total"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "Mijoz sharhlarining o'rtacha bahosini hisoblash uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "Math.max(...reviews)",
+            "reviews.length",
+            "reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length",
+            "reviews[0].rating"
+          ],
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "id": "netflix",
+      "name": "Netflix",
+      "logo": "https://lab.marsit.uz/media/quiz_theme_images/Netflix/Netflix_icon.jpeg",
+      "logoClass": "rounded-full object-cover border border-slate-100",
+      "tasks": [
+        "Film Janrlarini Ajratib Olish",
+        "Tomosha Vaqtini Hisoblash",
+        "Eng Uzoq Filmni Topish",
+        "Serial Fasllarini Saralash",
+        "Foydalanuvchi Reytinglarini Baholash",
+        "Takroriy Tomoshalarni Olib Tashlash",
+        "Tavsiya Ro'yxatini Tuzish",
+        "Subtitr Tillarini Filtrlash"
+      ],
+      "questions": [
+        {
+          "question": "'Action, Drama, Sci-Fi' matnidan janrlarni qanday ajratish mumkin?",
+          "options": [
+            "genres.split(', ')",
+            "genres.slice(', ')",
+            "genres.join(', ')",
+            "genres.trim(', ')"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "2 soat 15 daqiqani faqat daqiqalarda hisoblash uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "2 + 15",
+            "2 * 60 + 15",
+            "2 * 100 + 15",
+            "15 * 60 + 2"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "Eng uzun filmni topish uchun qaysi yondashuv to'g'ri?",
+          "options": [
+            "films.find((f) => f.duration)",
+            "films.reduce((longest, f) => (f.duration > longest.duration ? f : longest))",
+            "films.map((f) => f.duration)",
+            "films.sort((a, b) => a.duration - b.duration)[0]"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "Reytinglar o'rtachasini hisoblash uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "ratings.reduce((sum, r) => sum + r, 0) / ratings.length",
+            "ratings.length",
+            "Math.max(...ratings)",
+            "ratings.reduce((sum, r) => sum + r, 0)"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "Fasllarni o'sish tartibida saralash uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "seasons.sort((a, b) => b.season - a.season)",
+            "seasons.sort((a, b) => a.season - b.season)",
+            "seasons.sort()",
+            "seasons.reverse()"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "Takroriy tomoshalarni olib tashlash uchun nima ishlatiladi?",
+          "options": [
+            "[...new Set(shows)]",
+            "shows.slice()",
+            "shows.concat(shows)",
+            "shows.push(shows)"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "Subtitr tillari ichida kerakli til borligini qanday tekshirish mumkin?",
+          "options": [
+            "lang.includes(subtitles)",
+            "subtitles === lang",
+            "subtitles.includes(lang)",
+            "subtitles.push(lang)"
+          ],
+          "answer": 2
+        },
+        {
+          "question": "Filmlar ro'yxatidan tasodifiy tavsiya tanlash uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "Math.floor(Math.random() * films.length)",
+            "Math.random(films.length)",
+            "Math.round(films.length)",
+            "films[Math.random()]"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "[10, 9, 100].sort() ning natijasi qanday?",
+          "options": [
+            "[9, 10, 100]",
+            "[100, 10, 9]",
+            "[10, 9, 100]",
+            "[10, 100, 9]"
+          ],
+          "answer": 3
+        },
+        {
+          "question": "Film davomiyligiga to'g'ri murojaat qaysi?",
+          "options": [
+            "film(duration)",
+            "film[duration]",
+            "film.duration",
+            "duration.film"
+          ],
+          "answer": 2
+        },
+        {
+          "question": "Janrlar ro'yxatida 'Drama' borligini qanday tekshirish mumkin?",
+          "options": [
+            "genres.push('Drama')",
+            "genres.split('Drama')",
+            "genres.includes('Drama')",
+            "genres.indexOf('Drama') > 0"
+          ],
+          "answer": 2
+        },
+        {
+          "question": "Reytinglar orasidan eng pastini topish uchun nima ishlatiladi?",
+          "options": [
+            "Math.max(...ratings)",
+            "Math.min(...ratings)",
+            "Math.round(ratings)",
+            "ratings.length"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "google",
+      "name": "Google",
+      "logo": "https://lab.marsit.uz/media/quiz_theme_images/Google/Google_icon.png",
+      "logoClass": "rounded-full object-contain p-2 bg-slate-50",
+      "tasks": [
+        "Gmail Domenli Manzillarni Ajratish",
+        "Qidiruv So'zlari Uzunligini Hisoblash",
+        "Tadbirlardagi Noyob Ishtirokchilar Soni",
+        "Shahar Nomlarini Alifbo Tartibida Saralash",
+        "Videolar Tomosha Qilingan Vaqtni Daqiqaga Aylantirish",
+        "O'zbek Tilidagi Matnlarni Ajratib Olish",
+        "Matn Belgilar Sonini Hisoblash",
+        "Email Domenlarini Ajratib Olish",
+        "So'zlar Qanchalik Ko'p Qidirilganini Aniqlash",
+        "YouTube Kanal Nomlarini Normallashtirish",
+        "Qidiruv Natijalaridan URL Manzillarni Ajratish"
+      ],
+      "questions": [
+        {
+          "question": "'ali@gmail.com' manzilidan domenni qanday olish mumkin?",
+          "options": [
+            "email.split('@')[0]",
+            "email.split('@')[1]",
+            "email.slice(0, 5)",
+            "email.indexOf('@')"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "Matndagi so'zlar sonini to'g'ri hisoblaydigan ifoda qaysi?",
+          "options": [
+            "text.split(' ').length",
+            "text.trim().split(/\\s+/).length",
+            "text.length",
+            "text.indexOf(' ')"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "Ishtirokchilar ro'yxatidagi noyob ismlar sonini qanday aniqlash mumkin?",
+          "options": [
+            "participants.length",
+            "new Set(participants).size",
+            "participants.filter((p) => p).length",
+            "Object.keys(participants).length"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "Shahar nomlarini alifbo tartibida saralash uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "cities.sort()",
+            "[...cities].sort((a, b) => a.localeCompare(b))",
+            "cities.reverse()",
+            "cities.map((c) => c.length)"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "5400 sekund necha daqiqa bo'ladi?",
+          "options": [
+            "90",
+            "54",
+            "540",
+            "9"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "Matn ichidan URL manzillarni ajratish uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "lines.filter((l) => l.startsWith('http'))",
+            "lines.map((l) => l.startsWith('http'))",
+            "lines.find((l) => l.startsWith('http'))",
+            "lines.join('http')"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "Matndagi belgilar sonini (probellar bilan) nima beradi?",
+          "options": [
+            "text.trim().length",
+            "text.length",
+            "text.split(' ').length",
+            "text.match(/[a-z]/g).length"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "So'zlarning qanchalik ko'p qidirilganini hisoblash uchun qulay yondashuv qaysi?",
+          "options": [
+            "words.reduce((acc, w) => { acc[w] = (acc[w] || 0) + 1; return acc; }, {})",
+            "words.map((w) => w.length)",
+            "words.sort()",
+            "words.filter((w) => w)"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "YouTube kanal nomini normallashtirish uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "name.trim().toLowerCase()",
+            "name.toUpperCase()",
+            "name.split(' ')",
+            "name.length"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "'a,b,c'.split(',') ning natijasi qanday?",
+          "options": [
+            "'abc'",
+            "['a', 'b', 'c']",
+            "['a,b,c']",
+            "3"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "O'zbek tilidagi matnlarni ajratib olish uchun qaysi usul qulay?",
+          "options": [
+            "text.match(/[a-z']/gi) kabi regex",
+            "text.toUpperCase()",
+            "text.length",
+            "text.split(',')"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "Email manzillaridan faqat gmail.com domenini qanday ajratish mumkin?",
+          "options": [
+            "emails.map((e) => e.split('@')[0])",
+            "emails.find((e) => e)",
+            "emails.filter((e) => e.endsWith('@gmail.com'))",
+            "emails.join('gmail')"
+          ],
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "id": "facebook",
+      "name": "facebook",
+      "logo": "https://lab.marsit.uz/media/quiz_theme_images/Facebook/Facebook_f_logo_2021.svg.png",
+      "logoClass": "rounded-full object-cover",
+      "tasks": [
+        "Do'stlar Ro'yxatidagi Noyob Ismlar",
+        "Postdagi Layk va Komentariylarni Hisoblash",
+        "Xabar Matnidagi So'zlarni Ajratish",
+        "Guruh A'zolarini Saralash",
+        "Rasm Yuklash Vaqtini Aniqlash",
+        "Hashtaglarni Ajratib Olish",
+        "Foydalanuvchi Ismlarini Formatlash",
+        "Eng Faol Foydalanuvchini Topish",
+        "Postlar Sanasini Saralash",
+        "Emoji Sonini Hisoblash",
+        "Takroriy Xabarlarni Olib Tashlash",
+        "Guruh Postlarini Filtrlash"
+      ],
+      "questions": [
+        {
+          "question": "Ismning birinchi harfini katta qilish uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "name.toUpperCase()",
+            "name[0].toUpperCase() + name.slice(1)",
+            "name.slice(1).toUpperCase()",
+            "name.toLowerCase()"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "Matndan hashtaglarni ajratib olish uchun qaysi ifoda ishlatiladi?",
+          "options": [
+            "text.match(/#\\w+/g)",
+            "text.match(/\\d+/g)",
+            "text.split('#')",
+            "text.includes('#')"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "Postdagi layklar va komentariylar sonini qo'shib hisoblash uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "post.likes.length + post.comments.length",
+            "post.likes + post.comments",
+            "post.likes * post.comments",
+            "post.likes.length"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "Do'stlar ro'yxatidagi noyob ismlar sonini qanday topish mumkin?",
+          "options": [
+            "names.length",
+            "[...new Set(names)].length",
+            "names.sort().length",
+            "names.join('').length"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "Postlarni sana bo'yicha o'sish tartibida saralash uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "posts.sort((a, b) => new Date(a.date) - new Date(b.date))",
+            "posts.sort((a, b) => new Date(b.date) - new Date(a.date))",
+            "posts.sort()",
+            "posts.reverse()"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "Har bir foydalanuvchi nechta post yozganini hisoblash uchun qaysi yondashuv to'g'ri?",
+          "options": [
+            "posts.map((p) => p.author)",
+            "posts.reduce((acc, p) => { acc[p.author] = (acc[p.author] || 0) + 1; return acc; }, {})",
+            "posts.filter((p) => p.author)",
+            "posts.find((p) => p.author)"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "Emojilarni to'g'ri (bittadan) sanash uchun qaysi ifoda ishonchli?",
+          "options": [
+            "text.length",
+            "Array.from(text).length",
+            "text.split('').length",
+            "text.trim().length"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "Takroriy xabarlarni olib tashlash uchun nima ishlatiladi?",
+          "options": [
+            "messages.filter((m) => m)",
+            "[...new Set(messages)]",
+            "messages.map((m) => m)",
+            "messages.sort((m) => m)"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "Guruh postlarini guruh IDsi bo'yicha ajratish uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "posts.filter((p) => p.groupId === groupId)",
+            "posts.map((p) => p.groupId === groupId)",
+            "posts.find((p) => p.groupId === groupId)",
+            "posts.sort((p) => p.groupId)"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "'salom dunyo'.split(' ') ning natijasi qanday?",
+          "options": [
+            "['salomdunyo']",
+            "['salom', 'dunyo']",
+            "2",
+            "'salom'"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "Guruh a'zolarini ismi bo'yicha alifbo tartibida saralash uchun qaysi ifoda to'g'ri?",
+          "options": [
+            "members.length",
+            "[...members].sort((a, b) => a.name.localeCompare(b.name))",
+            "members.filter((m) => m.name)",
+            "members.map((m) => m.name.length)"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "Rasm yuklash vaqtini matndan Date obyektiga aylantirish uchun nima ishlatiladi?",
+          "options": [
+            "Date.now(uploadedAt)",
+            "uploadedAt.toDate()",
+            "new Date(uploadedAt)",
+            "parseDate(uploadedAt)"
+          ],
+          "answer": 2
+        }
+      ]
+    }
+  ],
+  "algoResults": [],
+  "$schema": "./node_modules/json-server/schema.json"
 }
