@@ -2,43 +2,56 @@ import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import dbData from '../../db.json'
 
-const QUICK_AMOUNTS = [990000, 10000, 980000]
+// Barcha summalar, to'lov usullari va boshlang'ich tarix db.json dan olinadi
+const PAYMENT_CONFIG = dbData.payment
+const QUICK_AMOUNTS = PAYMENT_CONFIG.quickAmounts
+const INITIAL_PAYMENTS = PAYMENT_CONFIG.history
 
-const PAYMENT_METHODS = [
-    {
-        id: 'payme',
-        name: 'Payme',
-        logo: (
-            <div className="flex flex-col items-center justify-center leading-none">
-                <span className="text-lg font-black text-[#35b8ec] tracking-tight">Pay</span>
-                <span className="text-lg font-black text-[#35b8ec] tracking-tight -mt-1">me</span>
-            </div>
-        )
-    },
-    {
-        id: 'click',
-        name: 'Click',
-        logo: (
-            <div className="w-12 h-12 rounded-2xl bg-[#0d1b3e] flex items-center justify-center">
-                <div className="w-6 h-6 rounded-full border-[6px] border-[#00a8e8]" />
-            </div>
-        )
-    },
-    {
-        id: 'uzum',
-        name: 'Uzum Bank',
-        logo: (
-            <div className="w-12 h-12 rounded-2xl bg-[#6b2bf5] flex items-center justify-center">
-                <span className="text-white font-black text-2xl leading-none">U</span>
-            </div>
-        )
+// Logotiplar usul id si bo'yicha tanlanadi
+const METHOD_LOGOS = {
+    payme: (
+        <div className="flex flex-col items-center justify-center leading-none">
+            <span className="text-lg font-black text-[#35b8ec] tracking-tight">Pay</span>
+            <span className="text-lg font-black text-[#35b8ec] tracking-tight -mt-1">me</span>
+        </div>
+    ),
+    click: (
+        <div className="w-12 h-12 rounded-2xl bg-[#0d1b3e] flex items-center justify-center">
+            <div className="w-6 h-6 rounded-full border-[6px] border-[#00a8e8]" />
+        </div>
+    ),
+    uzum: (
+        <div className="w-12 h-12 rounded-2xl bg-[#6b2bf5] flex items-center justify-center">
+            <span className="text-white font-black text-2xl leading-none">U</span>
+        </div>
+    )
+}
+
+const PAYMENT_METHODS = PAYMENT_CONFIG.methods.map((method) => ({
+    ...method,
+    logo: METHOD_LOGOS[method.id] ?? null
+}))
+
+// Har bir to'lov JSON ko'rinishida localStorage ga yoziladi
+const HISTORY_STORAGE_KEY = 'mars_payments_history'
+
+const loadStoredPayments = () => {
+    try {
+        const raw = localStorage.getItem(HISTORY_STORAGE_KEY)
+        const parsed = raw ? JSON.parse(raw) : []
+        return Array.isArray(parsed) ? parsed : []
+    } catch {
+        return []
     }
-]
+}
 
-const INITIAL_PAYMENTS = [
-    { id: 1, amount: 100000, date: '2026-11-19 15:16', status: 'Kutilmoqda' },
-    { id: 2, amount: 990000, date: '2026-11-03 09:58', status: 'Kutilmoqda' }
-]
+const saveStoredPayments = (items) => {
+    try {
+        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(items))
+    } catch {
+        // localStorage yopiq bo'lsa sahifa baribir ishlaydi
+    }
+}
 
 const formatSum = (value) => Number(value || 0).toLocaleString('ru-RU').replace(/,/g, ' ')
 
@@ -60,8 +73,8 @@ const Payment = () => {
         }
     }, [])
 
-    const [amount, setAmount] = useState(100000)
-    const [history, setHistory] = useState(INITIAL_PAYMENTS)
+    const [amount, setAmount] = useState(PAYMENT_CONFIG.defaultAmount)
+    const [history, setHistory] = useState(() => [...loadStoredPayments(), ...INITIAL_PAYMENTS])
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [selectedMethod, setSelectedMethod] = useState(null)
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -85,16 +98,19 @@ const Payment = () => {
 
         // To'lov tizimiga yuborilgandek kichik kechikish
         setTimeout(() => {
-            setHistory((prev) => [
-                {
-                    id: Date.now(),
-                    amount: numericAmount,
-                    date: nowString(),
-                    status: 'Kutilmoqda',
-                    method: PAYMENT_METHODS.find((m) => m.id === selectedMethod)?.name
-                },
-                ...prev
-            ])
+            const newPayment = {
+                id: Date.now(),
+                amount: numericAmount,
+                date: nowString(),
+                status: 'Kutilmoqda',
+                method: PAYMENT_METHODS.find((m) => m.id === selectedMethod)?.name
+            }
+
+            // Yangi to'lov JSON tarixiga qo'shilib saqlanadi
+            const stored = [newPayment, ...loadStoredPayments()]
+            saveStoredPayments(stored)
+
+            setHistory([...stored, ...INITIAL_PAYMENTS])
             setIsSubmitting(false)
             setIsModalOpen(false)
             setSelectedMethod(null)

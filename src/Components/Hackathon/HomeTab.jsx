@@ -1,3 +1,4 @@
+import { HACKATHON } from './hackathonData'
 import NextSteps from './NextSteps'
 import QuickActions from './QuickActions'
 
@@ -14,10 +15,10 @@ const HomeTab = ({ onChangeTab }) => {
                             <line x1="8" x2="8" y1="2" y2="6" />
                             <line x1="3" x2="21" y1="10" y2="10" />
                         </svg>
-                        04.10.2026
+                        {HACKATHON.announcement.date}
                     </div>
                     <h2 className="text-xl sm:text-2xl font-black tracking-wide text-white mt-1.5 uppercase">
-                        Natijalar e'lon qilindi
+                        {HACKATHON.announcement.title}
                     </h2>
                 </div>
 
@@ -26,7 +27,7 @@ const HomeTab = ({ onChangeTab }) => {
                     onClick={() => onChangeTab('results')}
                     className="self-start sm:self-auto inline-flex items-center gap-2 rounded-full bg-[#f6c453] hover:bg-[#f0b93b] text-[#1f2430] text-sm font-bold px-5 py-3 transition active:scale-[0.99] cursor-pointer"
                 >
-                    Natijalarni ko'rish
+                    {HACKATHON.announcement.buttonLabel}
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="5" x2="19" y1="12" y2="12" />
                         <polyline points="12 5 19 12 12 19" />

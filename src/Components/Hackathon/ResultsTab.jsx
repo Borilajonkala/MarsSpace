@@ -1,4 +1,4 @@
-import { RESULTS } from './hackathonData'
+import { HACKATHON, RESULTS } from './hackathonData'
 
 const MEDAL = {
     1: 'bg-[#f6c453]/20 text-[#a9791a] border-[#f6c453]',
@@ -12,7 +12,7 @@ const ResultsTab = () => {
             <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
                 <div>
                     <h2 className="text-base font-bold text-gray-900">Natijalar</h2>
-                    <p className="text-xs text-gray-400 mt-1">04.10.2026 · Yakuniy baholash natijalari</p>
+                    <p className="text-xs text-gray-400 mt-1">{HACKATHON.resultsSubtitle}</p>
                 </div>
                 <span className="rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-bold px-3 py-1">
                     E'lon qilindi

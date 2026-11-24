@@ -1,4 +1,4 @@
-import { TABS } from './hackathonData'
+import { HACKATHON, TABS } from './hackathonData'
 
 const HackathonHero = ({ activeTab, onChangeTab }) => {
     return (
@@ -8,12 +8,12 @@ const HackathonHero = ({ activeTab, onChangeTab }) => {
                 <div className="flex items-start justify-between gap-4">
                     <div>
                         <h1 className="text-2xl sm:text-4xl font-black tracking-wide text-white leading-tight">
-                            MARS ONLINE HACKHATON
+                            {HACKATHON.hero.title}
                         </h1>
                         <div className="flex flex-wrap items-center gap-3 mt-3">
-                            <span className="text-sm font-black tracking-[0.2em] text-[#6ee7a8]">2026</span>
+                            <span className="text-sm font-black tracking-[0.2em] text-[#6ee7a8]">{HACKATHON.hero.year}</span>
                             <span className="inline-flex items-center rounded-lg border border-cyan-400/40 bg-cyan-400/5 px-3 py-1 text-[10px] sm:text-[11px] font-bold tracking-wider text-cyan-300">
-                                ONLAYN XAKATON · NATIJALAR E'LON QILINDI
+                                {HACKATHON.hero.badge}
                             </span>
                         </div>
                     </div>
