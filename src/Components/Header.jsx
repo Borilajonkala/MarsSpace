@@ -62,6 +62,8 @@ const Header = ({ children }) => {
                 return 'Kurslarim'
             case '/my-works':
                 return 'Mening ishlarim'
+            case '/frontend':
+                return 'Front-End Akademiya'
             case '/games':
                 return "O'yin-kulgi"
             case '/alogo':
@@ -118,6 +120,16 @@ const Header = ({ children }) => {
             icon: (
                 <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 8 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+                </svg>
+            )
+        },
+        {
+            to: '/frontend',
+            label: 'Front-End Akademiya',
+            icon: (
+                <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="16 18 22 12 16 6" />
+                    <polyline points="8 6 2 12 8 18" />
                 </svg>
             )
         },

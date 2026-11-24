@@ -7,6 +7,7 @@ import Login from './Pages/Login'
 import Register from './Pages/Register'
 import Blog from './Pages/Blog'
 import MyWorks from './Pages/My-works'
+import FrontendAcademy from './Pages/FrontendAcademy'
 import Alogo from './Pages/Alogo'
 import Payment from './Pages/Payment'
 import Hackathon from './Pages/Hackathon'
@@ -29,6 +30,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/courses" element={<About />} />
         <Route path="/my-works" element={<MyWorks />} />
+        <Route path="/frontend" element={<FrontendAcademy />} />
         <Route path="/games" element={<BattleLobby />} />
         <Route path="/battle" element={<BattleLobby />} />
         <Route path="/alogo" element={<Alogo />} />
