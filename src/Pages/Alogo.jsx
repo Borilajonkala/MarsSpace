@@ -7,7 +7,7 @@ const Alogo = () => {
                 TOP Kompaniyalar
             </h1>
             <img className="mt-[20px]" src="https://space.marsit.uz/img/editor-ads.08b4da43.webp" alt="" />
-            <section className="flex items-center jutify-between mt-[30px] gap-10 bg-[white] p-[20px] rounded-lg">
+            <section className="flex items-center justify-between mt-[30px] gap-10 bg-[white] p-[20px] rounded-lg">
                 <div>
                     <h2 className="text-2xl font-bold text-slate-900 mb-3">Olimpiada masalalari — mars.algo</h2>
                     <p className="text-base text-slate-700 leading-relaxed mb-3">Bu yerda mashhur kompaniyalar mahsulotlari asosidagi masalalarni yechasan. mars.algoʼda esa olimpiada masalalari: divizionlar, haftalik reyting, oylik musobaqalar.</p>
