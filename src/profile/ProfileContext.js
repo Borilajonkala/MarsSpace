@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react'
 
 export {
+  AUTH_ID_TOKEN_KEY,
   AUTH_STORAGE_KEY,
   COSMETICS,
   DEFAULT_AVATAR,
@@ -12,7 +13,9 @@ export {
   PROFILE_PENDING_KEY,
   clearAuthUser,
   normalizeProfile,
+  readAuthToken,
   readAuthUser,
+  writeAuthToken,
   writeAuthUser,
   safeArray,
 } from './profileStore.js'

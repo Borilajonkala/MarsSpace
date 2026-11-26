@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { FaTelegramPlane } from 'react-icons/fa'
+import { signInWithPopup } from 'firebase/auth'
+import { FaGoogle, FaTelegramPlane } from 'react-icons/fa'
 import {
   LuCircleAlert,
   LuEye,
@@ -10,10 +11,17 @@ import {
   LuUser,
 } from 'react-icons/lu'
 import AuthShell, { LanguageSwitcher } from '../Components/AuthShell.jsx'
-import { useProfile } from '../profile/ProfileContext.js'
-import { normalizeLogin, resolveAccount } from '../profile/authAccounts.js'
+import { auth, provider } from '../firebase.js'
+import { DEFAULT_AVATAR, useProfile } from '../profile/ProfileContext.js'
+import { upsertRegisteredUser, writeAuthToken } from '../profile/profileStore.js'
+import {
+  normalizeLogin,
+  resolveAccount,
+  saveRemoteAccount,
+} from '../profile/authAccounts.js'
 
 const LANG_STORAGE_KEY = 'mars_login_lang'
+const STARTER_COINS = 10000
 
 const TRANSLATIONS = {
   ru: {
@@ -22,6 +30,7 @@ const TRANSLATIONS = {
     subtitle: 'Что изучим сегодня?',
     student: 'Студент',
     parent: 'Родитель',
+    google: 'Войти через Google',
     telegram: 'Войти через Telegram',
     otherTelegram: 'Войти с другим Telegram',
     divider: 'или по ID и паролю',
@@ -35,6 +44,7 @@ const TRANSLATIONS = {
     register: 'Регистрация',
     errorEmpty: 'Введите логин и пароль.',
     errorWrong: 'Неверный логин или пароль.',
+    errorGoogle: 'Не удалось войти через Google. Попробуйте ещё раз.',
     infoTelegram: 'Вход через Telegram скоро станет доступен.',
     badgeClose: 'Скрыть',
   },
@@ -44,6 +54,7 @@ const TRANSLATIONS = {
     subtitle: "Bugun nimalarni o'rganamiz?",
     student: "O'quvchi",
     parent: 'Ota-ona',
+    google: 'Google orqali kirish',
     telegram: 'Telegram orqali kirish',
     otherTelegram: 'Boshqa Telegram bilan kirish',
     divider: 'yoki ID va parol bilan',
@@ -57,6 +68,7 @@ const TRANSLATIONS = {
     register: "Ro'yxatdan o'tish",
     errorEmpty: 'Login va parolni kiriting.',
     errorWrong: "Login yoki parol noto'g'ri.",
+    errorGoogle: "Google orqali kirish amalga oshmadi. Qayta urinib ko'ring.",
     infoTelegram: 'Telegram orqali kirish tez orada ishga tushadi.',
     badgeClose: 'Yashirish',
   },
@@ -66,6 +78,7 @@ const TRANSLATIONS = {
     subtitle: 'What will we learn today?',
     student: 'Student',
     parent: 'Parent',
+    google: 'Sign in with Google',
     telegram: 'Sign in with Telegram',
     otherTelegram: 'Sign in with another Telegram',
     divider: 'or with ID and password',
@@ -79,6 +92,7 @@ const TRANSLATIONS = {
     register: 'Sign up',
     errorEmpty: 'Enter your login and password.',
     errorWrong: 'Wrong login or password.',
+    errorGoogle: 'Google sign-in failed. Please try again.',
     infoTelegram: 'Telegram sign-in is coming soon.',
     badgeClose: 'Hide',
   },
@@ -117,6 +131,77 @@ const Login = () => {
   }
 
   const showStatus = (type, text) => setStatus({ type, text })
+
+  const handleGoogle = async () => {
+    setStatus(null)
+    setPending(true)
+
+    try {
+      const result = await signInWithPopup(auth, provider)
+      const user = result.user
+      const idToken = await user.getIdToken()
+
+      console.log('Name:', user.displayName)
+      console.log('Email:', user.email)
+      console.log('Photo:', user.photoURL)
+      console.log('UID:', user.uid)
+
+      // Google hisobi db.json'dagi users jadvaliga bog'lanadi.
+      const login = normalizeLogin(user.email || user.uid)
+      let account = await resolveAccount(login, { offline: apiOnline === false })
+
+      if (!account) {
+        const draft = {
+          id: `user-${user.uid}`,
+          login,
+          name: user.displayName || user.email || 'Space user',
+          email: user.email || '',
+          firebaseUid: user.uid,
+          provider: 'google',
+          role,
+          marsId: `M-${Math.floor(10000 + Math.random() * 90000)}`,
+          profileId: 'profile-current',
+          avatar: user.photoURL || DEFAULT_AVATAR,
+          coins: STARTER_COINS,
+          xp: 0,
+          level: 1,
+          createdAt: new Date().toISOString(),
+        }
+
+        const saved = await saveRemoteAccount(draft, { offline: apiOnline === false })
+
+        // Server o'chirilgan bo'lsa ham hisob brauzerda saqlanadi va keyin sinxronlanadi.
+        upsertRegisteredUser({ ...draft, ...saved })
+        account = { ...draft, ...saved }
+      }
+
+      // Firebase ID tokeni keyingi so'rovlar uchun localStorage'da saqlanadi.
+      writeAuthToken(idToken)
+
+      const session = {
+        id: account.id || user.uid,
+        login,
+        name: account.name || user.displayName || user.email || 'Space user',
+        role: account.role || role,
+        marsId: account.marsId || 'M-31710',
+        profileId: account.profileId || 'profile-current',
+        avatar: account.avatar || user.photoURL || DEFAULT_AVATAR,
+        email: user.email || '',
+        firebaseUid: user.uid,
+        provider: 'google',
+        token: idToken,
+        loggedInAt: new Date().toISOString(),
+      }
+
+      loginUser(session)
+      refreshProfile({ silent: true })
+      navigate('/', { replace: true })
+    } catch (error) {
+      console.log(error.message)
+      setPending(false)
+      showStatus('error', t.errorGoogle)
+    }
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -198,6 +283,17 @@ const Login = () => {
           </button>
         ))}
       </div>
+
+      {/* Google */}
+      <button
+        type="button"
+        onClick={handleGoogle}
+        disabled={pending}
+        className="mt-3 flex h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-black/10 bg-white text-sm font-semibold text-[#2b2b2f] transition hover:bg-[#f7f7f7] active:scale-[0.995] disabled:cursor-wait disabled:opacity-70"
+      >
+        <FaGoogle className="h-4 w-4 text-[#ea4335]" />
+        {t.google}
+      </button>
 
       {/* Telegram */}
       <button

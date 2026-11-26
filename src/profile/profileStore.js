@@ -6,6 +6,7 @@ export const PROFILE_CACHE_KEY = 'mars_profile_cache'
 export const PROFILE_PENDING_KEY = 'mars_profile_pending'
 export const AUTH_STORAGE_KEY = 'mars_auth_user'
 export const AUTH_TOKEN_KEY = 'token'
+export const AUTH_ID_TOKEN_KEY = 'mars_id_token'
 export const REGISTERED_USERS_KEY = 'mars_registered_users'
 export const DEFAULT_AVATAR = '/avatar-default.jpg'
 export const LEVEL_XP = 700
@@ -175,10 +176,28 @@ export const writeAuthUser = (user) => {
   }
 }
 
+export const readAuthToken = () => {
+  try {
+    return localStorage.getItem(AUTH_ID_TOKEN_KEY)
+  } catch {
+    return null
+  }
+}
+
+export const writeAuthToken = (token) => {
+  try {
+    if (token) localStorage.setItem(AUTH_ID_TOKEN_KEY, String(token))
+    else localStorage.removeItem(AUTH_ID_TOKEN_KEY)
+  } catch {
+    // Xotira yopilgan bo'lsa, token faqat joriy sessiyada saqlanadi.
+  }
+}
+
 export const clearAuthUser = () => {
   try {
     localStorage.removeItem(AUTH_STORAGE_KEY)
     localStorage.removeItem(AUTH_TOKEN_KEY)
+    localStorage.removeItem(AUTH_ID_TOKEN_KEY)
   } catch {
     // Xotira mavjud bo'lmasa, tozalash shart emas.
   }
