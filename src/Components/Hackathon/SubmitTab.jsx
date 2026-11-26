@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
+import { LuPackage } from 'react-icons/lu'
 import { TOPIC_STORAGE_KEY, TOPICS, WORK_STORAGE_KEY, loadJSON, saveJSON } from './hackathonData'
+import TopicIcon from './TopicIcon'
 
 const nowString = () => {
     const d = new Date()
@@ -62,7 +64,7 @@ const SubmitTab = () => {
                         <div className="rounded-xl border border-gray-100 bg-slate-50 px-4 py-3 text-sm font-semibold text-gray-800">
                             {selectedTopic ? (
                                 <span className="flex items-center gap-2">
-                                    <span>{selectedTopic.emoji}</span>
+                                    <TopicIcon name={selectedTopic.icon} />
                                     {selectedTopic.title}
                                 </span>
                             ) : (
@@ -159,7 +161,9 @@ const SubmitTab = () => {
                     </div>
                 ) : (
                     <div className="rounded-2xl border border-dashed border-gray-200 p-6 text-center">
-                        <div className="text-3xl mb-2">📦</div>
+                        <div className="mb-2 flex justify-center text-3xl text-gray-400">
+                            <LuPackage aria-hidden="true" />
+                        </div>
                         <p className="text-xs text-gray-500">Hozircha ish topshirilmagan.</p>
                     </div>
                 )}

@@ -1,66 +1,56 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
+import {
+	LuCalendarDays,
+	LuCheck,
+	LuClock,
+	LuPartyPopper,
+	LuPuzzle,
+	LuRocket,
+	LuSearch,
+} from 'react-icons/lu'
 import dbData from '../../db.json'
 
 const STORAGE_KEY = 'mars_event_registrations'
 const CLUB_STORAGE_KEY = 'mars_club_members'
 
-
-
-
-
-
-
-const loadList = (key) => {
-	try {
-		const saved = localStorage.getItem(key)
-		const parsed = saved ? JSON.parse(saved) : []
-		return Array.isArray(parsed) ? parsed : []
-	} catch {
-		return []
-	}
+const TYPE_META = {
+	tadbir: { label: 'Tadbir', badge: 'bg-blue-50 text-blue-700 border-blue-200', icon: <LuPartyPopper aria-hidden="true" /> },
+	togarak: { label: "To'garak", badge: 'bg-emerald-50 text-emerald-700 border-emerald-200', icon: <LuPuzzle aria-hidden="true" /> },
+	hackathon: { label: 'Xakaton', badge: 'bg-purple-50 text-purple-700 border-purple-200', icon: <LuRocket aria-hidden="true" /> },
 }
 
-const saveList = (key, value) => {
-
-
-
-
-	try {
-		localStorage.setItem(key, JSON.stringify(value))
-	} catch {
-		console.log('locolstorege yopilsayam sayt iwlaydi');
-		
-	}
-}
-
-const Events = () => {
-	const [query, setQuery] = useState('')
-	const [registrations, setRegistrations] = useState(() => loadList(STORAGE_KEY))
-	const [memberships, setMemberships] = useState(() => loadList(CLUB_STORAGE_KEY))
-
-		
-const [clubs, setClubs] = useState([])
-console.log(clubs);
-
-  useEffect(() => {
-    async function getClubs() {
-      try {
-        const response = await fetch('http://localhost:3001/CLUBS')
-
-        if (!response.ok) {
-          throw new Error(`Server xatosi: ${response.status}`)
-        }
-
-        const data = await response.json()
-        setClubs(data)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    getClubs()
-  }, [])
-
+const CLUBS = [
+	{
+		id: 'club-shaxmat',
+		name: 'Shaxmat',
+		image: 'https://picsum.photos/seed/mars-shaxmat/600/400',
+		description: "Ochiq turnirlar, debyut nazariyasi va endshpil mashg'ulotlari. Boshlovchilar uchun alohida guruh bor.",
+		schedule: 'Seshanba va payshanba · 15:00',
+		mentor: 'Sardor Aliyev',
+		location: 'Chilonzor filiali · 204-xona',
+		members: 18,
+	},
+	{
+		id: 'club-krestiki-noliki',
+		name: 'Krestiki-noliki',
+		image: 'https://picsum.photos/seed/mars-krestiki/600/400',
+		description: "Mantiqiy o'yinlar klubi: krestiki-noliki, karto4kalar va tezkor fikrlash musobaqalari.",
+		schedule: 'Chorshanba · 16:30',
+		mentor: 'Dilnoza Karimova',
+		location: 'Yunusobod filiali · 101-xona',
+		members: 12,
+	},
+	{
+		id: 'club-movie-day',
+		name: 'Movie Day',
+		image: 'https://picsum.photos/seed/mars-movie/600/400',
+		description: "Har juma film tomosha qilamiz va ingliz tilida muhokama qilamiz. Popkorn bizdan.",
+		schedule: 'Juma · 17:00',
+		mentor: 'Aziza Yusupova',
+		location: 'Chilonzor filiali · Konferens-zal',
+		members: 26,
+	},
+]
 
 const normalizeType = (raw) => {
 	const t = String(raw || '').toLowerCase()
@@ -80,11 +70,30 @@ const formatDate = (value) => {
 	}
 }
 
+const loadList = (key) => {
+	try {
+		const saved = localStorage.getItem(key)
+		const parsed = saved ? JSON.parse(saved) : []
+		return Array.isArray(parsed) ? parsed : []
+	} catch {
+		return []
+	}
+}
 
+const saveList = (key, value) => {
+	try {
+		localStorage.setItem(key, JSON.stringify(value))
+	} catch {
+		// localStorage yopiq bo'lsa ham sahifa ishlashda davom etadi
+	}
+}
 
+const Events = () => {
+	const [query, setQuery] = useState('')
+	const [registrations, setRegistrations] = useState(() => loadList(STORAGE_KEY))
+	const [memberships, setMemberships] = useState(() => loadList(CLUB_STORAGE_KEY))
 
-
-
+	// tadbirlar db.json dan keladi (mavjud bo'lmasa announcements dan olinadi)
 	const events = useMemo(() => {
 		if (Array.isArray(dbData.events) && dbData.events.length > 0) return dbData.events
 		if (Array.isArray(dbData.announcements)) {
@@ -148,7 +157,7 @@ const formatDate = (value) => {
 							{events.length}
 						</span>
 					</div>
-					
+
 					<div className="relative w-full sm:w-72">
 						<svg
 							className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
@@ -172,9 +181,12 @@ const formatDate = (value) => {
 					</div>
 				</div>
 
+				{/* Bo'sh holat */}
 				{filtered.length === 0 && (
 					<div className="mt-5 bg-white border border-dashed border-gray-200 rounded-2xl p-10 text-center">
-						<div className="text-4xl mb-3">{events.length === 0 ? '📅' : '🔍'}</div>
+						<div className="mb-3 flex justify-center text-4xl text-gray-400">
+							{events.length === 0 ? <LuCalendarDays aria-hidden="true" /> : <LuSearch aria-hidden="true" />}
+						</div>
 						<h3 className="font-bold text-gray-800">
 							{events.length === 0 ? "Hozircha tadbirlar yo'q" : 'Hech narsa topilmadi'}
 						</h3>
@@ -186,11 +198,12 @@ const formatDate = (value) => {
 					</div>
 				)}
 
+				{/* Kartalar */}
 				{filtered.length > 0 && (
 					<div className="mt-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
 						{filtered.map((event) => {
 							const type = normalizeType(event.type)
-							const meta = dbData.TYPE_META[type] ?? dbData.TYPE_META.tadbir
+							const meta = TYPE_META[type]
 							const seats = Number(event.seats) || 0
 							const baseRegistered = Number(event.registered) || 0
 							const isRegistered = registrations.includes(event.id)
@@ -204,6 +217,7 @@ const formatDate = (value) => {
 									key={event.id}
 									className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col"
 								>
+									{/* Rasm + badge */}
 									<div className="relative h-40 bg-gray-100">
 										{event.image ? (
 											<img
@@ -213,8 +227,8 @@ const formatDate = (value) => {
 												loading="lazy"
 											/>
 										) : (
-											<div className="w-full h-full flex items-center justify-center text-5xl bg-gray-50">
-												{meta.emoji}
+											<div className="w-full h-full flex items-center justify-center text-5xl text-gray-400 bg-gray-50">
+												{meta.icon}
 											</div>
 										)}
 										<span
@@ -223,12 +237,13 @@ const formatDate = (value) => {
 											{meta.label}
 										</span>
 										{isRegistered && (
-											<span className="absolute top-3 right-3 text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-600 text-white shadow-sm">
-												✓ Ro'yxatdansiz
+											<span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-600 text-white shadow-sm">
+												<LuCheck aria-hidden="true" /> Ro'yxatdansiz
 											</span>
 										)}
 									</div>
 
+									{/* Kontent */}
 									<div className="p-4 flex flex-col flex-1">
 										<div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-semibold text-gray-500">
 											{event.date && (
@@ -240,7 +255,11 @@ const formatDate = (value) => {
 													{formatDate(event.date)}
 												</span>
 											)}
-											{event.time && <span>🕒 {event.time}</span>}
+											{event.time && (
+												<span className="inline-flex items-center gap-1">
+													<LuClock aria-hidden="true" /> {event.time}
+												</span>
+											)}
 										</div>
 
 										<h3 className="mt-1.5 font-bold text-gray-900 text-[15px] leading-snug line-clamp-2">
@@ -250,7 +269,8 @@ const formatDate = (value) => {
 										{event.description && (
 											<p className="text-xs text-gray-500 mt-1.5 line-clamp-3">{event.description}</p>
 										)}
-												<div className="mt-3 space-y-1 text-[11px] text-gray-500">
+
+										<div className="mt-3 space-y-1 text-[11px] text-gray-500">
 											{event.location && (
 												<div className="flex items-center gap-1.5">
 													<svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -271,6 +291,7 @@ const formatDate = (value) => {
 											)}
 										</div>
 
+										{/* Teglar */}
 										{Array.isArray(event.tags) && event.tags.length > 0 && (
 											<div className="mt-3 flex flex-wrap gap-1.5">
 												{event.tags.map((tag) => (
@@ -284,6 +305,7 @@ const formatDate = (value) => {
 											</div>
 										)}
 
+										{/* Joylar */}
 										{seats > 0 && (
 											<div className="mt-4">
 												<div className="flex items-center justify-between text-[11px] font-semibold text-gray-500 mb-1">
@@ -303,6 +325,7 @@ const formatDate = (value) => {
 											</div>
 										)}
 
+										{/* Tugma */}
 										<button
 											type="button"
 											disabled={isClosed && !isRegistered}
@@ -324,15 +347,18 @@ const formatDate = (value) => {
 					</div>
 				)}
 			</section>
-	<section className="mt-8">
+
+			{/* ===== TO'GARAKLAR (qo'lda yozilgan) ===== */}
+			<section className="mt-8">
 				<div className="flex items-center gap-2 border-t border-gray-200 pt-5">
 					<h2 className="text-[16px] font-bold text-gray-900">To'garaklar</h2>
 					<span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+						{CLUBS.length}
 					</span>
 				</div>
 
 				<div className="mt-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-					{clubs.map((club) => {
+					{CLUBS.map((club) => {
 						const isMember = memberships.includes(club.id)
 
 						return (
@@ -340,6 +366,7 @@ const formatDate = (value) => {
 								key={club.id}
 								className="h-[400px] bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col"
 							>
+								{/* Rasm — kartaning 45% ini egallaydi */}
 								<div className="relative h-[45%] shrink-0 bg-gray-100">
 									<img
 										src={club.image}
@@ -348,8 +375,8 @@ const formatDate = (value) => {
 										loading="lazy"
 									/>
 									{isMember && (
-										<span className="absolute top-3 right-3 text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-600 text-white shadow-sm">
-											 A'zo
+										<span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-600 text-white shadow-sm">
+											<LuCheck aria-hidden="true" /> A'zo
 										</span>
 									)}
 								</div>

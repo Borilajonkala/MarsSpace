@@ -1,7 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LuBot, LuFlame, LuPencil, LuTrophy, LuVolume2, LuZap } from 'react-icons/lu';
+import { DEFAULT_AVATAR, useProfile } from '../profile/ProfileContext.js';
 
 const Battle = ({ back }) => {
+  const { profile, fullName } = useProfile();
   const [tab, setTab] = useState('BATTLE');
   const [seats, setSeats] = useState(4);
   const [searching, setSearching] = useState(false);
@@ -38,7 +41,7 @@ const Battle = ({ back }) => {
             </button>
           ))}
         </div>
-        <span className="vol">🔊</span>
+        <span className="vol"><LuVolume2 aria-hidden="true" /></span>
       </div>
 
       <div className="bt">
@@ -49,20 +52,30 @@ const Battle = ({ back }) => {
             <b className="o">677</b> <small>JANGDA</small>
           </div>
           <div className="pill2">
-            ⚡ <b>0</b> <small>CHAQMOQLAR</small>
-            🔥 <b>0</b> <small>SERIYA</small>
-            🏆 <b>0</b> <small>G'ALABALAR</small>
+            <LuZap aria-hidden="true" /> <b>0</b> <small>CHAQMOQLAR</small>
+            <LuFlame aria-hidden="true" /> <b>0</b> <small>SERIYA</small>
+            <LuTrophy aria-hidden="true" /> <b>0</b> <small>G'ALABALAR</small>
           </div>
         </div>
 
         <div className="vs">
           <div className="side-p">
-            <span className="ring">👨‍🚀</span>
-            <small>SIZ</small>
+            <span className="ring">
+              <img
+                src={profile.avatar || DEFAULT_AVATAR}
+                alt={`${fullName} avatari`}
+                onError={(event) => {
+                  event.currentTarget.src = DEFAULT_AVATAR;
+                }}
+              />
+            </span>
+            <small>{fullName.split(' ')[0] || 'SIZ'}</small>
           </div>
           <span className="vs-t">VS</span>
           <div className="side-p">
-            <span className={'ring empty' + (found ? ' got' : '')}>{found ? '🤖' : '+'}</span>
+            <span className={'ring empty' + (found ? ' got' : '')}>
+              {found ? <LuBot aria-hidden="true" /> : '+'}
+            </span>
             <small>{found ? 'RAQIB' : 'TANLASH'}</small>
           </div>
         </div>
@@ -71,8 +84,12 @@ const Battle = ({ back }) => {
           {searching ? 'QIDIRILMOQDA… (bekor qilish)' : found ? 'JANGNI BOSHLASH' : 'RAQIB TOPISH'}
         </button>
 
-        <p className="first">Bugungi birinchi g'alaba: ×2 ⚡</p>
-        <button className="topic">PYTHON · BOSHLANG'ICH ✎</button>
+        <p className="first">
+          Bugungi birinchi g'alaba: ×2 <LuZap className="inline align-[-2px]" aria-hidden="true" />
+        </p>
+        <button className="topic">
+          PYTHON · BOSHLANG'ICH <LuPencil className="inline align-[-2px]" aria-hidden="true" />
+        </button>
 
         <div className="room">
           <div className="room-h">
@@ -110,7 +127,9 @@ const Battle = ({ back }) => {
           </button>
         </div>
 
-        <button className="bot">🤖 BOT BILAN MASHQ</button>
+        <button className="bot">
+          <LuBot className="inline align-[-2px]" aria-hidden="true" /> BOT BILAN MASHQ
+        </button>
         <p className="foot">Mashq uchun chaqmoq berilmaydi.</p>
       </div>
     </div>
@@ -130,7 +149,8 @@ const battleCss = `
 .tabs{display:flex;border:1px solid #2b3262;background:#0e1230}
 .tabs button{background:none;border:0;color:#aab3e0;font-size:11px;letter-spacing:.14em;font-weight:700;padding:10px 16px}
 .tabs button.on{background:#6cbf3f;color:#fff}
-.vol{opacity:.7}
+.vol{opacity:.7;display:inline-flex;align-items:center}
+.vol svg{width:18px;height:18px}
 
 .bt{max-width:910px;margin:44px auto 0;display:flex;flex-direction:column;align-items:center}
 .pills{display:flex;gap:22px;margin-bottom:18px;flex-wrap:wrap;justify-content:center}
@@ -139,13 +159,15 @@ const battleCss = `
 .pill2 b{font-size:17px}
 .pill2 b.g{color:#6cd44a}
 .pill2 b.o{color:#ff7a45;font-size:20px}
+.pill2 svg{width:16px;height:16px;color:#9aa3d6}
 .gdot{width:8px;height:8px;border-radius:50%;background:#6cd44a}
 .sep{width:1px;height:20px;background:#2b3262;margin:0 8px}
 
 .vs{display:flex;align-items:center;gap:46px;margin-top:6px}
 .side-p{display:flex;flex-direction:column;align-items:center;gap:12px}
 .side-p small{font-size:11px;letter-spacing:.14em;color:#aab3e0;font-weight:700}
-.ring{width:86px;height:86px;border-radius:50%;border:3px solid #34406f;background:#10163a;display:grid;place-items:center;font-size:42px}
+.ring{width:86px;height:86px;border-radius:50%;border:3px solid #34406f;background:#10163a;display:grid;place-items:center;font-size:42px;overflow:hidden}
+.ring img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .ring.empty{border:2px dashed #3b4478;font-size:30px;color:#7b86bd;background:transparent}
 .ring.got{border-style:solid;color:#fff;font-size:42px}
 .vs-t{font-size:26px;font-weight:900;color:#c4592c;letter-spacing:.1em;margin-top:-22px}

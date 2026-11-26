@@ -1,14 +1,19 @@
+import { LuCoins, LuMedal, LuTrophy } from 'react-icons/lu'
 import dbData from '../../db.json'
 
 const Home = () => {
   const ratings = dbData.ratings || []
   const marstype = dbData.marstype || {}
+  
 
   return (
     
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Reyting va Yutuqlar 🏆</h1>
+        <h1 className="flex items-center gap-2 text-2xl font-bold text-gray-900 mb-2">
+          <LuTrophy aria-hidden="true" />
+          Reyting va Yutuqlar
+        </h1>
         <p className="text-sm text-gray-500 mb-6">
           Eng yaxshi o'quvchilar haftalik va oylik natijalari
         </p>
@@ -32,13 +37,30 @@ const Home = () => {
                   }`}
                 >
                   <td className="py-3 px-4 font-bold">
-                    {item.rank === 1 ? '🥇 1' : item.rank === 2 ? '🥈 2' : item.rank === 3 ? '🥉 3' : item.rank}
+                    <span className="inline-flex items-center gap-1.5">
+                      {item.rank <= 3 && (
+                        <LuMedal
+                          aria-hidden="true"
+                          className={
+                            item.rank === 1
+                              ? 'text-amber-500'
+                              : item.rank === 2
+                                ? 'text-slate-400'
+                                : 'text-orange-600'
+                          }
+                        />
+                      )}
+                      {item.rank}
+                    </span>
                   </td>
                   <td className="py-3 px-4 text-gray-800">
                     {item.name} {item.isCurrent && <span className="text-xs text-orange-600 font-semibold">(Siz)</span>}
                   </td>
                   <td className="py-3 px-4 text-right font-black text-amber-600">
-                    🪙 {item.score}
+                    <span className="inline-flex items-center gap-1.5">
+                      <LuCoins aria-hidden="true" />
+                      {item.score}
+                    </span>
                   </td>
                 </tr>
               ))}

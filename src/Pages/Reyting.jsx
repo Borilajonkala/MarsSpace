@@ -1,4 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { LuTrophy } from 'react-icons/lu'
+import { useProfile } from '../profile/ProfileContext.js'
 
 
 const API = 'http://localhost:3000'
@@ -60,6 +62,7 @@ const stamp = () => {
 
 /* ---------------------------------- ASOSIY ---------------------------------- */
 const Reyting = () => {
+  const { profile, fullName } = useProfile()
   const [data, setData] = useState(null)
   const [error, setError] = useState('')
   const [tab, setTab] = useState('quvvat')
@@ -107,7 +110,14 @@ const Reyting = () => {
   // har bir tab uchun tayyor ro'yxat (hammasi db.json'dan)
   const boards = useMemo(() => {
     if (!data) return null
-    const { me, ratings } = data
+    const { ratings } = data
+    const me = {
+      ...data.me,
+      fullName,
+      avatar: profile.avatar,
+      xp: Number(profile.xp) || 0,
+      coins: Number(profile.coins) || 0,
+    }
     const inScope = (s, sc) =>
       sc === 'group' ? s.groupId === me.groupId : sc === 'branch' ? s.branchId === me.branchId : true
 
@@ -160,7 +170,7 @@ const Reyting = () => {
     )
 
     return { quvvat, coin, battle, marstype, yutuq, granpri }
-  }, [data, players])
+  }, [data, players, profile.avatar, profile.coins, profile.xp, fullName])
 
   if (error) return <div className="rt"><style>{css}</style><p className="rt-msg">{error}</p></div>
   if (!boards) return <div className="rt"><style>{css}</style><p className="rt-msg">Yuklanmoqda…</p></div>
@@ -201,7 +211,10 @@ const Reyting = () => {
   return (
     <div className="rt">
       <style>{css}</style>
-      <h2 className="rt-title">Reytinglar</h2>
+      <h2 className="rt-title">
+        Reyting va Yutuqlar
+        <LuTrophy aria-hidden="true" />
+      </h2>
 
       {/* yuqoridagi tablar */}
       <div className="rt-chips">
@@ -351,7 +364,8 @@ const css = `
 .rt{min-height:100vh;background:#f8f7fc;padding:24px 24px 60px;font-family:'Manrope','Nunito','Segoe UI',system-ui,sans-serif;color:#1c1b2e}
 .rt *{box-sizing:border-box}
 .rt-msg{color:#6b6a80}
-.rt-title{margin:0 0 14px;font-size:22px;font-weight:700;letter-spacing:-.01em}
+.rt-title{display:flex;align-items:center;gap:8px;margin:0 0 14px;font-size:22px;font-weight:700;letter-spacing:-.01em}
+.rt-title svg{color:#d79a32}
 .rt-chips,.rt-card{max-width:1151px}
 
 /* tablar */
